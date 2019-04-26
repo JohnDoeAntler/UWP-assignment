@@ -11,20 +11,35 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace CherryProject
+namespace CherryProject.Panel.Promotion
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginPage : Page
+    public sealed partial class IndexPage : Page
     {
-        public LoginPage()
+        public IndexPage()
         {
             this.InitializeComponent();
+
+            Window.Current.SetTitleBar(titleBar);
+        }
+
+        private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+            else
+            {
+                Frame.Navigate(typeof(Panel.IndexPage), null, new DrillInNavigationTransitionInfo());
+            }
         }
     }
 }

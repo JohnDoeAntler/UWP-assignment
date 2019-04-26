@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="CherryProject.Panel.Account.ModifyAccount"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="GUID: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="guid" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="2c473fce-44f0-4158-941c-a97670289163"/>
+            <TextBlock Text="Username: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="username" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     Text="n153m0n0"/>
+            <TextBlock Text="Password: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <PasswordBox x:Name="password" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"/>
+            <TextBlock Text="First Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="firstname" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     Text="Ho Ching"/>
+            <TextBlock Text="Last Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="lastname" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     Text="Yeung"/>
+            <TextBlock Text="Email: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="email" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     Text="c010ru1355code@gmail.com"/>
+            <TextBlock Text="Phone Number: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="phone" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     Text="2347 1239"/>
+            <TextBlock Text="Role: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <ComboBox x:Name="role" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10">
+                <ComboBoxItem>Dealer</ComboBoxItem>
+                <ComboBoxItem>Area Manager</ComboBoxItem>
+                <ComboBoxItem>Sales Manager</ComboBoxItem>
+                <ComboBoxItem>Sales Order Office</ComboBoxItem>
+                <ComboBoxItem>Storemen</ComboBoxItem>
+                <ComboBoxItem>Dispatch clerk</ComboBoxItem>
+            </ComboBox>
+            <TextBlock Text="Status: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <ToggleSwitch x:Name="status" OffContent="Enabled account" OnContent="Disabled account" IsOn="False" />
+            <TextBlock Text="Region: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <ComboBox x:Name="region" Height="32" 
+                     Background="Transparent"
+                     Margin="0 0 0 10">
+                <ComboBoxItem>CN (China)</ComboBoxItem>
+                <ComboBoxItem>KR (Korea)</ComboBoxItem>
+                <ComboBoxItem>JP (Japan)</ComboBoxItem>
+                <ComboBoxItem>TW (Taiwan)</ComboBoxItem>
+                <ComboBoxItem>TH (Thailand)</ComboBoxItem>
+                <ComboBoxItem>HK (Hong Kong)</ComboBoxItem>
+                <ComboBoxItem>EU (Euope)</ComboBoxItem>
+                <ComboBoxItem>RU (Russia)</ComboBoxItem>
+                <ComboBoxItem>US (United State of America)</ComboBoxItem>
+                <ComboBoxItem>UK (United Kingdom)</ComboBoxItem>
+            </ComboBox>
+            <TextBlock Text="Address: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <RichEditBox x:Name="address" MinHeight="96"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     />
+            <Button x:Name="submit" Content="Modify" HorizontalAlignment="Left"/>
+            <Button x:Name="reset" Content="Reset" HorizontalAlignment="Right" Margin="0 -32 0 0"/>
+        </StackPanel>
+    </Grid>
+</Page>

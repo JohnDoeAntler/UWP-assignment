@@ -119,8 +119,74 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="Panel\Account\CreateAccount.xaml.cs">
+      <DependentUpon>CreateAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Account\DisableAccount.xaml.cs">
+      <DependentUpon>DisableAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Account\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Account\ModifyAccount.xaml.cs">
+      <DependentUpon>ModifyAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Account\SearchAccounts.xaml.cs">
+      <DependentUpon>SearchAccounts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Account\ViewAccount.xaml.cs">
+      <DependentUpon>ViewAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Invoice\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\CancelOrder.xaml.cs">
+      <DependentUpon>CancelOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\CreateOrder.xaml.cs">
+      <DependentUpon>CreateOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\EndorseOrder.xaml.cs">
+      <DependentUpon>EndorseOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\ModifyOrder.xaml.cs">
+      <DependentUpon>ModifyOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\SearchOrders.xaml.cs">
+      <DependentUpon>SearchOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Order\ViewOrder.xaml.cs">
+      <DependentUpon>ViewOrder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Other\Calendar.xaml.cs">
+      <DependentUpon>Calendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Other\EmitNotification.xaml.cs">
+      <DependentUpon>EmitNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Other\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Product\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Product\SearchProducts.xaml.cs">
+      <DependentUpon>SearchProducts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Promotion\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Spare\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -145,7 +211,95 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Panel\Account\CreateAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Account\DisableAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Account\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Account\ModifyAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Account\SearchAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Account\ViewAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Invoice\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\CancelOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\CreateOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\EndorseOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\ModifyOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\SearchOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Order\ViewOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Other\Calendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Other\EmitNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Other\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Product\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Product\SearchProducts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Promotion\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Spare\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,6 +308,11 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Service\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

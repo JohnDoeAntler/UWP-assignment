@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="CherryProject.Panel.Account.SearchAccounts"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Search Account" FontSize="36" TextAlignment="Center"/>
+            <TextBlock Text="Enter your username and password below" Margin="0,20,0,20"
+               TextWrapping="Wrap" Width="300"
+               TextAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+            <TextBox x:Name="UsernameTextBox" Margin="4" Width="330" PlaceholderText="Find user by username."/>
+            <TextBlock HorizontalAlignment="Center" Text="There has only found 2 result(s)."/>
+            <GridView HorizontalAlignment="Center" SelectionMode="Single" IsItemClickEnabled="True">
+                <GridViewItem Margin="10">
+                    <StackPanel Padding="12" Orientation="Horizontal">
+                        <SymbolIcon Symbol="ContactInfo"></SymbolIcon>
+                        <StackPanel Margin="16,0,0,0">
+                            <TextBlock Width="176" Margin="0,0,0,2" 
+                                       TextWrapping="WrapWholeWords" 
+                                       TextTrimming="Clip" 
+                                       Text="Ho Ching Yeung"/>
+                            <TextBlock Width="176" 
+                                       Height="48" 
+                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
+                                       TextWrapping="WrapWholeWords"
+                                       TextTrimming="Clip" 
+                                       Text="Role: dealer
+                                       GUID: 2c473fce-44f0-4158-94...
+                                       Phone number: 2347 1239" />
+                        </StackPanel>
+                    </StackPanel>
+                </GridViewItem>
+                <GridViewItem Margin="10">
+                    <StackPanel Padding="12" Orientation="Horizontal">
+                        <SymbolIcon Symbol="ContactInfo"></SymbolIcon>
+                        <StackPanel Margin="16,0,0,0">
+                            <TextBlock Width="176" Margin="0,0,0,2" 
+                                       TextWrapping="WrapWholeWords" 
+                                       TextTrimming="Clip" 
+                                       Text="Oscar Yeung"/>
+                            <TextBlock Width="176" 
+                                       Height="48" 
+                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
+                                       TextWrapping="WrapWholeWords"
+                                       TextTrimming="Clip" 
+                                       Text="Role: area manager
+                                       GUID: c66e75cf-0154-4e70-84...
+                                       Phone number: 9237 1379" />
+                        </StackPanel>
+                    </StackPanel>
+                </GridViewItem>
+            </GridView>
+        </StackPanel>
+    </Grid>
+</Page>

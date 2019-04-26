@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="CherryProject.Panel.Account.ViewAccount"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="GUID: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="guid" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="2c473fce-44f0-4158-941c-a97670289163"/>
+            <TextBlock Text="Username: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="username" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="n153m0n0"/>
+            <TextBlock Text="First Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="firstname" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="Ho Ching"/>
+            <TextBlock Text="Last Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="lastname" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="Yeung"/>
+            <TextBlock Text="Email: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="email" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="c010ru1355code@gmail.com"/>
+            <TextBlock Text="Phone Number: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox x:Name="phone" Height="32"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     Text="2347 1239"/>
+            <TextBlock Text="Role: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox Text="Dealer" />
+            <TextBlock Text="Status: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox Text="Enabled" />
+            <TextBlock Text="Region: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <TextBox Text="Hong Kong" />
+            <TextBlock Text="Address: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
+            <RichEditBox x:Name="address" MinHeight="96"
+                     Background="Transparent"
+                     Margin="0 0 0 10"
+                     IsReadOnly="True"
+                     />
+        </StackPanel>
+    </Grid>
+</Page>
