@@ -8,78 +8,91 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="GUID: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="guid" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="2c473fce-44f0-4158-941c-a97670289163"/>
-            <TextBlock Text="Username: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="username" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     Text="n153m0n0"/>
-            <TextBlock Text="Password: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <PasswordBox x:Name="password" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"/>
-            <TextBlock Text="First Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="firstname" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     Text="Ho Ching"/>
-            <TextBlock Text="Last Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="lastname" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     Text="Yeung"/>
-            <TextBlock Text="Email: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="email" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     Text="c010ru1355code@gmail.com"/>
-            <TextBlock Text="Phone Number: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="phone" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     Text="2347 1239"/>
-            <TextBlock Text="Role: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <ComboBox x:Name="role" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10">
-                <ComboBoxItem>Dealer</ComboBoxItem>
-                <ComboBoxItem>Area Manager</ComboBoxItem>
-                <ComboBoxItem>Sales Manager</ComboBoxItem>
-                <ComboBoxItem>Sales Order Office</ComboBoxItem>
-                <ComboBoxItem>Storemen</ComboBoxItem>
-                <ComboBoxItem>Dispatch clerk</ComboBoxItem>
-            </ComboBox>
-            <TextBlock Text="Status: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <ToggleSwitch x:Name="status" OffContent="Enabled account" OnContent="Disabled account" IsOn="False" />
-            <TextBlock Text="Region: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <ComboBox x:Name="region" Height="32" 
-                     Background="Transparent"
-                     Margin="0 0 0 10">
-                <ComboBoxItem>CN (China)</ComboBoxItem>
-                <ComboBoxItem>KR (Korea)</ComboBoxItem>
-                <ComboBoxItem>JP (Japan)</ComboBoxItem>
-                <ComboBoxItem>TW (Taiwan)</ComboBoxItem>
-                <ComboBoxItem>TH (Thailand)</ComboBoxItem>
-                <ComboBoxItem>HK (Hong Kong)</ComboBoxItem>
-                <ComboBoxItem>EU (Euope)</ComboBoxItem>
-                <ComboBoxItem>RU (Russia)</ComboBoxItem>
-                <ComboBoxItem>US (United State of America)</ComboBoxItem>
-                <ComboBoxItem>UK (United Kingdom)</ComboBoxItem>
-            </ComboBox>
-            <TextBlock Text="Address: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <RichEditBox x:Name="address" MinHeight="96"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     />
-            <Button x:Name="submit" Content="Modify" HorizontalAlignment="Left"/>
-            <Button x:Name="reset" Content="Reset" HorizontalAlignment="Right" Margin="0 -32 0 0"/>
-        </StackPanel>
-    </Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		<StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="GUID" Margin="0 0 0 10"/>
+				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Username" Margin="0 0 0 10"/>
+				<TextBox x:Name="Username" Margin="0 0 0 10"/>
+				<TextBlock Text="The account username. The length of username should not be less than 6."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Password" Margin="0 0 0 10"/>
+				<PasswordBox x:Name="Password" Margin="0 0 0 10"/>
+				<TextBlock Text="The account password. The length of password should not be less than 8."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<Grid ColumnSpacing="10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Margin="0 0 0 30">
+					<TextBlock Text="First Name" Margin="0 0 0 10"/>
+					<TextBox x:Name="FirstName"/>
+				</StackPanel>
+				<StackPanel Margin="0 0 0 30" Grid.Column="1">
+					<TextBlock Text="Last Name" Margin="0 0 0 10"/>
+					<TextBox x:Name="LastName"/>
+				</StackPanel>
+			</Grid>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Email" Margin="0 0 0 10"/>
+				<TextBox x:Name="Email" Margin="0 0 0 10"/>
+				<TextBlock Text="The account contact use email, it would be used on account recovery or account confirmation."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Phone Number" Margin="0 0 0 10"/>
+				<TextBox x:Name="PhoneNumber" Margin="0 0 0 10"/>
+				<TextBlock Text="The account contact use phone number, it would be used on account recovery or identity verification."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Role" Margin="0 0 0 10"/>
+				<ComboBox x:Name="Role" MinWidth="280" Margin="0 0 0 10" />
+				<TextBlock Text="The account role, the selected role would decide the permissions the account granted."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Region" Margin="0 0 0 10"/>
+				<ComboBox x:Name="Region" MinWidth="280" Margin="0 0 0 10" />
+				<TextBlock Text="The account user region, the selected region would decide the whole spare dispatchment."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Address" Margin="0 0 0 10"/>
+				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
+				<TextBlock Text="The account detail address, it would be used on dispatch destination address."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Status" Margin="0 0 0 10"/>
+				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10" />
+				<TextBlock Text="The account status, it determine the account is locked or not."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 30" Orientation="Horizontal" Spacing="10">
+				<Button x:Name="Submit" Content="Modify Account" Click="Submit_Click"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Page>

@@ -5,24 +5,82 @@
     xmlns:local="using:CherryProject.Panel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource SystemAccentColorDark3}">
-        <StackPanel Orientation="Vertical" Margin="0,57,0,0">
-            <TextBlock Text="Login" FontSize="36" TextAlignment="Center"/>
-            <TextBlock x:Name="ErrorMessage" Text="" FontSize="20" Margin="4" Foreground="Red" TextAlignment="Center"/>
-            <TextBlock Text="Enter your username and password below" Margin="0,0,0,20"
-               TextWrapping="Wrap" Width="300"
-               TextAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-            <TextBox x:Name="UsernameTextBox" Margin="4" Width="250" PlaceholderText="Username"/>
-            <PasswordBox x:Name="PasswordTextBox" Margin="4" Width="250" PlaceholderText="Password"/>
-            <Button x:Name="PassportSignInButton" Content="Login" Foreground="White"
-        Width="80" HorizontalAlignment="Center" Margin="0,20" Click="OnClick"/>
-            <TextBlock Text="Don't have an account?"
-                TextAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-            <TextBlock x:Name="RegisterButtonTextBlock" Text="Please contact area manager to get an account."
-               TextAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="0"/>
+            <ColumnDefinition Width="3*" MinWidth="340"/>
+            <ColumnDefinition Width="*" MinWidth="0"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="0"/>
+            <RowDefinition Height="3*" MinHeight="370"/>
+            <RowDefinition Height="*" MinHeight="0"/>
+        </Grid.RowDefinitions>
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Column="1"
+            Grid.Row="1">
+            <TextBlock 
+                Text="Login" 
+                FontSize="36"
+                TextAlignment="Center"/>
+            <TextBlock 
+                x:Name="ErrorMessage"
+                Text="" FontSize="20" 
+                Margin="4" 
+                Foreground="Red"
+                TextAlignment="Center"/>
+            <TextBlock 
+                Text="Enter your username and password below" 
+                Margin="0,0,0,20"
+                TextWrapping="Wrap" 
+                Width="300"
+                TextAlignment="Center" 
+                VerticalAlignment="Center" 
+                FontSize="16"/>
+            <TextBox 
+                x:Name="UsernameTextBox"
+                Margin="4"
+                Width="250"
+                PlaceholderText="Username"/>
+            <PasswordBox 
+                x:Name="PasswordTextBox" 
+                Margin="4" Width="250" 
+                PlaceholderText="Password" KeyDown="OnKeyDown"/>
+			<TextBlock
+				x:Name="ValidationAlerter"
+				Foreground="Yellow"
+				TextAlignment="Center"
+				TextWrapping="WrapWholeWords"
+				Margin="0 10 0 0"/>
+			<ProgressRing
+				x:Name="ProgressBar"
+				IsActive="True"
+				Visibility="Collapsed"
+				Width="50"
+				Height="50"
+				Margin="0 0 0 22"/>
+			<Button 
+                x:Name="PassportSignInButton"
+                Content="Login" 
+                Foreground="White"
+                Width="80"
+                HorizontalAlignment="Center"
+                Margin="0,20"
+                Click="OnClick"/>
+            <TextBlock 
+                Text="Don't have an account?"
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"/>
+            <TextBlock
+                x:Name="RegisterButtonTextBlock"
+                Text="Please contact area manager to get an account."
+                TextAlignment="Center" 
+                VerticalAlignment="Center" 
+                FontSize="16"/>
         </StackPanel>
     </Grid>
 </Page>

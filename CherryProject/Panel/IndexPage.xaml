@@ -5,93 +5,54 @@
     xmlns:local="using:CherryProject.Panel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	xmlns:vw="using:CherryProject.ViewModel"
+	mc:Ignorable="d">
 
-    <Grid  Background="{ThemeResource SystemAccentColorDark3}">
+    <Grid>
         <ScrollViewer VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Visible">
             <StackPanel Margin="0,62,0,0">
             <TextBlock HorizontalTextAlignment="Center" FontSize="24" FontWeight="Light">SLMC System</TextBlock>
-            <AutoSuggestBox PlaceholderText="Find a setting" Width="330" Margin="0,50" QueryIcon="Find"></AutoSuggestBox>
-                <GridView HorizontalAlignment="Center">
-                    <GridViewItem Margin="10" Tapped="NavigateAccountPage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="ContactInfo"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Account Management"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords"
-                                       TextTrimming="Clip" Text="Account observation, creation, modification and remove control." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigateOrderPage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="MoveToFolder"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Order Processing"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords"
-                                       TextTrimming="Clip" Text="Order processing view, statistics and trend calculation, creation, modification and remove." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigateProductPage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="Page2"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Product Management"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords" 
-                                       TextTrimming="Clip" Text="Product supplement, modification and view." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigatePromotionPage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="Pictures"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Promotion Management"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords"
-                                       TextTrimming="Clip" Text="Promotion view, supplement and modification." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigateSparePage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="PreviewLink"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Spare Management"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords"
-                                       TextTrimming="Clip" Text="Spare information view and spare status modification." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigateInvoicePage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="AlignCenter"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Invoice Management"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords"
-                                       TextTrimming="Clip" Text="Invoice generation and invoice content and status modification." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                    <GridViewItem Margin="10" Tapped="NavigateOtherPage">
-                        <StackPanel Padding="12" Orientation="Horizontal">
-                            <SymbolIcon Symbol="Comment"></SymbolIcon>
-                            <StackPanel Margin="16,0,0,0">
-                                <TextBlock Width="176" Margin="0,0,0,2" TextWrapping="WrapWholeWords" TextTrimming="Clip" Text="Others"/>
-                                <TextBlock Width="176" Height="48" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" TextWrapping="WrapWholeWords" 
-                                       TextTrimming="Clip" Text="Emit notification, etc." />
-                            </StackPanel>
-                        </StackPanel>
-                    </GridViewItem>
-                </GridView>
+				<AutoSuggestBox
+					PlaceholderText="Find a setting"
+					Width="330"
+					Margin="0,50"
+					QueryIcon="Find"
+					QuerySubmitted="OnQuerySubmitted"
+					TextChanged="OnTextChanged">
+				</AutoSuggestBox>
+				<GridView 
+                    HorizontalAlignment="Center"
+                    MaxWidth="1330"
+					ItemsSource="{x:Bind Items}">
+					<GridView.ItemTemplate>
+						<DataTemplate x:DataType="vw:IndexGridViewItem">
+							<GridViewItem 
+								Margin="10"
+								Tapped="Navigate"
+								Tag="{x:Bind Tag}">
+								<StackPanel
+									Padding="12"
+									Orientation="Horizontal">
+									<SymbolIcon Symbol="{x:Bind Icon}"></SymbolIcon>
+									<StackPanel Margin="16,0,0,0">
+										<TextBlock Width="176"
+											Margin="0,0,0,2"
+											TextWrapping="WrapWholeWords" 
+											TextTrimming="Clip" 
+											Text="{x:Bind Title}"/>
+										<TextBlock Width="176"
+											Height="48"
+											Style="{ThemeResource CaptionTextBlockStyle}"
+											Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"
+											TextWrapping="WrapWholeWords"
+											TextTrimming="Clip"
+											Text="{x:Bind Description}" />
+									</StackPanel>
+								</StackPanel>
+							</GridViewItem>
+						</DataTemplate>
+					</GridView.ItemTemplate>
+				</GridView>
             </StackPanel>
         </ScrollViewer>
     </Grid>

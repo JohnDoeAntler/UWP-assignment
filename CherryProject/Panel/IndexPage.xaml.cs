@@ -1,10 +1,18 @@
-﻿using System;
+﻿using CherryProject.Extension;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
+using CherryProject.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,46 +30,176 @@ namespace CherryProject.Panel
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class IndexPage : Page
-    {
-        public IndexPage()
+	{
+		private static IEnumerable<IndexGridViewItem> IndexGridViewItems
+		{
+			get => new[]{
+				new IndexGridViewItem{
+					Title = "Account Management",
+					Description = "Account observation, creation, modification and remove control.",
+					Icon = Symbol.ContactInfo,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Account")
+				},
+				new IndexGridViewItem{
+					Title = "Order Processing",
+					Description = "Order processing view, statistics and trend calculation, creation, modification and remove.",
+					Icon = Symbol.MoveToFolder,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Order")
+				},
+				new IndexGridViewItem{
+					Title = "Product Management",
+					Description = "Product supplement, modification and view.",
+					Icon = Symbol.Page2,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Product")
+				},
+				new IndexGridViewItem{
+					Title = "Promotion Management",
+					Description = "Promotion view, supplement and modification.",
+					Icon = Symbol.Pictures,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Promotion")
+				},
+				new IndexGridViewItem{
+					Title = "Spare Management",
+					Description = "Spare information view and spare status modification.",
+					Icon = Symbol.PreviewLink,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Spare")
+				},
+				new IndexGridViewItem{
+					Title = "Invoice Management",
+					Description = "Invoice generation and invoice content and status modification.",
+					Icon = Symbol.AlignCenter,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Invoice")
+				},
+				new IndexGridViewItem{
+					Title = "Other",
+					Description = "Emit notification, etc.",
+					Icon = Symbol.Comment,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Other")
+				}
+			};
+		}
+
+		public static ObservableCollection<IndexGridViewItem> GetIndexGridViewItems(RoleEnum role)
+			=> new ObservableCollection<IndexGridViewItem>(IndexGridViewItems.Where(x => x.Views.Any(y => PermissionManager.GetPermission(role).Any(z => y.Name == z.Name))));
+
+		private ObservableCollection<IndexGridViewItem> _items;
+
+		private ObservableCollection<IndexGridViewItem> Items { get => this._items; }
+
+		public IndexPage()
         {
             this.InitializeComponent();
-            Window.Current.SetTitleBar(null);
+
+			_items = GetIndexGridViewItems(SignInManager.CurrentUser.Role.ToRoleEnum());
+
+			_items.Add(new IndexGridViewItem()
+			{
+				Title = "Setting",
+				Description = "Login out, theme customization and language selection.",
+				Icon = Symbol.Setting,
+			});
+
+			Window.Current.SetTitleBar(null);
         }
 
-        private void NavigateAccountPage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Account.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+		private void Navigate(object sender, TappedRoutedEventArgs e)
+		{
+			var item = sender as GridViewItem;
 
-        private void NavigateOrderPage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Order.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+			for (int i = 0; i < _items.Count; i++)
+			{
+				if (item.Tag as string == _items[i].Tag)
+				{
+					Frame.Navigate(typeof(PanelPage), _items[i], new DrillInNavigationTransitionInfo());
+				}
+			}
+		}
 
-        private void NavigateProductPage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Product.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+		private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+		{
+			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+			{
+				if (string.IsNullOrEmpty(sender.Text))
+				{
+					sender.ItemsSource = null;
+				}else
+				{
+					var list = new ObservableCollection<NavigationViewItemBase>(
+						PermissionManager
+							.GetPermission(SignInManager.CurrentUser.Role.ToRoleEnum())
+							.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
+							.Take(5)
+							.Select(x => new NavigationViewItem()
+							{
+								Content = x.ClassNameToString(),
+								Icon = new SymbolIcon(
+									_items
+										.FirstOrDefault(y => y.Views.Any(z => z.Name == x.Name))
+										.Icon
+								)
+							}
+						)
+					);
 
-        private void NavigatePromotionPage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Promotion.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+					if (list.Count != 0)
+					{
+						list.Add(new NavigationViewItemSeparator());
+						list.Add(new NavigationViewItem()
+						{
+							Content = "Show all results"
+						});
+					}
+					else
+					{
+						list.Add(new NavigationViewItem()
+						{
+							Content = $"No results for {sender.Text}",
+							IsEnabled = false
+						});
+					}
 
-        private void NavigateSparePage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Spare.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+					sender.ItemsSource = list;
+				}
+			}
+		}
 
-        private void NavigateInvoicePage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Invoice.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
+		private void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+		{
+			if (args.ChosenSuggestion != null)
+			{
+				// User selected an item from the suggestion list, take an action on it here.
 
-        private void NavigateOtherPage(object sender, TappedRoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(Other.IndexPage), null, new DrillInNavigationTransitionInfo());
-        }
-    }
+				var selected = args.ChosenSuggestion as string;
+
+				foreach (var item in _items)
+				{
+					foreach (var view in item.Views)
+					{
+						if (selected == view.ClassNameToString())
+						{
+							item.Views = item.Views.OrderBy(x => x != view);
+
+							Frame.Navigate(typeof(PanelPage), item, new DrillInNavigationTransitionInfo());
+						}
+					}
+				}
+			}
+			else
+			{
+				// Use args.QueryText to determine what to do.
+
+				var result = PermissionManager
+						.GetPermission(RoleEnum.Administrator)
+						.FirstOrDefault(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase));
+
+				if (result != null)
+				{
+					var item = _items.FirstOrDefault(x => x.Views.Any(y => y == result));
+					item.Views = item.Views.OrderBy(x => x != result);
+
+					Frame.Navigate(typeof(PanelPage), item, new DrillInNavigationTransitionInfo());
+				}
+			}
+		}
+	}
 }

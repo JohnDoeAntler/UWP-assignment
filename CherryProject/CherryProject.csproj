@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -119,14 +119,30 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\DummyData.cs" />
+    <Compile Include="Extension\ControlExtension.cs" />
+    <Compile Include="Extension\PanelExtension.cs" />
+    <Compile Include="Extension\MD5Hasher.cs" />
+    <Compile Include="Extension\RoleExtension.cs" />
+    <Compile Include="Extension\UserExtension.cs" />
+    <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\Enum\OrderEnum.cs" />
+    <Compile Include="Model\Enum\RoleEnum.cs" />
+    <Compile Include="Model\Enum\StatusEnum.cs" />
+    <Compile Include="Model\Invoices.cs" />
+    <Compile Include="Model\Orderproduct.cs" />
+    <Compile Include="Model\Orders.cs" />
+    <Compile Include="Model\Products.cs" />
+    <Compile Include="Model\Promotions.cs" />
+    <Compile Include="Model\Roles.cs" />
+    <Compile Include="Model\Spare.cs" />
+    <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\Users.cs" />
     <Compile Include="Panel\Account\CreateAccount.xaml.cs">
       <DependentUpon>CreateAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\Account\DisableAccount.xaml.cs">
       <DependentUpon>DisableAccount.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel\Account\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\Account\ModifyAccount.xaml.cs">
       <DependentUpon>ModifyAccount.xaml</DependentUpon>
@@ -140,8 +156,17 @@
     <Compile Include="Panel\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Invoice\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
+    <Compile Include="Panel\Invoice\CompleteInvoice.xaml.cs">
+      <DependentUpon>CompleteInvoice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Invoice\CreateInvoice.xaml.cs">
+      <DependentUpon>CreateInvoice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Invoice\ModifyInvoice.xaml.cs">
+      <DependentUpon>ModifyInvoice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Invoice\SearchInvoices.xaml.cs">
+      <DependentUpon>SearchInvoices.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -154,9 +179,6 @@
     </Compile>
     <Compile Include="Panel\Order\EndorseOrder.xaml.cs">
       <DependentUpon>EndorseOrder.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel\Order\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\Order\ModifyOrder.xaml.cs">
       <DependentUpon>ModifyOrder.xaml</DependentUpon>
@@ -173,22 +195,49 @@
     <Compile Include="Panel\Other\EmitNotification.xaml.cs">
       <DependentUpon>EmitNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Other\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
+    <Compile Include="Panel\PanelPage.xaml.cs">
+      <DependentUpon>PanelPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
+    <Compile Include="Panel\Product\AddProduct.xaml.cs">
+      <DependentUpon>AddProduct.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Product\ModifyProduct.xaml.cs">
+      <DependentUpon>ModifyProduct.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Product\ModifyProductStatus.xaml.cs">
+      <DependentUpon>ModifyProductStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\Product\SearchProducts.xaml.cs">
       <DependentUpon>SearchProducts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Promotion\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
+    <Compile Include="Panel\Product\ViewProduct.xaml.cs">
+      <DependentUpon>ViewProduct.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Spare\IndexPage.xaml.cs">
-      <DependentUpon>IndexPage.xaml</DependentUpon>
+    <Compile Include="Panel\Promotion\AddPromotion.xaml.cs">
+      <DependentUpon>AddPromotion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Promotion\ModifyPromotion.xaml.cs">
+      <DependentUpon>ModifyPromotion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Promotion\ModifyPromotionStatus.xaml.cs">
+      <DependentUpon>ModifyPromotionStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Promotion\ViewPromotions.xaml.cs">
+      <DependentUpon>ViewPromotions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Spare\ModifySpareStatus.xaml.cs">
+      <DependentUpon>ModifySpareStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\Spare\SearchSpares.xaml.cs">
+      <DependentUpon>SearchSpares.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\CountryProvider.cs" />
+    <Compile Include="Service\PermissionManager.cs" />
+    <Compile Include="Service\RoleManager.cs" />
+    <Compile Include="Service\SignInManager.cs" />
+    <Compile Include="Service\UserManager.cs" />
+    <Compile Include="ViewModel\IndexGridViewItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -197,6 +246,7 @@
     <None Include="CherryProject_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Account.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -219,10 +269,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Account\IndexPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Panel\Account\ModifyAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -239,7 +285,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Invoice\IndexPage.xaml">
+    <Page Include="Panel\Invoice\CompleteInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Invoice\CreateInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Invoice\ModifyInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Invoice\SearchInvoices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,10 +314,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\Order\EndorseOrder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panel\Order\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,11 +337,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Other\IndexPage.xaml">
+    <Page Include="Panel\PanelPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\IndexPage.xaml">
+    <Page Include="Panel\Product\AddProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Product\ModifyProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Product\ModifyProductStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -295,25 +357,70 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Promotion\IndexPage.xaml">
+    <Page Include="Panel\Product\ViewProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Spare\IndexPage.xaml">
+    <Page Include="Panel\Promotion\AddPromotion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Promotion\ModifyPromotion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Promotion\ModifyPromotionStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Promotion\ViewPromotions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Spare\ModifySpareStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\Spare\SearchSpares.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore">
+      <Version>2.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <Version>2.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <Version>2.2.4</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>2.2.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>5.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql">
+      <Version>2.2.0</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Service\" />
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

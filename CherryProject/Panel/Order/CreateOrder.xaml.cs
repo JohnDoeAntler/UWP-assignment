@@ -26,10 +26,6 @@ namespace CherryProject.Panel.Order
         public CreateOrder()
         {
             this.InitializeComponent();
-
-            guid.Text = Guid.NewGuid().ToString();
-
-            timestamp.Text = DateTime.Now.ToLongTimeString();
         }
     }
 }

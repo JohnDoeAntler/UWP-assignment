@@ -9,13 +9,5 @@
     Background="Transparent">
 
     <Grid>
-        <CalendarView 
-            SelectionMode="Single" 
-            IsGroupLabelVisible="True"
-            IsOutOfScopeEnabled="True"
-            Language="en"
-            CalendarIdentifier="GregorianCalendar"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
     </Grid>
 </Page>

@@ -8,56 +8,77 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="GUID: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="guid" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="2c473fce-44f0-4158-941c-a97670289163"/>
-            <TextBlock Text="Username: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="username" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="n153m0n0"/>
-            <TextBlock Text="First Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="firstname" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="Ho Ching"/>
-            <TextBlock Text="Last Name: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="lastname" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="Yeung"/>
-            <TextBlock Text="Email: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="email" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="c010ru1355code@gmail.com"/>
-            <TextBlock Text="Phone Number: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox x:Name="phone" Height="32"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     Text="2347 1239"/>
-            <TextBlock Text="Role: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox Text="Dealer" />
-            <TextBlock Text="Status: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox Text="Enabled" />
-            <TextBlock Text="Region: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <TextBox Text="Hong Kong" />
-            <TextBlock Text="Address: " VerticalAlignment="Center" Margin="5" FontSize="18"/>
-            <RichEditBox x:Name="address" MinHeight="96"
-                     Background="Transparent"
-                     Margin="0 0 0 10"
-                     IsReadOnly="True"
-                     />
-        </StackPanel>
-    </Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		<StackPanel>
+			<StackPanel Margin="0 20">
+				<Ellipse Height="200" Width="200">
+					<Ellipse.Fill>
+						<ImageBrush ImageSource="ms-appx:///Assets/Account.jpg"/>
+					</Ellipse.Fill>
+				</Ellipse>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 20">
+				<StackPanel
+					Orientation="Horizontal"
+					HorizontalAlignment="Center"
+					Spacing="8">
+					<TextBlock x:Name="FirstName" TextAlignment="Center" FontSize="36"/>
+					<TextBlock x:Name="LastName" TextAlignment="Center" FontSize="36"/>
+				</StackPanel>
+				<TextBlock 
+					x:Name="Username"
+					TextAlignment="Center"
+					Style="{ThemeResource CaptionTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+			</StackPanel>
+
+			<ListView
+				Margin="0 0 0 20"
+				ItemsSource="{Binding}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ListViewItem Padding="10">
+							<StackPanel 
+								Orientation="Horizontal"
+								Spacing="10">
+								<Rectangle
+									 Fill="Gray"
+									 Height="40"
+									 Width="2"/>
+								<StackPanel>
+									<TextBlock Text="{Binding Item1}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Item2}" 
+										Style="{ThemeResource BodyTextBlockStyle}"
+										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+								</StackPanel>
+							</StackPanel>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Modify the account by clicking the above button to modify the account information."/>
+				<Button
+					x:Name="ModifyAccount"
+					Content="Modify Account"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Disable the account by clicking the above button to lock the account prevent anyone to access current account." />
+				<Button
+					x:Name="DisableAccount"
+					Content="Disable Account"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Page>

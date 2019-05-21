@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="CherryProject.Panel.PanelPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="ResponseStateGroup">
+				<VisualState x:Name="LessThan720">
+					<VisualState.Setters>
+						<Setter Target="NavigationViewControl.PaneDisplayMode" Value="LeftCompact"/>
+					</VisualState.Setters>
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1"/>
+					</VisualState.StateTriggers>
+				</VisualState>
+				<VisualState x:Name="GreaterThan720">
+					<VisualState.Setters>
+						<Setter Target="NavigationViewControl.PaneDisplayMode" Value="Left"/>
+					</VisualState.Setters>
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="720"/>
+					</VisualState.StateTriggers>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<NavigationView x:Name="NavigationViewControl"
+            PaneDisplayMode="LeftCompact"
+			IsPaneToggleButtonVisible="False"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="True"
+            Margin="0 0 0 0"
+			SelectionChanged="OnSelectionChanged">
+			<NavigationView.AutoSuggestBox>
+				<AutoSuggestBox
+					PlaceholderText="Search"
+					QueryIcon="Find"
+					QuerySubmitted="OnQuerySubmitted"
+					TextChanged="OnTextChanged"/>
+			</NavigationView.AutoSuggestBox>
+			<NavigationView.MenuItems>
+				<NavigationViewItem Icon="Home" Content="Main Page" Tag="MainPage" />
+				<NavigationViewItemSeparator />
+			</NavigationView.MenuItems>
+			<NavigationView.Header>
+				<TextBlock
+                        x:Name="header"
+                        FontSize="28"
+                        FontWeight="SemiLight"
+                        Text=""
+						Margin="5 50 0 0"/>
+			</NavigationView.Header>
+			<ScrollViewer>
+				<Frame x:Name="contentFrame" Padding="20 0"/>
+			</ScrollViewer>
+		</NavigationView>
+		<Button
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left" 
+            Style="{StaticResource NavigationBackButtonNormalStyle}"
+            Width="40"
+            Height="32"
+            FontSize="12"
+            Click="OnBackRequested"/>
+		<Grid x:Name="titleBar" Background="Transparent" Margin="40 0 0 0" Height="32" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0"/>
+			</Grid.ColumnDefinitions>
+			<TextBlock/>
+		</Grid>
+	</Grid>
+</Page>

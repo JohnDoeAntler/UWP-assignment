@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CherryProject.Model;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,11 +26,11 @@ namespace CherryProject
     /// </summary>
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
+		/// <summary>
+		/// Initializes the singleton application object.  This is the first line of authored code
+		/// executed, and as such is the logical equivalent of main() or WinMain().
+		/// </summary>
+		public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
@@ -61,21 +63,21 @@ namespace CherryProject
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+			if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(Panel.LoginPage), e.Arguments, new DrillInNavigationTransitionInfo());
+                    rootFrame.Navigate(typeof(Panel.LoginPage), e, new DrillInNavigationTransitionInfo());
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
 
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-        }
+		}
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails
@@ -100,5 +102,5 @@ namespace CherryProject
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
-    }
+	}
 }
