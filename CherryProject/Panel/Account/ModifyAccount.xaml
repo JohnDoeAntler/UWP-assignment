@@ -12,6 +12,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
+		
 		<StackPanel>
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="GUID" Margin="0 0 0 10"/>
@@ -20,6 +21,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Username" Margin="0 0 0 10"/>
 				<TextBox x:Name="Username" Margin="0 0 0 10"/>
@@ -27,6 +29,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Password" Margin="0 0 0 10"/>
 				<PasswordBox x:Name="Password" Margin="0 0 0 10"/>
@@ -34,6 +37,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<Grid ColumnSpacing="10">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
@@ -48,6 +52,7 @@
 					<TextBox x:Name="LastName"/>
 				</StackPanel>
 			</Grid>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Email" Margin="0 0 0 10"/>
 				<TextBox x:Name="Email" Margin="0 0 0 10"/>
@@ -55,6 +60,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Phone Number" Margin="0 0 0 10"/>
 				<TextBox x:Name="PhoneNumber" Margin="0 0 0 10"/>
@@ -62,6 +68,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Role" Margin="0 0 0 10"/>
 				<ComboBox x:Name="Role" MinWidth="280" Margin="0 0 0 10" />
@@ -69,6 +76,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Region" Margin="0 0 0 10"/>
 				<ComboBox x:Name="Region" MinWidth="280" Margin="0 0 0 10" />
@@ -76,6 +84,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Address" Margin="0 0 0 10"/>
 				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
@@ -83,6 +92,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Status" Margin="0 0 0 10"/>
 				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10" />
@@ -90,6 +100,7 @@
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+			
 			<StackPanel Margin="0 0 0 30" Orientation="Horizontal" Spacing="10">
 				<Button x:Name="Submit" Content="Modify Account" Click="Submit_Click"/>
 			</StackPanel>

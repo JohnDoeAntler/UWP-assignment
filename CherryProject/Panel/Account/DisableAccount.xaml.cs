@@ -59,7 +59,7 @@ namespace CherryProject.Panel.Account
 					CloseButtonText = "OK"
 				};
 
-				ContentDialogResult result = await dialog.ShowAsync();
+				ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 				this.Frame.Navigate(typeof(SearchAccounts), this.GetType(), new DrillInNavigationTransitionInfo());
 			}
@@ -71,17 +71,18 @@ namespace CherryProject.Panel.Account
 			{
 				Title = "Confirmation",
 				Content = "Are you ensure to disable/enable current account?",
-				PrimaryButtonText = "Modify Account",
+				PrimaryButtonText = "Disable Account",
 				CloseButtonText = "Cancel"
 			};
 
-			ContentDialogResult result = await dialog.ShowAsync();
+			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				try
 				{
-					var user = UserManager.FindUser(x => x.Id == User.Id);
+					var guid = User.Id;
+					var user = await UserManager.FindUserAsync(x => x.Id == guid);
 
 					user = await user.ModifyAsync(x => x.Status = Status.SelectedItem as string);
 
@@ -93,7 +94,7 @@ namespace CherryProject.Panel.Account
 						Width = 400
 					};
 
-					await message.ShowAsync();
+					await message.EnqueueAndShowIfAsync();
 
 					this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 				}
@@ -106,6 +107,8 @@ namespace CherryProject.Panel.Account
 						CloseButtonText = "OK",
 						Width = 400
 					};
+
+					await error.EnqueueAndShowIfAsync();
 				}
 			}
 		}

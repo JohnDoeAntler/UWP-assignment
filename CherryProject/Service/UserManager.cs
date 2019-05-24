@@ -10,11 +10,11 @@ namespace CherryProject.Service
 {
 	public class UserManager
 	{
-		public static Users FindUser(Func<Users, bool> predicate)
+		public static async Task<Users> FindUserAsync(Predicate<Users> predicate)
 		{
 			using (var context = new Context())
 			{
-				return context.Users.Include(x => x.Role).FirstOrDefault(predicate);
+				return await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => predicate(x));
 			}
 		}
 

@@ -70,7 +70,7 @@ namespace CherryProject.Panel.Account
 					CloseButtonText = "Modify Your Account"
 				};
 
-				ContentDialogResult result = await dialog.ShowAsync();
+				ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 				if (result == ContentDialogResult.Primary)
 				{
@@ -108,7 +108,7 @@ namespace CherryProject.Panel.Account
 				CloseButtonText = "Cancel"
 			};
 
-			ContentDialogResult result = await dialog.ShowAsync();
+			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -130,15 +130,16 @@ namespace CherryProject.Panel.Account
 						Width = 400
 					};
 
-					await error.ShowAsync();
+					await error.EnqueueAndShowIfAsync();
 				}
 				else
 				{
 					try
 					{
-						var user = UserManager.FindUser(x => x.Id == Guid.Text);
+						var guid = Guid.Text;
+						var user = await UserManager.FindUserAsync(x => x.Id == guid);
 
-						string roleId = (await Role.SelectedItem.ToString().ToRoleAsync()).Id;
+						var roleId = (await Role.SelectedItem.ToString().ToRoleAsync()).Id;
 
 						user = await user.ModifyAsync(x =>
 						{
@@ -162,7 +163,7 @@ namespace CherryProject.Panel.Account
 							Width = 400
 						};
 
-						await message.ShowAsync();
+						await message.EnqueueAndShowIfAsync();
 
 						this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 					}
@@ -175,6 +176,8 @@ namespace CherryProject.Panel.Account
 							CloseButtonText = "OK",
 							Width = 400
 						};
+
+						await error.EnqueueAndShowIfAsync();
 					}
 				}
 			}

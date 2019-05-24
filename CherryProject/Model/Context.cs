@@ -198,7 +198,11 @@ namespace CherryProject.Model
 
                 entity.Property(e => e.DangerLevel).HasColumnType("int(11)");
 
-                entity.Property(e => e.Description)
+				entity.Property(e => e.Status)
+					.IsRequired()
+					.HasColumnType("varchar(256)");
+
+				entity.Property(e => e.Description)
                     .IsRequired()
                     .HasColumnType("varchar(256)");
 

@@ -76,7 +76,7 @@ namespace CherryProject.Panel.Account
 			};
 
 			// alert user
-			ContentDialogResult result = await dialog.ShowAsync();
+			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -98,7 +98,7 @@ namespace CherryProject.Panel.Account
 						Width = 400
 					};
 
-					await error.ShowAsync();
+					await error.EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -135,7 +135,7 @@ namespace CherryProject.Panel.Account
 							Width = 400
 						};
 
-						await message.ShowAsync();
+						await message.EnqueueAndShowIfAsync();
 
 						this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 					}

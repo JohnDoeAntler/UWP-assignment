@@ -27,7 +27,7 @@ namespace CherryProject.Service
 		{
 			using (var context = new Context())
 			{
-				var result = UserManager.FindUser(x => x.UserName == username);
+				var result = await UserManager.FindUserAsync(x => x.UserName == username);
 
 				// if user in not null.
 				if (result != null)
@@ -48,6 +48,6 @@ namespace CherryProject.Service
 
 		public static void SignOutAsync() => CurrentUser = null;
 
-		public static async Task<bool> ValidateSecurityStamp() => UserManager.FindUser(x => x.Id == CurrentUser.Id).SecurityStamp == CurrentUser.SecurityStamp;
+		public static async Task<bool> ValidateSecurityStamp() => (await UserManager.FindUserAsync(x => x.Id == CurrentUser.Id)).SecurityStamp == CurrentUser.SecurityStamp;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using CherryProject.Model;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
 using CherryProject.Service;
 using CherryProject.ViewModel;
 using Microsoft.EntityFrameworkCore;
@@ -170,7 +171,7 @@ namespace CherryProject.Panel.Account
 				CloseButtonText = "Cancel"
 			};
 
-			ContentDialogResult result = await dialog.ShowAsync();
+			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -193,7 +194,7 @@ namespace CherryProject.Panel.Account
 					CloseButtonText = "Got it"
 				};
 
-				await Reminder.ShowAsync();
+				await Reminder.EnqueueAndShowIfAsync();
 			}
 		}
 	}

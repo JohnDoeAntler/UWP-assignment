@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +23,16 @@ namespace CherryProject.Panel.Product
 	/// </summary>
 	public sealed partial class ViewProduct : Page
 	{
+		private readonly ObservableCollection<Tuple<string, string>> _displayItems;
+		public ObservableCollection<Tuple<string, string>> DisplayItems => _displayItems;
+
 		public ViewProduct()
 		{
 			this.InitializeComponent();
+
+			_displayItems = new ObservableCollection<Tuple<string, string>>();
+
+			DataContext = _displayItems;
 		}
 	}
 }

@@ -8,7 +8,74 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		
+		<StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="GUID" Margin="0 0 0 10"/>
+				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+				<Button 
+					x:Name="GenerateGuidBtn"
+					Content="Generate new GUID" 
+					Margin="0 0 0 10"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
 
-    </Grid>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Name" Margin="0 0 0 10"/>
+				<TextBox x:Name="Name" Margin="0 0 0 10"/>
+				<TextBlock Text="The product display name."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Description" Margin="0 0 0 10"/>
+				<TextBox x:Name="Description" Margin="0 0 0 10"/>
+				<TextBlock Text="The product description, it would support markdown language format for styling the description."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Price" Margin="0 0 0 10"/>
+				<TextBox x:Name="Price" Margin="0 0 0 10"/>
+				<TextBlock Text="The product price. You re not permitted to enter any non-numeric character on this text field."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Weight" Margin="0 0 0 10"/>
+				<TextBox x:Name="Weight" Margin="0 0 0 10"/>
+				<TextBlock Text="The product weight. The weight unit is using kilogram to indicate."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Danger Level" Margin="0 0 0 10"/>
+				<TextBox x:Name="DangerLevel" Margin="0 0 0 10"/>
+				<TextBlock Text="The product danger level indicates when product quantity fall in specific range (danger level), it would programmatically send the re-order request to certain department."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Status" Margin="0 0 0 10"/>
+				<TextBlock Text="The product danger level indicates when product quantity fall in specific range (danger level), it would programmatically send the re-order request to certain department."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<Button x:Name="Submit" Content="Add Product"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Page>

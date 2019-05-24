@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\DummyData.cs" />
+    <Compile Include="Extension\ContentDialogExtension.cs" />
     <Compile Include="Extension\ControlExtension.cs" />
     <Compile Include="Extension\PanelExtension.cs" />
     <Compile Include="Extension\MD5Hasher.cs" />

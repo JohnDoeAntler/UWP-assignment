@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -21,10 +24,56 @@ namespace CherryProject.Panel.Product
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class SearchProducts : Page
-    {
-        public SearchProducts()
+	{
+		private readonly ObservableCollection<string> _searchFilters;
+		private readonly ObservableCollection<Products> _searchProductGridViewItems;
+		private readonly Dictionary<string, Predicate<Products>> keyValuePairs = new Dictionary<string, Predicate<Products>>();
+		private Type searchStatus;
+
+		public ObservableCollection<string> SearchFilters => _searchFilters;
+		public ObservableCollection<Products> SearchProductGridViewItems => _searchProductGridViewItems;
+		public SearchProducts()
         {
             this.InitializeComponent();
-        }
-    }
+
+			_searchFilters = new ObservableCollection<string>();
+
+			AddSearchFilter();
+		}
+
+		private void AddSearchFilter() => _searchFilters.Add($"Filter {_searchFilters.Count + 1}:");
+
+		private void AddSearchingFilterBtn_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			AddSearchFilter();
+		}
+
+		private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+
+		}
+
+		private void UpdateSearchResult()
+		{
+
+		}
+
+		private void Button_Refresh(object sender, RoutedEventArgs e)
+		{
+			UpdateSearchResult();
+		}
+
+		private void Button_Reset(object sender, RoutedEventArgs e)
+		{
+		}
+
+		private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+		}
+
+		protected override async void OnNavigatedTo(NavigationEventArgs e)
+		{
+			base.OnNavigatedTo(e);
+		}
+	}
 }

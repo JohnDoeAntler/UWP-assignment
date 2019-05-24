@@ -8,7 +8,77 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		<StackPanel>
+			<StackPanel Margin="0 20">
+				<Ellipse Height="200" Width="200">
+					<Ellipse.Fill>
+						<ImageBrush ImageSource="ms-appx:///Assets/Account.jpg"/>
+					</Ellipse.Fill>
+				</Ellipse>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 20">
+				<StackPanel
+					Orientation="Horizontal"
+					HorizontalAlignment="Center"
+					Spacing="8">
+					<TextBlock x:Name="FirstName" TextAlignment="Center" FontSize="36"/>
+					<TextBlock x:Name="LastName" TextAlignment="Center" FontSize="36"/>
+				</StackPanel>
+				<TextBlock 
+					x:Name="Username"
+					TextAlignment="Center"
+					Style="{ThemeResource CaptionTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+			</StackPanel>
 
-    </Grid>
+			<ListView
+				Margin="0 0 0 20"
+				ItemsSource="{Binding}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ListViewItem Padding="10">
+							<StackPanel 
+								Orientation="Horizontal"
+								Spacing="10">
+								<Rectangle
+									 Fill="Gray"
+									 Height="40"
+									 Width="2"/>
+								<StackPanel>
+									<TextBlock Text="{Binding Item1}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Item2}" 
+										Style="{ThemeResource BodyTextBlockStyle}"
+										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+								</StackPanel>
+							</StackPanel>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Modify the product by clicking the above button to modify the product information."/>
+				<Button
+					x:Name="ModifyProduct"
+					Content="Modify Product"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Modify the product status by clicking the above button to lock/unlock the product for enabling/disabling anyone to access current product." />
+				<Button
+					x:Name="ModifyProductStatus"
+					Content="Modify Product Status"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Page>
