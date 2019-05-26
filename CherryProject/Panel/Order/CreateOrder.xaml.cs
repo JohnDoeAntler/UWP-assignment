@@ -26,6 +26,10 @@ namespace CherryProject.Panel.Order
         public CreateOrder()
         {
             this.InitializeComponent();
-        }
-    }
+
+			Guid.Text = System.Guid.NewGuid().ToString();
+		}
+
+		private void GenerateGuidBtn_Tapped(object sender, TappedRoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
+	}
 }

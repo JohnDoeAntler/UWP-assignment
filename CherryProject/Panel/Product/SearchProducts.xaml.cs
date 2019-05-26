@@ -38,6 +38,15 @@ namespace CherryProject.Panel.Product
 
 			_searchFilters = new ObservableCollection<string>();
 
+			using (var context = new Context())
+			{
+				_searchProductGridViewItems = new ObservableCollection<Products>(
+					context.Products
+				);
+
+				ResultAlerter.Text = $"There has only found {_searchProductGridViewItems.Count} result(s).";
+			}
+
 			AddSearchFilter();
 		}
 

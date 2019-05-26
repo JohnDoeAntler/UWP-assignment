@@ -93,7 +93,7 @@
 			<ScrollViewer
 				Height="236"
 				HorizontalAlignment="Left"
-				Margin="0 0 0 20"
+				Margin="0 0 0 30"
 				BorderBrush="Gray"
 				BorderThickness="1">
 				

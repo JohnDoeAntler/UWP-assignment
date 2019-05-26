@@ -27,7 +27,7 @@ namespace CherryProject.Panel.Account
     /// </summary>
     public sealed partial class DisableAccount : Page
     {
-		private Users User { get; set; }
+		private Users user;
 
         public DisableAccount()
         {
@@ -45,8 +45,7 @@ namespace CherryProject.Panel.Account
 
 			if (e.Parameter is Users user)
 			{
-				Status.SelectedItem = user.Status;
-				User = user;
+				Status.SelectedItem = (this.user = user).Status;
 
 				Status.SelectionChanged += Status_SelectionChanged;
 			}
@@ -81,9 +80,6 @@ namespace CherryProject.Panel.Account
 			{
 				try
 				{
-					var guid = User.Id;
-					var user = await UserManager.FindUserAsync(x => x.Id == guid);
-
 					user = await user.ModifyAsync(x => x.Status = Status.SelectedItem as string);
 
 					ContentDialog message = new ContentDialog

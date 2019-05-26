@@ -12,6 +12,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
+		
 		<StackPanel>
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="GUID" Margin="0 0 0 10"/>

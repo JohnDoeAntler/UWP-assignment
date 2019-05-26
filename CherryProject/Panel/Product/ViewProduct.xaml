@@ -12,11 +12,12 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
+		
 		<StackPanel>
 			<StackPanel Margin="0 20">
 				<Ellipse Height="200" Width="200">
 					<Ellipse.Fill>
-						<ImageBrush ImageSource="ms-appx:///Assets/Account.jpg"/>
+						<ImageBrush ImageSource="https://i.imgur.com/Yj7sJJz.jpg"/>
 					</Ellipse.Fill>
 				</Ellipse>
 			</StackPanel>
@@ -25,11 +26,10 @@
 					Orientation="Horizontal"
 					HorizontalAlignment="Center"
 					Spacing="8">
-					<TextBlock x:Name="FirstName" TextAlignment="Center" FontSize="36"/>
-					<TextBlock x:Name="LastName" TextAlignment="Center" FontSize="36"/>
+					<TextBlock x:Name="ProductName" TextAlignment="Center" FontSize="36"/>
 				</StackPanel>
 				<TextBlock 
-					x:Name="Username"
+					x:Name="ProductId"
 					TextAlignment="Center"
 					Style="{ThemeResource CaptionTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
@@ -37,7 +37,7 @@
 
 			<ListView
 				Margin="0 0 0 20"
-				ItemsSource="{Binding}">
+				ItemsSource="{x:Bind DisplayItems}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ListViewItem Padding="10">
@@ -49,8 +49,8 @@
 									 Height="40"
 									 Width="2"/>
 								<StackPanel>
-									<TextBlock Text="{Binding Item1}" FontWeight="Bold"/>
-									<TextBlock Text="{Binding Item2}" 
+									<TextBlock Text="{Binding Header}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Content}" 
 										Style="{ThemeResource BodyTextBlockStyle}"
 										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 								</StackPanel>

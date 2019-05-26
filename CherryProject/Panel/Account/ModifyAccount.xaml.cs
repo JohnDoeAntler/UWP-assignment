@@ -32,6 +32,8 @@ namespace CherryProject.Panel.Account
     /// </summary>
     public sealed partial class ModifyAccount : Page
     {
+		private Users user;
+
         public ModifyAccount()
         {
             this.InitializeComponent();
@@ -58,7 +60,7 @@ namespace CherryProject.Panel.Account
 
 			if (e.Parameter is Users user)
 			{
-				FillInformation(user);
+				FillInformation(this.user = user);
 			}
 			else
 			{
@@ -78,7 +80,7 @@ namespace CherryProject.Panel.Account
 				}
 				else
 				{
-					FillInformation(SignInManager.CurrentUser);
+					FillInformation(this.user = SignInManager.CurrentUser);
 				}
 			}
 		}
@@ -87,7 +89,7 @@ namespace CherryProject.Panel.Account
 		{
 			Guid.Text = user.Id;
 			Username.Text = user.UserName;
-			Password.Password = "password";
+			Password.Password = user.PasswordHash;
 			FirstName.Text = user.FirstName;
 			LastName.Text = user.LastName;
 			Email.Text = user.Email;
@@ -120,6 +122,7 @@ namespace CherryProject.Panel.Account
 				|| !PhoneNumber.Text.IsPhoneNumber()
 				|| string.IsNullOrEmpty(Region.SelectedItem as string)
 				|| string.IsNullOrEmpty(Role.SelectedItem as string)
+				|| string.IsNullOrEmpty(Status.SelectedItem as string)
 				)
 				{
 					ContentDialog error = new ContentDialog
@@ -136,24 +139,22 @@ namespace CherryProject.Panel.Account
 				{
 					try
 					{
-						var guid = Guid.Text;
-						var user = await UserManager.FindUserAsync(x => x.Id == guid);
-
 						var roleId = (await Role.SelectedItem.ToString().ToRoleAsync()).Id;
 
 						user = await user.ModifyAsync(x =>
-						{
-							x.UserName = Username.Text;
-							x.PasswordHash = Password.Password.GetMD5hash();
-							x.FirstName = FirstName.Text;
-							x.LastName = LastName.Text;
-							x.Email = Email.Text;
-							x.PhoneNumber = PhoneNumber.Text;
-							x.Region = Region.SelectedItem as string;
-							x.RoleId = roleId;
-							x.Status = Status.SelectedItem as string;
-							x.Address = Address.GetText();
-						});
+							{
+								x.UserName = Username.Text;
+								x.PasswordHash = x.PasswordHash == Password.Password ? x.PasswordHash : Password.Password.GetMD5hash();
+								x.FirstName = FirstName.Text;
+								x.LastName = LastName.Text;
+								x.Email = Email.Text;
+								x.PhoneNumber = PhoneNumber.Text;
+								x.Region = Region.SelectedItem as string;
+								x.RoleId = roleId;
+								x.Status = Status.SelectedItem as string;
+								x.Address = Address.GetText();
+							}
+						);
 
 						ContentDialog message = new ContentDialog
 						{

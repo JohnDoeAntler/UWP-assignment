@@ -25,6 +25,10 @@ namespace CherryProject.Panel.Promotion
 		public AddPromotion()
 		{
 			this.InitializeComponent();
+
+			Guid.Text = System.Guid.NewGuid().ToString();
 		}
+
+		private void GenerateGuidBtn_OnClick(object sender, RoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
 	}
 }

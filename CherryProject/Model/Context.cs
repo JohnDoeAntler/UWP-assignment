@@ -192,7 +192,7 @@ namespace CherryProject.Model
 
                 entity.Property(e => e.Id).HasColumnType("varchar(255)");
 
-                entity.Property(e => e.Concurrency)
+                entity.Property(e => e.ConcurrencyStamp)
                     .IsRequired()
                     .HasColumnType("longtext");
 
@@ -219,9 +219,9 @@ namespace CherryProject.Model
                     .IsRequired()
                     .HasColumnType("varchar(256)");
 
-                entity.Property(e => e.Price).HasColumnType("int(11)");
+                entity.Property(e => e.Price).HasColumnType("double");
 
-                entity.Property(e => e.Weight).HasColumnType("double(3,3)");
+                entity.Property(e => e.Weight).HasColumnType("double");
             });
 
             modelBuilder.Entity<Promotions>(entity =>

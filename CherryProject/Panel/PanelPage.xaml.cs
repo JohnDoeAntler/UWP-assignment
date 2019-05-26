@@ -47,14 +47,7 @@ namespace CherryProject.Panel
 
 			panel = (IndexGridViewItem) e.Parameter;
 
-			NavigationViewControl.PaneTitle = panel.Title;
-
-			contentFrame.Navigate(panel.Views.First(), null, new DrillInNavigationTransitionInfo());
-			header.Text = panel.Views.First().ClassNameToString();
-
-			panel.Views = panel.Views.OrderBy(x => x.Name);
-
-			foreach (var t in panel.Views)
+			foreach (var t in panel.Views.OrderBy(x => x.Name))
 			{
 				NavigationViewControl.MenuItems.Add(
 					new NavigationViewItem()
@@ -65,6 +58,12 @@ namespace CherryProject.Panel
 					}
 				);
 			}
+
+			NavigationViewControl.PaneTitle = panel.Title;
+
+			contentFrame.Navigate(panel.Views.FirstOrDefault(), null, new DrillInNavigationTransitionInfo());
+
+			header.Text = panel.Views.First().ClassNameToString();
 		}
 
 		private void OnBackRequested(object sender, RoutedEventArgs e)

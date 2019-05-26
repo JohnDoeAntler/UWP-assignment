@@ -8,7 +8,71 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
 
-    </Grid>
+		<StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="GUID" Margin="0 0 0 10"/>
+				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+				<Button 
+					x:Name="GenerateGuidBtn"
+					Content="Generate new GUID" 
+					Margin="0 0 0 10"
+					Click="GenerateGuidBtn_OnClick"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Product" Margin="0 0 0 10"/>
+
+				<Button x:Name="Select" Content="Select Product"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Description" Margin="0 0 0 10"/>
+				<RichEditBox x:Name="Description" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Discount" Margin="0 0 0 10"/>
+				<TextBox x:Name="Discount" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Promotion Duration" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+				<DatePicker x:Name="StartTime" Header="Start Time" Margin="0 0 0 10"/>
+				<DatePicker x:Name="EndTime" Header="End Time" Margin="0 0 0 10"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Status" Margin="0 0 0 10"/>
+				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<Button x:Name="Submit" Content="Add Promotion"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Page>

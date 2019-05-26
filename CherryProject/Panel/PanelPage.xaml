@@ -29,7 +29,7 @@
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 		<NavigationView x:Name="NavigationViewControl"
-            PaneDisplayMode="LeftCompact"
+            PaneDisplayMode="Top"
 			IsPaneToggleButtonVisible="False"
             IsBackButtonVisible="Collapsed"
             IsBackEnabled="True"

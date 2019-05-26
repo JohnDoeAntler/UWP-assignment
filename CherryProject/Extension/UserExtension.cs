@@ -11,7 +11,7 @@ namespace CherryProject.Extension
 {
 	public static class UserExtension
 	{
-		public static async Task<Users> ModifyAsync(this Users user, Action<Users> predicate)
+		public static async Task<Users> ModifyAsync(this Users user, Action<Users> action)
 		{
 			using (var context = new Context()){
 				var result = context.Users.Include(x => x.Role).FirstOrDefault(x => x.Id == user.Id && x.ConcurrencyStamp == user.ConcurrencyStamp);
@@ -19,12 +19,11 @@ namespace CherryProject.Extension
 				var username = result.UserName;
 				var password = result.PasswordHash;
 
-				predicate(result);
+				action(result);
 
 				Debug.WriteLine(result.RoleId);
 
-				if (username != result.UserName
-				|| password != result.PasswordHash)
+				if (username != result.UserName || password != result.PasswordHash)
 				{
 					result.SecurityStamp = Guid.NewGuid().ToString("D");
 				}

@@ -8,7 +8,17 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
 
-    </Grid>
+		<StackPanel Margin="0 0 0 30">
+			<TextBlock Text="Status" Margin="0 0 0 10"/>
+			<Button x:Name="Submit" Content="Complete Invoice"/>
+			<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+		</StackPanel>
+	</Grid>
 </Page>

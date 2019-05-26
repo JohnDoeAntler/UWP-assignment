@@ -124,6 +124,7 @@
     <Compile Include="Extension\ControlExtension.cs" />
     <Compile Include="Extension\PanelExtension.cs" />
     <Compile Include="Extension\MD5Hasher.cs" />
+    <Compile Include="Extension\ProductExtension.cs" />
     <Compile Include="Extension\RoleExtension.cs" />
     <Compile Include="Extension\UserExtension.cs" />
     <Compile Include="Model\Category.cs" />
@@ -162,9 +163,6 @@
     </Compile>
     <Compile Include="Panel\Invoice\CreateInvoice.xaml.cs">
       <DependentUpon>CreateInvoice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel\Invoice\ModifyInvoice.xaml.cs">
-      <DependentUpon>ModifyInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\Invoice\SearchInvoices.xaml.cs">
       <DependentUpon>SearchInvoices.xaml</DependentUpon>
@@ -239,6 +237,7 @@
     <Compile Include="Service\SignInManager.cs" />
     <Compile Include="Service\UserManager.cs" />
     <Compile Include="ViewModel\IndexGridViewItem.cs" />
+    <Compile Include="ViewModel\ViewTuple.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -291,10 +290,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\Invoice\CreateInvoice.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panel\Invoice\ModifyInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

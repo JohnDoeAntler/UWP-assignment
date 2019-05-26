@@ -119,10 +119,6 @@ namespace CherryProject.Panel.Account
 							RoleId = role.Id,
 							Status = StatusEnum.Available.ToString(),
 							Address = Address.GetText(),
-							ConcurrencyStamp = GuidHelper.CreateNewGuid().ToString(),
-							SecurityStamp = GuidHelper.CreateNewGuid().ToString(),
-							EmailConfirmed = false,
-							PhoneNumberConfirmed = false
 						});
 
 						user.Role = role;
@@ -139,15 +135,17 @@ namespace CherryProject.Panel.Account
 
 						this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 					}
-					catch (Exception)
+					catch (Exception err)
 					{
 						ContentDialog error = new ContentDialog
 						{
 							Title = "Error",
-							Content = "The information you typed might duplicated, please re-type the username and make sure the email has not been registered before.",
+							Content = $"The information you typed might duplicated, please re-type the username and make sure the email has not been registered before.\n{err.ToString()}",
 							CloseButtonText = "OK",
 							Width = 400
 						};
+
+						await error.EnqueueAndShowIfAsync();
 					}
 				}
 			}

@@ -25,6 +25,15 @@ namespace CherryProject.Panel.Invoice
 		public CreateInvoice()
 		{
 			this.InitializeComponent();
+
+			Guid.Text = System.Guid.NewGuid().ToString();
 		}
+
+		/// <summary>
+		/// generate a new guid when user tapped generate button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GenerateGuidBtn_OnClick(object sender, RoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
 	}
 }

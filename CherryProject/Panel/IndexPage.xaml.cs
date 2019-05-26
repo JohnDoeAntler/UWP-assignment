@@ -31,9 +31,8 @@ namespace CherryProject.Panel
     /// </summary>
     public sealed partial class IndexPage : Page
 	{
-		private static IEnumerable<IndexGridViewItem> IndexGridViewItems
-		{
-			get => new[]{
+		private static readonly IEnumerable<IndexGridViewItem> _indexGridViewItems =
+			new[]{
 				new IndexGridViewItem{
 					Title = "Account Management",
 					Description = "Account observation, creation, modification and remove control.",
@@ -77,7 +76,8 @@ namespace CherryProject.Panel
 					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Other")
 				}
 			};
-		}
+
+		private static IEnumerable<IndexGridViewItem> IndexGridViewItems => _indexGridViewItems;
 
 		public static ObservableCollection<IndexGridViewItem> GetIndexGridViewItems(RoleEnum role)
 			=> new ObservableCollection<IndexGridViewItem>(IndexGridViewItems.Where(x => x.Views.Any(y => PermissionManager.GetPermission(role).Any(z => y.Name == z.Name))));
