@@ -17,43 +17,43 @@ namespace CherryProject.Data
 				// Role setup
 
 				var roles = new []{
-					new Roles()
+					new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "AreaManager",
 						NormalizedName      = "AreaManager".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "Dealer",
 						NormalizedName      = "Dealer".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "DispatchClerk",
 						NormalizedName      = "DispatchClerk".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "SalesOrderOfficer",
 						NormalizedName      = "SalesOrderOfficer".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "SalesManager",
 						NormalizedName      = "SalesManager".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "Storemen",
 						NormalizedName      = "Storemen".ToUpper(),
 						ConcurrencyStamp    = Guid.NewGuid().ToString()
-					}, new Roles()
+					}, new Role()
 					{
 						Id                  = Guid.NewGuid().ToString(),
 						Name                = "Administrator",
@@ -63,7 +63,7 @@ namespace CherryProject.Data
 				};
 
 				var users = new[]{
-					new Users() 
+					new User() 
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "LauraRose20",
@@ -80,7 +80,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[0].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "MarvinRomero76",
@@ -97,7 +97,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "CoreySimon99",
@@ -114,7 +114,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "LarryFuller54",
@@ -131,7 +131,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "HuldaChandler57",
@@ -148,7 +148,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "LeonaKlein87",
@@ -165,7 +165,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "AlejandroSimmons19",
@@ -182,7 +182,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[1].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "DouglasHughes62",
@@ -199,7 +199,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[2].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "LloydWheeler59",
@@ -216,7 +216,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[3].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "MichaelChambers36",
@@ -233,7 +233,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[4].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "GeorgiaHarper96",
@@ -250,7 +250,7 @@ namespace CherryProject.Data
 						Address                 = "",
 						Status                  = "Available",
 						RoleId                  = roles[5].Id
-					},new Users()
+					},new User()
 					{
 						Id                      = Guid.NewGuid().ToString(),
 						UserName                = "admin",
@@ -270,8 +270,8 @@ namespace CherryProject.Data
 					}
 				};
 
-				await context.Roles.AddRangeAsync(roles);
-				await context.Users.AddRangeAsync(users);
+				await context.Role.AddRangeAsync(roles);
+				await context.User.AddRangeAsync(users);
 
 				return await context.SaveChangesAsync();
             }

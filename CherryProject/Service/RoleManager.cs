@@ -10,11 +10,11 @@ namespace CherryProject.Service
 {
 	public class RoleManager
 	{
-		public static async Task<Roles> FindRoleAsync(Predicate<Roles> predicate)
+		public static async Task<Role> FindRoleAsync(Predicate<Role> predicate)
 		{
 			using (var context = new Context())
 			{
-				return await context.Roles.FirstOrDefaultAsync(x => predicate(x));
+				return await context.Role.FirstOrDefaultAsync(x => predicate(x));
 			}
 		}
 	}

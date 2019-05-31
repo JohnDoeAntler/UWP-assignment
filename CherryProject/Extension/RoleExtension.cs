@@ -17,18 +17,18 @@ namespace CherryProject.Extension
 			return result;
 		}
 
-		public static RoleEnum ToRoleEnum(this Roles role)
+		public static RoleEnum ToRoleEnum(this Role role)
 		{
 			Enum.TryParse(role.Name, out RoleEnum result);
 			return result;
 		}
 
-		public static async Task<Roles> ToRoleAsync(this RoleEnum role)
+		public static async Task<Role> ToRoleAsync(this RoleEnum role)
 		{
 			return await RoleManager.FindRoleAsync(x => x.NormalizedName == role.ToString().ToUpper());
 		}
 
-		public static async Task<Roles> ToRoleAsync(this string str)
+		public static async Task<Role> ToRoleAsync(this string str)
 		{
 			return await RoleManager.FindRoleAsync(x => x.NormalizedName == str.ToUpper());
 		}

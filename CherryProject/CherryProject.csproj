@@ -120,123 +120,138 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\DummyData.cs" />
+    <Compile Include="Dialog\UserDialog.xaml.cs">
+      <DependentUpon>UserDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extension\ContentDialogExtension.cs" />
     <Compile Include="Extension\ControlExtension.cs" />
+    <Compile Include="Extension\OrderExtension.cs" />
+    <Compile Include="Extension\OrderProductExtension.cs" />
     <Compile Include="Extension\PanelExtension.cs" />
     <Compile Include="Extension\MD5Hasher.cs" />
     <Compile Include="Extension\ProductExtension.cs" />
     <Compile Include="Extension\RoleExtension.cs" />
     <Compile Include="Extension\UserExtension.cs" />
     <Compile Include="Model\Category.cs" />
-    <Compile Include="Model\Enum\OrderEnum.cs" />
+    <Compile Include="Model\Dic.cs" />
+    <Compile Include="Model\Did.cs" />
+    <Compile Include="Model\DidSpare.cs" />
+    <Compile Include="Model\Enum\DicStatus.cs" />
+    <Compile Include="Model\Enum\OrderStatusEnum.cs" />
+    <Compile Include="Model\Enum\OrderTypeEnum.cs" />
     <Compile Include="Model\Enum\RoleEnum.cs" />
-    <Compile Include="Model\Enum\StatusEnum.cs" />
-    <Compile Include="Model\Invoices.cs" />
-    <Compile Include="Model\Orderproduct.cs" />
-    <Compile Include="Model\Orders.cs" />
-    <Compile Include="Model\Products.cs" />
-    <Compile Include="Model\Promotions.cs" />
-    <Compile Include="Model\Roles.cs" />
+    <Compile Include="Model\Enum\GeneralStatusEnum.cs" />
+    <Compile Include="Model\Invoice.cs" />
+    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\OrderProduct.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\Promotion.cs" />
+    <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Spare.cs" />
     <Compile Include="Model\Context.cs" />
-    <Compile Include="Model\Users.cs" />
-    <Compile Include="Panel\Account\CreateAccount.xaml.cs">
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Panel\AccountPages\CreateAccount.xaml.cs">
       <DependentUpon>CreateAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Account\DisableAccount.xaml.cs">
+    <Compile Include="Panel\AccountPages\DisableAccount.xaml.cs">
       <DependentUpon>DisableAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Account\ModifyAccount.xaml.cs">
+    <Compile Include="Panel\AccountPages\ModifyAccount.xaml.cs">
       <DependentUpon>ModifyAccount.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Account\SearchAccounts.xaml.cs">
+    <Compile Include="Panel\AccountPages\SearchAccounts.xaml.cs">
       <DependentUpon>SearchAccounts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Account\ViewAccount.xaml.cs">
+    <Compile Include="Panel\AccountPages\ViewAccount.xaml.cs">
       <DependentUpon>ViewAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Invoice\CompleteInvoice.xaml.cs">
+    <Compile Include="Panel\InvoicePages\CompleteInvoice.xaml.cs">
       <DependentUpon>CompleteInvoice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Invoice\CreateInvoice.xaml.cs">
+    <Compile Include="Panel\InvoicePages\CreateInvoice.xaml.cs">
       <DependentUpon>CreateInvoice.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Invoice\SearchInvoices.xaml.cs">
+    <Compile Include="Panel\InvoicePages\SearchInvoices.xaml.cs">
       <DependentUpon>SearchInvoices.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\CancelOrder.xaml.cs">
+    <Compile Include="Panel\OrderPages\CancelOrder.xaml.cs">
       <DependentUpon>CancelOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\CreateOrder.xaml.cs">
+    <Compile Include="Panel\OrderPages\CreateOrder.xaml.cs">
       <DependentUpon>CreateOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\EndorseOrder.xaml.cs">
+    <Compile Include="Panel\OrderPages\EndorseOrder.xaml.cs">
       <DependentUpon>EndorseOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\ModifyOrder.xaml.cs">
+    <Compile Include="Panel\OrderPages\ModifyOrder.xaml.cs">
       <DependentUpon>ModifyOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\SearchOrders.xaml.cs">
+    <Compile Include="Panel\OrderPages\SearchOrders.xaml.cs">
       <DependentUpon>SearchOrders.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Order\ViewOrder.xaml.cs">
+    <Compile Include="Panel\OrderPages\ViewOrder.xaml.cs">
       <DependentUpon>ViewOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Other\Calendar.xaml.cs">
+    <Compile Include="Panel\OtherPages\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Other\EmitNotification.xaml.cs">
+    <Compile Include="Panel\OtherPages\EmitNotification.xaml.cs">
       <DependentUpon>EmitNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\PanelPage.xaml.cs">
       <DependentUpon>PanelPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\AddProduct.xaml.cs">
+    <Compile Include="Panel\ProductPages\AddProduct.xaml.cs">
       <DependentUpon>AddProduct.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\ModifyProduct.xaml.cs">
+    <Compile Include="Panel\ProductPages\ModifyProduct.xaml.cs">
       <DependentUpon>ModifyProduct.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\ModifyProductStatus.xaml.cs">
+    <Compile Include="Panel\ProductPages\ModifyProductStatus.xaml.cs">
       <DependentUpon>ModifyProductStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\SearchProducts.xaml.cs">
+    <Compile Include="Dialog\ProductDialog.xaml.cs">
+      <DependentUpon>ProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\ProductPages\SearchProducts.xaml.cs">
       <DependentUpon>SearchProducts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Product\ViewProduct.xaml.cs">
+    <Compile Include="Panel\ProductPages\ViewProduct.xaml.cs">
       <DependentUpon>ViewProduct.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Promotion\AddPromotion.xaml.cs">
+    <Compile Include="Panel\PromotionPages\AddPromotion.xaml.cs">
       <DependentUpon>AddPromotion.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Promotion\ModifyPromotion.xaml.cs">
+    <Compile Include="Panel\PromotionPages\ModifyPromotion.xaml.cs">
       <DependentUpon>ModifyPromotion.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Promotion\ModifyPromotionStatus.xaml.cs">
+    <Compile Include="Panel\PromotionPages\ModifyPromotionStatus.xaml.cs">
       <DependentUpon>ModifyPromotionStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Promotion\ViewPromotions.xaml.cs">
+    <Compile Include="Panel\PromotionPages\ViewPromotions.xaml.cs">
       <DependentUpon>ViewPromotions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Spare\ModifySpareStatus.xaml.cs">
+    <Compile Include="Panel\SparePages\ModifySpareStatus.xaml.cs">
       <DependentUpon>ModifySpareStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\Spare\SearchSpares.xaml.cs">
+    <Compile Include="Panel\SparePages\SearchSpares.xaml.cs">
       <DependentUpon>SearchSpares.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\CountryProvider.cs" />
     <Compile Include="Service\PermissionManager.cs" />
     <Compile Include="Service\RoleManager.cs" />
+    <Compile Include="Service\SelectionManager.cs" />
     <Compile Include="Service\SignInManager.cs" />
     <Compile Include="Service\UserManager.cs" />
     <Compile Include="ViewModel\IndexGridViewItem.cs" />
+    <Compile Include="ViewModel\OrderProductViewModel.cs" />
     <Compile Include="ViewModel\ViewTuple.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -261,23 +276,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Panel\Account\CreateAccount.xaml">
+    <Page Include="Dialog\UserDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Account\DisableAccount.xaml">
+    <Page Include="Panel\AccountPages\CreateAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Account\ModifyAccount.xaml">
+    <Page Include="Panel\AccountPages\DisableAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Account\SearchAccounts.xaml">
+    <Page Include="Panel\AccountPages\ModifyAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Account\ViewAccount.xaml">
+    <Page Include="Panel\AccountPages\SearchAccounts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\AccountPages\ViewAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -285,15 +304,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Invoice\CompleteInvoice.xaml">
+    <Page Include="Panel\InvoicePages\CompleteInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Invoice\CreateInvoice.xaml">
+    <Page Include="Panel\InvoicePages\CreateInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Invoice\SearchInvoices.xaml">
+    <Page Include="Panel\InvoicePages\SearchInvoices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -301,35 +320,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\CancelOrder.xaml">
+    <Page Include="Panel\OrderPages\CancelOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\CreateOrder.xaml">
+    <Page Include="Panel\OrderPages\CreateOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\EndorseOrder.xaml">
+    <Page Include="Panel\OrderPages\EndorseOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\ModifyOrder.xaml">
+    <Page Include="Panel\OrderPages\ModifyOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\SearchOrders.xaml">
+    <Page Include="Panel\OrderPages\SearchOrders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Order\ViewOrder.xaml">
+    <Page Include="Panel\OrderPages\ViewOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Other\Calendar.xaml">
+    <Page Include="Panel\OtherPages\Calendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Other\EmitNotification.xaml">
+    <Page Include="Panel\OtherPages\EmitNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,47 +356,51 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\AddProduct.xaml">
+    <Page Include="Panel\ProductPages\AddProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\ModifyProduct.xaml">
+    <Page Include="Panel\ProductPages\ModifyProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\ModifyProductStatus.xaml">
+    <Page Include="Panel\ProductPages\ModifyProductStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\SearchProducts.xaml">
+    <Page Include="Dialog\ProductDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Product\ViewProduct.xaml">
+    <Page Include="Panel\ProductPages\SearchProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Promotion\AddPromotion.xaml">
+    <Page Include="Panel\ProductPages\ViewProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Promotion\ModifyPromotion.xaml">
+    <Page Include="Panel\PromotionPages\AddPromotion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Promotion\ModifyPromotionStatus.xaml">
+    <Page Include="Panel\PromotionPages\ModifyPromotion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Promotion\ViewPromotions.xaml">
+    <Page Include="Panel\PromotionPages\ModifyPromotionStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Spare\ModifySpareStatus.xaml">
+    <Page Include="Panel\PromotionPages\ViewPromotions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\Spare\SearchSpares.xaml">
+    <Page Include="Panel\SparePages\ModifySpareStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\SparePages\SearchSpares.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

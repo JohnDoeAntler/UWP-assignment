@@ -25,5 +25,9 @@ namespace CherryProject.Extension
 
 			return str;
 		}
+
+		public static bool IsDoubleNumeric(this string str) => double.TryParse(str, out _) || string.IsNullOrEmpty(str);
+
+		public static bool IsIntegerNumeric(this string str) => int.TryParse(str, out _) || string.IsNullOrEmpty(str);
 	}
 }

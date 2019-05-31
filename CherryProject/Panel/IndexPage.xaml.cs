@@ -37,43 +37,43 @@ namespace CherryProject.Panel
 					Title = "Account Management",
 					Description = "Account observation, creation, modification and remove control.",
 					Icon = Symbol.ContactInfo,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Account")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.AccountPages")
 				},
 				new IndexGridViewItem{
 					Title = "Order Processing",
 					Description = "Order processing view, statistics and trend calculation, creation, modification and remove.",
 					Icon = Symbol.MoveToFolder,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Order")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.OrderPages")
 				},
 				new IndexGridViewItem{
 					Title = "Product Management",
 					Description = "Product supplement, modification and view.",
 					Icon = Symbol.Page2,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Product")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.ProductPages")
 				},
 				new IndexGridViewItem{
 					Title = "Promotion Management",
 					Description = "Promotion view, supplement and modification.",
 					Icon = Symbol.Pictures,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Promotion")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.PromotionPages")
 				},
 				new IndexGridViewItem{
 					Title = "Spare Management",
 					Description = "Spare information view and spare status modification.",
 					Icon = Symbol.PreviewLink,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Spare")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.SparePages")
 				},
 				new IndexGridViewItem{
 					Title = "Invoice Management",
 					Description = "Invoice generation and invoice content and status modification.",
 					Icon = Symbol.AlignCenter,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Invoice")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.InvoicePages")
 				},
 				new IndexGridViewItem{
 					Title = "Other",
 					Description = "Emit notification, etc.",
 					Icon = Symbol.Comment,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.Other")
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.OtherPages")
 				}
 			};
 
@@ -173,12 +173,20 @@ namespace CherryProject.Panel
 
 				foreach (var item in _items)
 				{
+					// if it loaded setting grid view item, skip it.
+					if (item.Views == null)
+					{
+						continue;
+					}
+
 					foreach (var view in item.Views)
 					{
 						if (selected == view.ClassNameToString())
 						{
+							// put the destination view to the top of the view list
 							item.Views = item.Views.OrderBy(x => x != view);
 
+							// navigate the frame to the panel page and load the target view
 							Frame.Navigate(typeof(PanelPage), item, new DrillInNavigationTransitionInfo());
 						}
 					}

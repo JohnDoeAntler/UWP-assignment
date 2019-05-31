@@ -21,7 +21,7 @@ namespace CherryProject.Service
 
 	public class SignInManager
 	{
-		public static Users CurrentUser { get; private set; }
+		public static User CurrentUser { get; private set; }
 
 		public static async Task<Status> SignInAsync(string username, string password)
 		{

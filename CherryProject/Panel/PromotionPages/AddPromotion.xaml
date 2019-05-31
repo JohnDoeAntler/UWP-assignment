@@ -1,0 +1,88 @@
+﻿<Page
+    x:Class="CherryProject.Panel.PromotionPages.AddPromotion"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.PromotionPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel>
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="GUID" Margin="0 0 0 10"/>
+				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+				<Button 
+					x:Name="GenerateGuidBtn"
+					Content="Generate new GUID" 
+					Margin="0 0 0 10"
+					Click="GenerateGuidBtn_OnClick"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Product" Margin="0 0 0 10"/>
+
+				<Button x:Name="Select" Content="Select Product" Click="Select_Click"/>
+
+				<TextBlock x:Name="SelectedProductTextBlock" Visibility="Collapsed"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Description" Margin="0 0 0 10"/>
+				<RichEditBox x:Name="Description" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Image URL" Margin="0 0 0 10"/>
+				<TextBox x:Name="ImageUrl" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Discount" Margin="0 0 0 10"/>
+				<TextBox x:Name="Discount" Margin="0 0 0 10" BeforeTextChanging="Discount_BeforeTextChanging"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Promotion Duration" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+				<DatePicker x:Name="StartTime" Header="Start Time" Margin="0 0 0 10"/>
+				<DatePicker x:Name="EndTime" Header="End Time" Margin="0 0 0 10"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Status" Margin="0 0 0 10"/>
+				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<Button x:Name="Submit" Content="Add Promotion" Click="Submit_Click"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

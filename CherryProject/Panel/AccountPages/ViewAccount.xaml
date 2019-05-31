@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="CherryProject.Panel.AccountPages.ViewAccount"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.AccountPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		<StackPanel>
+			<StackPanel Margin="0 20">
+				<Ellipse Height="200" Width="200">
+					<Ellipse.Fill>
+						<ImageBrush ImageSource="ms-appx:///Assets/Account.jpg"/>
+					</Ellipse.Fill>
+				</Ellipse>
+			</StackPanel>
+			<StackPanel Margin="0 0 0 20">
+				<StackPanel
+					Orientation="Horizontal"
+					HorizontalAlignment="Center"
+					Spacing="8">
+					<TextBlock x:Name="FirstName" TextAlignment="Center" FontSize="36"/>
+					<TextBlock x:Name="LastName" TextAlignment="Center" FontSize="36"/>
+				</StackPanel>
+				<TextBlock 
+					x:Name="Username"
+					TextAlignment="Center"
+					Style="{ThemeResource CaptionTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+			</StackPanel>
+
+			<ListView
+				Margin="0 0 0 20"
+				ItemsSource="{Binding}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ListViewItem Padding="10">
+							<StackPanel 
+								Orientation="Horizontal"
+								Spacing="10">
+								<Rectangle
+									 Fill="Gray"
+									 Height="40"
+									 Width="2"/>
+								<StackPanel>
+									<TextBlock Text="{Binding Item1}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Item2}" 
+										Style="{ThemeResource BodyTextBlockStyle}"
+										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+								</StackPanel>
+							</StackPanel>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Modify the account by clicking the above button to modify the account information."/>
+				<Button
+					x:Name="ModifyAccount"
+					Content="Modify Account"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Disable the account by clicking the above button to lock the account prevent anyone to access current account." />
+				<Button
+					x:Name="DisableAccount"
+					Content="Disable Account"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

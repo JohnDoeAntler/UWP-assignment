@@ -1,0 +1,125 @@
+﻿<Page
+    x:Class="CherryProject.Panel.OrderPages.ViewOrder"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.OrderPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	mc:Ignorable="d"
+    Background="Transparent">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel>
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock x:Name="OrderName" TextAlignment="Center" FontSize="36"/>
+				<TextBlock 
+					x:Name="OrderId"
+					TextAlignment="Center"
+					Style="{ThemeResource CaptionTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+			</StackPanel>
+
+			<ListView
+				Margin="0 0 0 20"
+				ItemsSource="{x:Bind DisplayItems}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ListViewItem Padding="10">
+							<StackPanel 
+								Orientation="Horizontal"
+								Spacing="10">
+								<Rectangle
+									 Fill="Gray"
+									 Height="40"
+									 Width="2"/>
+								<StackPanel>
+									<TextBlock Text="{Binding Header}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Content}" 
+										Style="{ThemeResource BodyTextBlockStyle}"
+										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+								</StackPanel>
+							</StackPanel>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			
+			<StackPanel Margin="0 0 0 30" Spacing="10">
+				<TextBlock Text="Products"/>
+				<controls:DataGrid
+					x:Name="DataGridViewControl"
+					AutoGenerateColumns="False"
+					GridLinesVisibility="All"
+					CanUserResizeColumns="True"
+					CanUserSortColumns="True"
+					CanUserReorderColumns="True"
+					IsReadOnly="False"
+					ItemsSource="{x:Bind Items}">
+					<controls:DataGrid.Columns>
+						<controls:DataGridTextColumn
+							Header="Product Name"
+							Width="auto"
+							FontSize="12"
+							Binding="{Binding ProductName}"/>
+						<controls:DataGridTextColumn
+							Header="Quantity"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding ReadOnlyQuantity}"/>
+						<controls:DataGridTextColumn
+							Header="Total Price"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding Price}"/>
+						<controls:DataGridTextColumn
+							Header="Total Weight"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding Weight}"/>
+					</controls:DataGrid.Columns>
+				</controls:DataGrid>
+
+				<TextBlock x:Name="Summary" Visibility="Collapsed"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 20">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Modify the order by clicking the above button to modify the order information."/>
+				<Button
+					x:Name="ModifyOrder"
+					Content="Modify Order"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Endorse the order by clicking the above button to confirm the order could start to process spare assembling and dispatching." />
+				<Button
+					x:Name="EndorseOrder"
+					Content="Endorse Order"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
+					Margin="0 0 0 10"
+					Text="Cancel the order by clicking the above button to dispose the previous sent order." />
+				<Button
+					x:Name="CancelOrder"
+					Content="Cancel Order"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

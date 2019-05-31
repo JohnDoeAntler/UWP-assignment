@@ -10,19 +10,19 @@ namespace CherryProject.Service
 {
 	public class UserManager
 	{
-		public static async Task<Users> FindUserAsync(Predicate<Users> predicate)
+		public static async Task<User> FindUserAsync(Predicate<User> predicate)
 		{
 			using (var context = new Context())
 			{
-				return await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => predicate(x));
+				return await context.User.Include(x => x.Role).FirstOrDefaultAsync(x => predicate(x));
 			}
 		}
 
-		public static async Task<Users> CreateAsync(Users user)
+		public static async Task<User> CreateAsync(User user)
 		{
 			using (var context = new Context())
 			{
-				var entity = await context.Users.AddAsync(user);
+				var entity = await context.User.AddAsync(user);
 				await context.SaveChangesAsync();
 				return entity.Entity;
 			}

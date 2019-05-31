@@ -1,7 +1,7 @@
 ﻿using CherryProject.Model.Enum;
-using CherryProject.Panel.Account;
-using CherryProject.Panel.Order;
-using CherryProject.Panel.Product;
+using CherryProject.Panel.AccountPages;
+using CherryProject.Panel.OrderPages;
+using CherryProject.Panel.ProductPages;
 using CherryProject.ViewModel;
 using System;
 using System.Collections.Generic;
