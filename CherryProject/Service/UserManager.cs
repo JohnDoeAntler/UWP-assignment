@@ -17,15 +17,5 @@ namespace CherryProject.Service
 				return await context.User.Include(x => x.Role).FirstOrDefaultAsync(x => predicate(x));
 			}
 		}
-
-		public static async Task<User> CreateAsync(User user)
-		{
-			using (var context = new Context())
-			{
-				var entity = await context.User.AddAsync(user);
-				await context.SaveChangesAsync();
-				return entity.Entity;
-			}
-		}
 	}
 }

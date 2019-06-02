@@ -176,6 +176,7 @@ namespace CherryProject.Panel.OrderPages
 								Id = Guid.Text,
 								DealerId = dealer.Id,
 								ModifierId = SignInManager.CurrentUser.Id,
+								DeliveryAddress = Address.GetText(),
 								Type = Type.SelectedItem.ToString(),
 								Status = OrderStatusEnum.Pending.ToString()
 							})).Entity;

@@ -5,9 +5,164 @@
     xmlns:local="using:CherryProject.Panel.OrderPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+	xmlns:model="using:CherryProject.Model"
+	mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
-    </Grid>
+	<Grid>
+		<StackPanel>
+			<TextBlock Text="Enter the account information below for searching filtering." Margin="0 0 0 10"
+				TextWrapping="Wrap"
+				VerticalAlignment="Center"/>
+
+			<TextBlock Text="Each searching filter could be able to use different searching strategies and attribute selection."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"
+					MaxWidth="460"
+					HorizontalAlignment="Left"
+					Margin="0 0 0 10"/>
+
+			<StackPanel Margin="0 0 0 30" Spacing="10" MaxWidth="460" HorizontalAlignment="Left">
+				<TextBlock Text="Dealer GUID"/>
+				<TextBox x:Name="DealerGUID" IsEnabled="False"/>
+				<StackPanel Orientation="Horizontal" Spacing="10">
+					<Button 
+						Content="Select Dealer"
+						Click="SelectDealer_Click"/>
+					<Button 
+						Content="Reset Dealer"
+						Click="ResetDealer_Click"/>
+				</StackPanel>
+				<TextBlock Name="SelectedDealer"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30" Spacing="10" MaxWidth="460" HorizontalAlignment="Left">
+				<TextBlock Text="Modifier GUID"/>
+				<TextBox x:Name="ModifierGUID" IsEnabled="False"/>
+				<StackPanel Orientation="Horizontal" Spacing="10">
+					<Button 
+						Content="Select Modifier"
+						Click="SelectModifier_Click"/>
+					<Button
+						Content="Reset Modifier"
+						Click="ResetModifier_Click"/>
+				</StackPanel>
+				<TextBlock Name="SelectedModifier"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<ListView
+					x:Name="ListViewControl"
+					MaxWidth="600"
+					Margin="0 0 0 10" 
+					SelectionMode="Multiple"
+					ItemsSource="{x:Bind SearchFilters}"
+					HorizontalAlignment="Left">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="x:String">
+						<ListViewItem Padding="10" Tapped="ListViewItem_Tapped">
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
+								<ComboBox MinWidth="112">
+									<ComboBoxItem Content="Delivery Address"/>
+									<ComboBoxItem Content="Type"/>
+									<ComboBoxItem Content="Status"/>
+								</ComboBox>
+								<ComboBox MinWidth="112">
+									<ComboBoxItem Content="Equals"/>
+									<ComboBoxItem Content="Contains"/>
+									<ComboBoxItem Content="Not equals"/>
+									<ComboBoxItem Content="Not contains"/>
+								</ComboBox>
+								<TextBox PlaceholderText="Property value." HorizontalAlignment="Right" MinWidth="112"/>
+							</StackPanel>
+						</ListViewItem>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<ListView
+				Width="460"
+				Margin="0 0 0 10" 
+				SelectionMode="Extended"
+				HorizontalAlignment="Left">
+				<ListViewItem x:Name="AddSearchingFilterBtn" Tapped="AddSearchingFilterBtn_Tapped">
+					<StackPanel Orientation="Horizontal" Margin="0 10">
+						<Border BorderBrush="White" BorderThickness="2" Padding="8">
+							<SymbolIcon Symbol="Add">
+								<SymbolIcon.RenderTransform>
+									<CompositeTransform ScaleX="0.75" ScaleY="0.75" CenterX="10" CenterY="10"/>
+								</SymbolIcon.RenderTransform>
+							</SymbolIcon>
+						</Border>
+						<StackPanel Margin="10 0 0 0">
+							<TextBlock Text="Add searching filter." />
+						</StackPanel>
+					</StackPanel>
+				</ListViewItem>
+			</ListView>
+
+			<StackPanel
+				Orientation="Horizontal"
+				Spacing="5"
+				Margin="0 0 0 20">
+				<Button Content="Refresh" Click="Button_Refresh"/>
+				<Button Content="Reset searching filters." Click="Button_Reset"/>
+			</StackPanel>
+
+			<TextBlock x:Name="ResultAlerter" Text="There has only found 2 result(s)." Margin="0 0 0 10"/>
+
+			<ScrollViewer
+				Height="236"
+				HorizontalAlignment="Left"
+				Margin="0 0 0 20"
+				BorderBrush="Gray"
+				BorderThickness="1">
+
+				<ListView
+					x:Name="ResultListViewControl"
+					HorizontalAlignment="Left"
+					SelectionMode="Single"
+					IsItemClickEnabled="True"
+					ItemsSource="{x:Bind SearchOrderGridViewItems}"
+					Width="460">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="model:Order">
+							<ListViewItem Tapped="StackPanel_Tapped">
+								<StackPanel 
+									Padding="12"
+									Orientation="Horizontal">
+									<SymbolIcon Symbol="ContactInfo"></SymbolIcon>
+									<StackPanel Margin="16 0 0 0">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="{x:Bind Dealer.FirstName}"/>
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="'s Order"/>
+										</StackPanel>
+										<TextBlock
+											Style="{ThemeResource CaptionTextBlockStyle}"
+											Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
+											TextWrapping="WrapWholeWords"
+											TextTrimming="Clip" 
+											Text="{x:Bind Id}"/>
+									</StackPanel>
+								</StackPanel>
+							</ListViewItem>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</ScrollViewer>
+		</StackPanel>
+	</Grid>
 </Page>

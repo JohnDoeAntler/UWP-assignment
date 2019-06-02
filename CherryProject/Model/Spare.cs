@@ -11,8 +11,8 @@ namespace CherryProject.Model
         }
 
         public string Id { get; set; }
-        public decimal PositionXoffset { get; set; }
-        public decimal PositionYoffset { get; set; }
+        public double PositionXoffset { get; set; }
+        public double PositionYoffset { get; set; }
         public string CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

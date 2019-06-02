@@ -1,5 +1,8 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,31 +17,27 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+// The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace CherryProject.Panel.ProductPages
+namespace CherryProject.Dialog
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class SearchProducts : Page
+	public sealed partial class OrderDialog : ContentDialog
 	{
 		private readonly ObservableCollection<string> _searchFilters;
-		private readonly ObservableCollection<Product> _searchProductGridViewItems;
-		private readonly Dictionary<string, Predicate<Product>> keyValuePairs;
+		private readonly ObservableCollection<Order> _searchOrderGridViewItems;
+		private readonly Dictionary<string, Predicate<Order>> keyValuePairs;
 		private Type searchStatus;
 
-		public SearchProducts()
-        {
-            this.InitializeComponent();
+		public OrderDialog()
+		{
+			this.InitializeComponent();
 
 			// searching filter list instantiation
 			_searchFilters = new ObservableCollection<string>();
-			_searchProductGridViewItems = new ObservableCollection<Product>();
-			keyValuePairs = new Dictionary<string, Predicate<Product>>();
+			_searchOrderGridViewItems = new ObservableCollection<Order>();
+			keyValuePairs = new Dictionary<string, Predicate<Order>>();
 
 			// update the search result
 			UpdateSearchResult();
@@ -48,7 +47,8 @@ namespace CherryProject.Panel.ProductPages
 		}
 
 		public ObservableCollection<string> SearchFilters => _searchFilters;
-		public ObservableCollection<Product> SearchProductGridViewItems => _searchProductGridViewItems;
+		public ObservableCollection<Order> SearchOrderGridViewItems => _searchOrderGridViewItems;
+		public Order Order { get; set; }
 
 		private void AddSearchFilter() => _searchFilters.Add($"Filter {_searchFilters.Count + 1}:");
 
@@ -65,32 +65,6 @@ namespace CherryProject.Panel.ProductPages
 			AddSearchFilter();
 			// update the result to display all products
 			UpdateSearchResult();
-		}
-
-		private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-		{
-			// abstract a common factor
-			string str = (searchStatus == null ? "View" : "Select");
-
-			// create a dialog
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = $"Are you ensure to {str.ToLower()} tapped product?",
-				PrimaryButtonText = $"{str} Product",
-				CloseButtonText = "Cancel"
-			};
-
-			// display the dialog to user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
-
-			// if user selected "{str} account" button
-			if (result == ContentDialogResult.Primary)
-			{
-				// if the user enter searching user UI by clicking nav bar, it would direct user to view account UI
-				// else if the user was instructed to select an account, it would return a user previous UI
-				Frame.Navigate(searchStatus ?? typeof(ViewProduct), ResultListViewControl.SelectedItem, new DrillInNavigationTransitionInfo());
-			}
 		}
 
 		private void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
@@ -170,7 +144,7 @@ namespace CherryProject.Panel.ProductPages
 			using (var context = new Context())
 			{
 				// store user
-				IEnumerable<Product> set = context.Product;
+				IEnumerable<Order> set = context.Order.Include(x => x.Dealer).Include(x => x.OrderProduct);
 
 				// user filtering
 				foreach (var predicate in keyValuePairs)
@@ -184,40 +158,117 @@ namespace CherryProject.Panel.ProductPages
 				}
 
 				// clear the result for renew the searching result
-				_searchProductGridViewItems.Clear();
+				_searchOrderGridViewItems.Clear();
 
 				// re-update the searching result by using foreach statement
 				foreach (var item in set)
 				{
-					_searchProductGridViewItems.Add(item);
+					_searchOrderGridViewItems.Add(item);
 				}
 
 				// updatae the reminder text
-				ResultAlerter.Text = $"There has only found {_searchProductGridViewItems.Count} result(s).";
+				ResultAlerter.Text = $"There has only found {_searchOrderGridViewItems.Count} result(s).";
 			}
 		}
 
-		protected override async void OnNavigatedTo(NavigationEventArgs e)
+		private async void SelectDealer_Click(object sender, RoutedEventArgs e)
 		{
-			base.OnNavigatedTo(e);
+			var dialog = new UserDialog();
 
-			// if the parameter is type "Type"
-			if (e.Parameter is Type type)
+			ContentDialogResult button;
+
+			do
 			{
-				// store it to instance variable
-				searchStatus = type;
+				button = await dialog.EnqueueAndShowIfAsync();
+			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleManager.FindRoleAsync(x => x.NormalizedName == RoleEnum.Dealer.ToString().ToUpperInvariant())).Id);
 
-				// instantiate a dialog to remind user becauses of their initiative intention was not searching account
-				ContentDialog Reminder = new ContentDialog
+			if (button == ContentDialogResult.Primary)
+			{
+				User dealer = dialog.User;
+				DealerGUID.Text = dealer.Id;
+
+				SelectedDealer.Text = $"Selected Dealer: {dealer.FirstName} {dealer.LastName}";
+
+				if (keyValuePairs.ContainsKey("Dealer"))
 				{
-					Title = "Reminder",
-					Content = "Tap on the product which you want to modify on.",
-					CloseButtonText = "Got it"
-				};
+					keyValuePairs.Remove("Dealer");
+				}
 
-				// show the dialog
-				await Reminder.EnqueueAndShowIfAsync();
+				keyValuePairs.Add("Dealer", x => x.DealerId == dealer.Id);
+
+				UpdateSearchResult();
 			}
+		}
+
+		private async void SelectModifier_Click(object sender, RoutedEventArgs e)
+		{
+			var dialog = new UserDialog();
+
+			var button = await dialog.EnqueueAndShowIfAsync();
+
+			if (button == ContentDialogResult.Primary)
+			{
+				User modifier = dialog.User;
+				ModifierGUID.Text = modifier.Id;
+
+				SelectedModifier.Text = $"Selected Modifier: {modifier.FirstName} {modifier.LastName}";
+
+				if (keyValuePairs.ContainsKey("Modifier"))
+				{
+					keyValuePairs.Remove("Modifier");
+				}
+
+				keyValuePairs.Add("Modifier", x => x.ModifierId == modifier.Id);
+
+				UpdateSearchResult();
+			}
+		}
+
+		private void ResetDealer_Click(object sender, RoutedEventArgs e)
+		{
+			DealerGUID.Text = string.Empty;
+			SelectedDealer.Text = string.Empty;
+
+			if (keyValuePairs.ContainsKey("Dealer"))
+			{
+				keyValuePairs.Remove("Dealer");
+
+				UpdateSearchResult();
+			}
+		}
+
+		private void ResetModifier_Click(object sender, RoutedEventArgs e)
+		{
+			ModifierGUID.Text = string.Empty;
+			SelectedModifier.Text = string.Empty;
+
+			if (keyValuePairs.ContainsKey("Modifier"))
+			{
+				keyValuePairs.Remove("Modifier");
+
+				UpdateSearchResult();
+			}
+		}
+
+		private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			Order = (Order)ResultListViewControl.SelectedItem;
+			SelectedTarget.Text = $"Selected: {Order.Dealer.FirstName}'s Order";
+		}
+
+		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		{
+			if (Order == null)
+			{
+				SelectedTarget.Text = $"Please select an order or else cancel the select dialog.";
+				args.Cancel = true;
+			}
+		}
+
+		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		{
+			Order = null;
+			this.Hide();
 		}
 	}
 }

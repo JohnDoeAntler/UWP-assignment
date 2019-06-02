@@ -120,6 +120,18 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\DummyData.cs" />
+    <Compile Include="Dialog\CategoryDialog.xaml.cs">
+      <DependentUpon>CategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\DicDialog.xaml.cs">
+      <DependentUpon>DicDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\DidDialog.xaml.cs">
+      <DependentUpon>DidDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\OrderDialog.xaml.cs">
+      <DependentUpon>OrderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\UserDialog.xaml.cs">
       <DependentUpon>UserDialog.xaml</DependentUpon>
     </Compile>
@@ -186,6 +198,9 @@
     <Compile Include="Panel\OrderPages\CreateOrder.xaml.cs">
       <DependentUpon>CreateOrder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel\OrderPages\DeliverOrder.xaml.cs">
+      <DependentUpon>DeliverOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\OrderPages\EndorseOrder.xaml.cs">
       <DependentUpon>EndorseOrder.xaml</DependentUpon>
     </Compile>
@@ -237,11 +252,14 @@
     <Compile Include="Panel\PromotionPages\ViewPromotions.xaml.cs">
       <DependentUpon>ViewPromotions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\SparePages\ModifySpareStatus.xaml.cs">
-      <DependentUpon>ModifySpareStatus.xaml</DependentUpon>
+    <Compile Include="Panel\SparePages\AddCategory.xaml.cs">
+      <DependentUpon>AddCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\SparePages\SearchSpares.xaml.cs">
-      <DependentUpon>SearchSpares.xaml</DependentUpon>
+    <Compile Include="Panel\SparePages\AddSpare.xaml.cs">
+      <DependentUpon>AddSpare.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\SparePages\AssembleSpare.xaml.cs">
+      <DependentUpon>AssembleSpare.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\CountryProvider.cs" />
@@ -276,6 +294,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialog\CategoryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\DicDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\DidDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\OrderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\UserDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -327,6 +361,10 @@
     <Page Include="Panel\OrderPages\CreateOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\OrderPages\DeliverOrder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Panel\OrderPages\EndorseOrder.xaml">
       <SubType>Designer</SubType>
@@ -396,11 +434,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\SparePages\ModifySpareStatus.xaml">
+    <Page Include="Panel\SparePages\AddCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\SparePages\SearchSpares.xaml">
+    <Page Include="Panel\SparePages\AddSpare.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\SparePages\AssembleSpare.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

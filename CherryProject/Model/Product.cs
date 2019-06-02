@@ -6,7 +6,6 @@ namespace CherryProject.Model
 	public partial class Product
 	{
 		private string concurrencyStamp;
-		private DateTime lastTimeModified;
 
 		public Product()
 		{
@@ -22,10 +21,11 @@ namespace CherryProject.Model
 		public double Price { get; set; }
 		public string Description { get; set; }
 		public double Weight { get; set; }
+		public int ReorderLevel { get; set; }
 		public int DangerLevel { get; set; }
 		public string IconUrl { get; set; }
 		public string Status { get; set; }
-		public DateTime LastTimeModified { get => lastTimeModified == DateTime.MinValue ? (lastTimeModified = DateTime.Now) : lastTimeModified; set => lastTimeModified = value; }
+		public DateTime LastTimeModified { get; set; }
 		public string ConcurrencyStamp { get => concurrencyStamp ?? (concurrencyStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
 
 		public virtual ICollection<Category> Category { get; set; }

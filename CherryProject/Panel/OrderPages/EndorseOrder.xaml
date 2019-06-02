@@ -14,8 +14,8 @@
 		</Grid.ColumnDefinitions>
 
 		<StackPanel Margin="0 0 0 30">
-			<TextBlock Text="Status" Margin="0 0 0 10"/>
-			<Button x:Name="Submit" Content="Complete Invoice"/>
+			<TextBlock Text="Endorse Order" Margin="0 0 0 10"/>
+			<Button x:Name="Submit" Content="Endorse Order"/>
 			<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>

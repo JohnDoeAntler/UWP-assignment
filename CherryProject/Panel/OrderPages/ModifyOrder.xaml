@@ -80,6 +80,14 @@
 			</StackPanel>
 
 			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Delivery Address" Margin="0 0 0 10"/>
+				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
+				<TextBlock Text="The account detail address, it would be used on dispatch destination address."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Type" Margin="0 0 0 10"/>
 				<ComboBox x:Name="Type" MinWidth="280" Margin="0 0 0 10" />
 				<TextBlock Text="xxx."
@@ -96,7 +104,7 @@
 			</StackPanel>
 
 			<StackPanel Margin="0 0 0 30">
-				<Button x:Name="Submit" Content="Create Order" Click="Submit_Click"/>
+				<Button x:Name="Submit" Content="Modify Order" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel> 
 	</Grid>

@@ -44,6 +44,8 @@ namespace CherryProject.Panel.ProductPages
 
 		private void Weight_KeyDown(object sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsDoubleNumeric();
 
+		private void ReorderLevel_KeyDown(TextBox sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsIntegerNumeric();
+
 		private void DangerLevel_KeyDown(object sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsIntegerNumeric();
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -76,6 +78,7 @@ namespace CherryProject.Panel.ProductPages
 			Description.Text = product.Description;
 			Price.Text = product.Price.ToString();
 			Weight.Text = product.Weight.ToString();
+			ReorderLevel.Text = product.ReorderLevel.ToString();
 			DangerLevel.Text = product.DangerLevel.ToString();
 			Status.SelectedItem = product.Status;
 		}
@@ -101,6 +104,7 @@ namespace CherryProject.Panel.ProductPages
 				|| string.IsNullOrEmpty(DangerLevel.Text)
 				|| !double.TryParse(Price.Text, out double price)
 				|| !double.TryParse(Weight.Text, out double weight)
+				|| !int.TryParse(ReorderLevel.Text, out int reorderLevel)
 				|| !int.TryParse(DangerLevel.Text, out int dangerLevel)
 				|| string.IsNullOrEmpty(Status.SelectedItem as string)
 				)
@@ -125,6 +129,7 @@ namespace CherryProject.Panel.ProductPages
 								x.Description = Description.Text;
 								x.Price = price;
 								x.Weight = weight;
+								x.ReorderLevel = reorderLevel;
 								x.DangerLevel = dangerLevel;
 								x.Status = Status.SelectedItem as string;
 							}

@@ -1,12 +1,12 @@
 ﻿<Page
-    x:Class="CherryProject.Panel.OrderPages.CancelOrder"
+    x:Class="CherryProject.Panel.OrderPages.DeliverOrder"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CherryProject.Panel.OrderPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="Transparent">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
 		<Grid.ColumnDefinitions>
@@ -14,8 +14,8 @@
 		</Grid.ColumnDefinitions>
 
 		<StackPanel Margin="0 0 0 30">
-			<TextBlock Text="Cancel Order" Margin="0 0 0 10"/>
-			<Button x:Name="Submit" Content="Cancel Order"/>
+			<TextBlock Text="Deliver Order" Margin="0 0 0 10"/>
+			<Button x:Name="Submit" Content="Deliver Order"/>
 			<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>

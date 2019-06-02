@@ -2,6 +2,7 @@
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Service;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Extensions;
 using System;
 using System.Collections.Generic;
@@ -106,34 +107,37 @@ namespace CherryProject.Panel.AccountPages
 
 					try
 					{
-						var user = await UserManager.CreateAsync(new User()
+						using (var context = new Context())
 						{
-							Id = Guid.Text,
-							UserName = Username.Text,
-							PasswordHash = Password.Password.GetMD5hash(),
-							FirstName = FirstName.Text,
-							LastName = LastName.Text,
-							Email = Email.Text,
-							PhoneNumber = PhoneNumber.Text,
-							Region = Region.SelectedItem as string,
-							RoleId = role.Id,
-							Status = GeneralStatusEnum.Available.ToString(),
-							Address = Address.GetText(),
-						});
+							var user = await context.User.AddAsync(new User()
+							{
+								Id = Guid.Text,
+								UserName = Username.Text,
+								PasswordHash = Password.Password.GetMD5hash(),
+								FirstName = FirstName.Text,
+								LastName = LastName.Text,
+								Email = Email.Text,
+								PhoneNumber = PhoneNumber.Text,
+								Region = Region.SelectedItem as string,
+								RoleId = role.Id,
+								Status = GeneralStatusEnum.Available.ToString(),
+								Address = Address.GetText(),
+							});
 
-						user.Role = role;
+							user.Entity.Role = role;
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully created user.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+							ContentDialog message = new ContentDialog
+							{
+								Title = "Success",
+								Content = "Successfully created user.",
+								CloseButtonText = "OK",
+								Width = 400
+							};
 
-						await message.EnqueueAndShowIfAsync();
+							await message.EnqueueAndShowIfAsync();
 
-						this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
+							this.Frame.Navigate(typeof(ViewAccount), user.Entity, new DrillInNavigationTransitionInfo());
+						}
 					}
 					catch (Exception err)
 					{

@@ -30,6 +30,7 @@ namespace CherryProject.Panel.OrderPages
     public sealed partial class ViewOrder : Page
     {
 		private readonly ObservableCollection<ViewTuple> displayItems;
+
 		private readonly ObservableCollection<OrderProductViewModel> items;
 
 		public ViewOrder()
@@ -41,6 +42,7 @@ namespace CherryProject.Panel.OrderPages
 		}
 
 		public ObservableCollection<ViewTuple> DisplayItems => displayItems;
+
 		public ObservableCollection<OrderProductViewModel> Items => items;
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -80,6 +82,7 @@ namespace CherryProject.Panel.OrderPages
 
 			displayItems.Add(new ViewTuple("Dealer Name", $"{dealer.FirstName} {dealer.LastName}"));
 			displayItems.Add(new ViewTuple("Last Modifier Name", $"{modifier.FirstName} {modifier.LastName}"));
+			displayItems.Add(new ViewTuple("Delivery Address", order.DeliveryAddress));
 			displayItems.Add(new ViewTuple("Type", order.Type));
 			displayItems.Add(new ViewTuple("Status", order.Status));
 			displayItems.Add(new ViewTuple("Last Time Modified", string.Format("{0:G}", order.LastTimeModified)));

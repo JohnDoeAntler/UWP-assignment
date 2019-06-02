@@ -6,7 +6,6 @@ namespace CherryProject.Model
 	public partial class Order
 	{
 		private string concurrencyStamp;
-		private DateTime lastTimeModified;
 
 		public Order()
 		{
@@ -19,7 +18,8 @@ namespace CherryProject.Model
 		public string ModifierId { get; set; }
 		public string Type { get; set; }
 		public string Status { get; set; }
-		public DateTime LastTimeModified { get => lastTimeModified == DateTime.MinValue ? (lastTimeModified = DateTime.Now) : lastTimeModified; set => lastTimeModified = value; }
+		public string DeliveryAddress { get; set; }
+		public DateTime LastTimeModified { get; set; }
 		public string ConcurrencyStamp { get => concurrencyStamp ?? (concurrencyStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
 
 		public virtual User Dealer { get; set; }

@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="CherryProject.Panel.SparePages.AssembleSpare"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.SparePages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="Despatch Instruction Detail"/>
+
+				<TextBox x:Name="DidId" IsEnabled="False"/>
+
+				<StackPanel Orientation="Horizontal" Spacing="10">
+					<TextBlock Text="Select DID by: " VerticalAlignment="Center"/>
+					<Button Content="Order" Click="SelectDid_Click"/>
+					<Button Content="DIC" Click="SelectDid2_Click"/>
+					<Button Content="DID" Click="SelectDid3_Click"/>
+				</StackPanel>
+
+				<TextBlock x:Name="SelectedDidTextBlock" Visibility="Collapsed"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			
+			<StackPanel Spacing="10">
+				<TextBlock Text="Spare"/>
+
+				<AutoSuggestBox 
+					x:Name="SpareId" 
+					IsEnabled="False"
+					QueryIcon="Find"
+					TextChanged="SpareId_TextChanged"
+					MaxSuggestionListHeight="300"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel>
+				<Button Content="Assemble Spare" Click="Submit_Click"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

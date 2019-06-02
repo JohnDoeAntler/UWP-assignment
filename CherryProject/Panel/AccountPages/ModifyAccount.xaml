@@ -88,7 +88,7 @@
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Address" Margin="0 0 0 10"/>
 				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
-				<TextBlock Text="The account detail address, it would be used on dispatch destination address."
+				<TextBlock Text="The account detail address, it would be used on sending important notification."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

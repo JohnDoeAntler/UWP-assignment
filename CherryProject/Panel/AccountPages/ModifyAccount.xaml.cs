@@ -114,15 +114,17 @@ namespace CherryProject.Panel.AccountPages
 
 			if (result == ContentDialogResult.Primary)
 			{
-				if (string.IsNullOrEmpty(Username.Text) || Username.Text.Length < 6
-				|| string.IsNullOrEmpty(Password.Password) || Password.Password.Length < 8
-				|| string.IsNullOrEmpty(FirstName.Text)
-				|| string.IsNullOrEmpty(LastName.Text)
-				|| !Email.Text.IsEmail()
-				|| !PhoneNumber.Text.IsPhoneNumber()
-				|| string.IsNullOrEmpty(Region.SelectedItem as string)
-				|| string.IsNullOrEmpty(Role.SelectedItem as string)
-				|| string.IsNullOrEmpty(Status.SelectedItem as string)
+				if (string.IsNullOrEmpty(Username.Text)
+					|| Username.Text.Length < 6
+					|| string.IsNullOrEmpty(Password.Password)
+					|| Password.Password.Length < 8
+					|| string.IsNullOrEmpty(FirstName.Text)
+					|| string.IsNullOrEmpty(LastName.Text)
+					|| !Email.Text.IsEmail()
+					|| !PhoneNumber.Text.IsPhoneNumber()
+					|| string.IsNullOrEmpty(Region.SelectedItem as string)
+					|| string.IsNullOrEmpty(Role.SelectedItem as string)
+					|| string.IsNullOrEmpty(Status.SelectedItem as string)
 				)
 				{
 					ContentDialog error = new ContentDialog

@@ -55,6 +55,15 @@
 			</StackPanel>
 
 			<StackPanel Margin="0 0 0 30">
+				<TextBlock Text="Reorder Level" Margin="0 0 0 10"/>
+				<TextBox x:Name="ReorderLevel" Margin="0 0 0 10"
+						 BeforeTextChanging="ReorderLevel_KeyDown"/>
+				<TextBlock Text="The product reorder level indicates when product quantity fall in specific range (reorder level), it would programmatically send the re-order request to certain department."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Danger Level" Margin="0 0 0 10"/>
 				<TextBox x:Name="DangerLevel" Margin="0 0 0 10" BeforeTextChanging="DangerLevel_KeyDown"/>
 				<TextBlock Text="The product danger level indicates when product quantity fall in specific range (danger level), it would programmatically send the re-order request to certain department."
@@ -65,7 +74,7 @@
 			<StackPanel Margin="0 0 0 30">
 				<TextBlock Text="Status" Margin="0 0 0 10"/>
 				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10"/>
-				<TextBlock Text="The product danger level indicates when product quantity fall in specific range (danger level), it would programmatically send the re-order request to certain department."
+				<TextBlock Text="The product status indicates that the product is available for ordering or not."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

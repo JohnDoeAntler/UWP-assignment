@@ -40,6 +40,7 @@
 									<ComboBoxItem Content="Description"/>
 									<ComboBoxItem Content="Price"/>
 									<ComboBoxItem Content="Weight"/>
+									<ComboBoxItem Content="Reorder Level"/>
 									<ComboBoxItem Content="Danger Level"/>
 									<ComboBoxItem Content="Status"/>
 								</ComboBox>

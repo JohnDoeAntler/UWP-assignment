@@ -1,0 +1,82 @@
+﻿<ContentDialog
+    x:Class="CherryProject.Dialog.DicDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Dialog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:model="using:CherryProject.Model"
+	mc:Ignorable="d"
+    Title="TITLE"
+    PrimaryButtonText="Select"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+		<StackPanel Spacing="10">
+			<TextBlock Text="Enter the account information below for searching filtering."
+					TextWrapping="Wrap"
+					VerticalAlignment="Center"/>
+
+			<TextBlock Text="Each searching filter could be able to use different searching strategies and attribute selection."
+						Style="{ThemeResource BodyTextBlockStyle}"
+						Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"
+						MaxWidth="460"
+						HorizontalAlignment="Left"/>
+			
+			<ScrollViewer
+				Height="236"
+				HorizontalAlignment="Left"
+				BorderBrush="Gray"
+				BorderThickness="1">
+
+				<ListView
+					x:Name="ResultListViewControl"
+					HorizontalAlignment="Left"
+					SelectionMode="Single"
+					IsItemClickEnabled="True"
+					ItemsSource="{x:Bind SearchDicGridViewItems}"
+					Width="460">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="model:Dic">
+							<ListViewItem Tapped="StackPanel_Tapped" IsTapEnabled="False">
+								<StackPanel 
+									Padding="12"
+									Orientation="Horizontal">
+									<SymbolIcon Symbol="ContactInfo"></SymbolIcon>
+									<StackPanel Margin="16 0 0 0">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="{x:Bind Order.Dealer.FirstName}"/>
+											
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="'s Order"/>
+										</StackPanel>
+										<TextBlock
+											Margin="0 0 3 0"
+											TextWrapping="WrapWholeWords" 
+											TextTrimming="Clip" 
+											Text="{x:Bind Status}"/>
+									</StackPanel>
+								</StackPanel>
+							</ListViewItem>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</ScrollViewer>
+
+			<TextBlock 
+				Name="SelectedTarget"
+				TextWrapping="WrapWholeWords" 
+				TextTrimming="Clip"
+				MaxWidth="460"
+				Margin="0 20 0 0"/>
+		</StackPanel>
+    </Grid>
+</ContentDialog>

@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="CherryProject.Panel.SparePages.AddSpare"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.SparePages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="GUID"/>
+				<TextBox x:Name="Guid" IsEnabled="False"/>
+				<Button 
+					x:Name="GenerateGuidBtn"
+					Content="Generate new GUID" 
+					Click="GenerateGuidBtn_OnClick"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Category"/>
+				
+				<TextBox x:Name="CategoryId" IsEnabled="False"/>
+				
+				<Button x:Name="Select" Content="Select Category" Click="Select_Click"/>
+
+				<TextBlock x:Name="SelectedCategoryTextBlock" Visibility="Collapsed"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Position X"/>
+				<TextBox x:Name="PositionX" BeforeTextChanging="PositionX_BeforeTextChanging"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Position Y"/>
+				<TextBox x:Name="PositionY" BeforeTextChanging="PositionY_BeforeTextChanging"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<Button Content="Add Spare" Click="Submit_Click"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

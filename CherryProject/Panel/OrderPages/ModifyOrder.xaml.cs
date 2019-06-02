@@ -89,6 +89,7 @@ namespace CherryProject.Panel.OrderPages
 				Guid.Text = order.Id;
 				DealerGUID.Text = order.DealerId;
 				SelectedUser.Text = $"{dealer.FirstName} {dealer.LastName}";
+				Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, order.DeliveryAddress);
 				Type.SelectedItem = order.Type;
 				Status.SelectedItem = order.Status;
 
@@ -163,7 +164,7 @@ namespace CherryProject.Panel.OrderPages
 			{
 				Title = "Confirmation",
 				Content = "Are you ensure to create an order?",
-				PrimaryButtonText = "Create Order",
+				PrimaryButtonText = "Modify Order",
 				CloseButtonText = "Cancel"
 			};
 
@@ -189,6 +190,8 @@ namespace CherryProject.Panel.OrderPages
 					try
 					{
 						var order = await this.order.ModifyAsync(x => {
+							x.ModifierId = SignInManager.CurrentUser.Id;
+							x.DeliveryAddress = Address.GetText();
 							x.Type = Type.SelectedItem as string;
 							x.Status = Status.SelectedItem as string;
 						});
@@ -196,8 +199,10 @@ namespace CherryProject.Panel.OrderPages
 						foreach (var item in items)
 						{
 							// ikr, it looks weird
-							await item.OrderProduct.ModifyAsync(x => x.Quantity = x.Quantity);
+							await item.OrderProduct.ModifyAsync(x => x.Quantity = item.OrderProduct.Quantity);
 						}
+
+						await items.Select(x => x.OrderProduct).RemoveExceptAsync();
 
 						ContentDialog message = new ContentDialog
 						{

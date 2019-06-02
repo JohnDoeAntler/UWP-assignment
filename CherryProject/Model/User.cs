@@ -28,14 +28,13 @@ namespace CherryProject.Model
 		public bool EmailConfirmed { get => emailConfirmed; set => emailConfirmed = value; }
 		public string PasswordHash { get; set; }
 		public string SecurityStamp { get => securityStamp ?? (securityStamp = Guid.NewGuid().ToString()); set => securityStamp = value; }
-		public string ConcurrencyStamp { get => concurrencyStamp ?? (securityStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
+		public string ConcurrencyStamp { get => concurrencyStamp ?? (concurrencyStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
 		public string PhoneNumber { get; set; }
 		public bool PhoneNumberConfirmed { get => phoneNumberConfirmed; set => phoneNumberConfirmed = value; }
 		public string Region { get; set; }
 		public string Address { get; set; }
 		public string IconUrl { get; set; }
 		public string Status { get; set; }
-		[ForeignKey("Role")]
 		public string RoleId { get; set; }
 
 		public virtual Role Role { get; set; }
