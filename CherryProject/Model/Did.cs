@@ -10,7 +10,6 @@ namespace CherryProject.Model
 		public Did()
 		{
 			DidSpare = new HashSet<DidSpare>();
-			Invoice = new HashSet<Invoice>();
 		}
 
 		public string Id { get; set; }
@@ -23,6 +22,5 @@ namespace CherryProject.Model
 		public virtual Dic Dic { get; set; }
 		public virtual Product Product { get; set; }
 		public virtual ICollection<DidSpare> DidSpare { get; set; }
-		public virtual ICollection<Invoice> Invoice { get; set; }
 	}
 }

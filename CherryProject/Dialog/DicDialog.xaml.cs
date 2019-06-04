@@ -82,28 +82,8 @@ namespace CherryProject.Dialog
 		{
 			if (ResultListViewControl.SelectedItem is Dic dic)
 			{
-				long total;
-				int now;
-
-				using (var context = new Context())
-				{
-					// fullfill assembiled dic quantity:
-					total = dic.Did.Sum(x => x.Quantity);
-
-					// current assembiled
-					now = context.DidSpare.Include(x => x.Did).Count(x => x.Did.DicId == dic.Id);
-				}
-
-				if (total > now)
-				{
-					Dic = dic;
-					SelectedTarget.Text = $"Selected: {Dic.Id}";
-				}
-				else
-				{
-					Dic = null;
-					SelectedTarget.Text = $"The tapped despatch instruction cover has been assembled completely. Please choose another one.";
-				}
+				Dic = dic;
+				SelectedTarget.Text = $"Selected: {Dic.Id}";
 			}
 		}
 

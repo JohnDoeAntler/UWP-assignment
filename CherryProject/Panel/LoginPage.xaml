@@ -44,11 +44,13 @@
                 x:Name="UsernameTextBox"
                 Margin="4"
                 Width="250"
-                PlaceholderText="Username"/>
+                PlaceholderText="Username"
+				KeyDown="OnKeyDown"/>
             <PasswordBox 
                 x:Name="PasswordTextBox" 
                 Margin="4" Width="250" 
-                PlaceholderText="Password" KeyDown="OnKeyDown"/>
+                PlaceholderText="Password"
+				KeyDown="OnKeyDown"/>
 			<TextBlock
 				x:Name="ValidationAlerter"
 				Foreground="Yellow"

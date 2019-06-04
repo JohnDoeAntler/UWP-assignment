@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="CherryProject.Panel.DispatchPages.DeliverOrder"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.DispatchPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="Order GUID"/>
+				<TextBox x:Name="OrderGUID" IsEnabled="False"/>
+				<Button 
+					Content="Select Order"
+					Click="SelectOrder_Click"/>
+				<TextBlock Name="SelectedOrder"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+			
+			<Button
+				x:Name="Submit"
+				Content="Deliver Order"
+				Click="Submit_Click"/>
+		</StackPanel>
+	</Grid>
+</Page>

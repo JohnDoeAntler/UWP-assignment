@@ -153,13 +153,7 @@ namespace CherryProject.Panel.AccountPages
 				}
 
 				// clear the result for renew the searching result
-				_searchAccountGridViewItems.Clear();
-
-				// re-update the searching result by using foreach statement
-				foreach (var item in set)
-				{
-					_searchAccountGridViewItems.Add(item);
-				}
+				_searchAccountGridViewItems.UpdateObservableCollection(set);
 
 				// updatae the reminder text
 				ResultAlerter.Text = $"There has only found {_searchAccountGridViewItems.Count} result(s).";

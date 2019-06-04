@@ -1,4 +1,5 @@
 ﻿using CherryProject.Model;
+using CherryProject.Service;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,10 @@ namespace CherryProject
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-        }
+
+			// set theme color
+			RequestedTheme = (bool)(StorageManager.GetApplicationDataContainer().Values["theme"] ?? false) ? ApplicationTheme.Light : ApplicationTheme.Dark;
+		}
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

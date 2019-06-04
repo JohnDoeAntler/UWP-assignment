@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="CherryProject.Panel.SparePages.AddSpares"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.SparePages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="Category"/>
+
+				<TextBox x:Name="CategoryId" IsEnabled="False"/>
+
+				<Button x:Name="Select" Content="Select Category" Click="Select_Click"/>
+
+				<TextBlock x:Name="SelectedCategoryTextBlock" Visibility="Collapsed"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Quantity"/>
+
+				<TextBox x:Name="Quantity" BeforeTextChanging="Quantity_BeforeTextChanging"/>
+
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Margin="0 0 0 30">
+				<Button Content="Add Spare" Click="Submit_Click"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Page>

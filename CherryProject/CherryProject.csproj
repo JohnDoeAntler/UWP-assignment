@@ -18,6 +18,13 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>CherryProject_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <AppInstallerUri>https://colourful.dlinkddns.com</AppInstallerUri>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -137,23 +144,24 @@
     </Compile>
     <Compile Include="Extension\ContentDialogExtension.cs" />
     <Compile Include="Extension\ControlExtension.cs" />
+    <Compile Include="Extension\DicExtension.cs" />
     <Compile Include="Extension\OrderExtension.cs" />
     <Compile Include="Extension\OrderProductExtension.cs" />
     <Compile Include="Extension\PanelExtension.cs" />
     <Compile Include="Extension\MD5Hasher.cs" />
     <Compile Include="Extension\ProductExtension.cs" />
     <Compile Include="Extension\RoleExtension.cs" />
+    <Compile Include="Extension\SpareExtension.cs" />
     <Compile Include="Extension\UserExtension.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Dic.cs" />
     <Compile Include="Model\Did.cs" />
     <Compile Include="Model\DidSpare.cs" />
-    <Compile Include="Model\Enum\DicStatus.cs" />
+    <Compile Include="Model\Enum\DicStatusEnum.cs" />
     <Compile Include="Model\Enum\OrderStatusEnum.cs" />
     <Compile Include="Model\Enum\OrderTypeEnum.cs" />
     <Compile Include="Model\Enum\RoleEnum.cs" />
     <Compile Include="Model\Enum\GeneralStatusEnum.cs" />
-    <Compile Include="Model\Invoice.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\OrderProduct.cs" />
     <Compile Include="Model\Product.cs" />
@@ -177,17 +185,17 @@
     <Compile Include="Panel\AccountPages\ViewAccount.xaml.cs">
       <DependentUpon>ViewAccount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel\DispatchPages\CompleteDelivery.xaml.cs">
+      <DependentUpon>CompleteDelivery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\DispatchPages\ViewOrderDispatchStatus.xaml.cs">
+      <DependentUpon>ViewOrderDispatchStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\InvoicePages\CompleteInvoice.xaml.cs">
       <DependentUpon>CompleteInvoice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel\InvoicePages\CreateInvoice.xaml.cs">
-      <DependentUpon>CreateInvoice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Panel\InvoicePages\SearchInvoices.xaml.cs">
-      <DependentUpon>SearchInvoices.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -198,7 +206,7 @@
     <Compile Include="Panel\OrderPages\CreateOrder.xaml.cs">
       <DependentUpon>CreateOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\OrderPages\DeliverOrder.xaml.cs">
+    <Compile Include="Panel\DispatchPages\DeliverOrder.xaml.cs">
       <DependentUpon>DeliverOrder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\OrderPages\EndorseOrder.xaml.cs">
@@ -252,11 +260,17 @@
     <Compile Include="Panel\PromotionPages\ViewPromotions.xaml.cs">
       <DependentUpon>ViewPromotions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\SparePages\AddCategory.xaml.cs">
+    <Compile Include="Panel\CategoryPages\AddCategory.xaml.cs">
       <DependentUpon>AddCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\SparePages\AddSpare.xaml.cs">
       <DependentUpon>AddSpare.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\SparePages\AddSpares.xaml.cs">
+      <DependentUpon>AddSpares.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\SparePages\AssembleSpare.xaml.cs">
       <DependentUpon>AssembleSpare.xaml</DependentUpon>
@@ -267,6 +281,7 @@
     <Compile Include="Service\RoleManager.cs" />
     <Compile Include="Service\SelectionManager.cs" />
     <Compile Include="Service\SignInManager.cs" />
+    <Compile Include="Service\StorageManager.cs" />
     <Compile Include="Service\UserManager.cs" />
     <Compile Include="ViewModel\IndexGridViewItem.cs" />
     <Compile Include="ViewModel\OrderProductViewModel.cs" />
@@ -334,19 +349,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Panel\DispatchPages\CompleteDelivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\DispatchPages\ViewOrderDispatchStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panel\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\InvoicePages\CompleteInvoice.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panel\InvoicePages\CreateInvoice.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panel\InvoicePages\SearchInvoices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -362,7 +377,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\OrderPages\DeliverOrder.xaml">
+    <Page Include="Panel\DispatchPages\DeliverOrder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -434,11 +449,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\SparePages\AddCategory.xaml">
+    <Page Include="Panel\CategoryPages\AddCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\SparePages\AddSpare.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\SparePages\AddSpares.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

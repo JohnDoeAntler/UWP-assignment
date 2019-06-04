@@ -47,12 +47,6 @@ namespace CherryProject.Panel.OrderPages
 				Type.Items.Add(x.ToString());
 			});
 
-			// fill the role combo box with all role
-			Enum.GetValues(typeof(OrderStatusEnum)).Cast<OrderStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
-
 			DataGridViewControl.CellEditEnded += DataGridViewControl_CellEditEnded;
 		}
 
@@ -91,7 +85,6 @@ namespace CherryProject.Panel.OrderPages
 				SelectedUser.Text = $"{dealer.FirstName} {dealer.LastName}";
 				Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, order.DeliveryAddress);
 				Type.SelectedItem = order.Type;
-				Status.SelectedItem = order.Status;
 
 				this.order = order;
 
@@ -193,7 +186,6 @@ namespace CherryProject.Panel.OrderPages
 							x.ModifierId = SignInManager.CurrentUser.Id;
 							x.DeliveryAddress = Address.GetText();
 							x.Type = Type.SelectedItem as string;
-							x.Status = Status.SelectedItem as string;
 						});
 
 						foreach (var item in items)

@@ -96,14 +96,6 @@
 			</StackPanel>
 
 			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Status" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10" />
-				<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-			</StackPanel>
-
-			<StackPanel Margin="0 0 0 30">
 				<Button x:Name="Submit" Content="Modify Order" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel> 

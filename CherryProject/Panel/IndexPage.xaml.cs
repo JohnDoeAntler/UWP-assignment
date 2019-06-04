@@ -59,9 +59,21 @@ namespace CherryProject.Panel
 				},
 				new IndexGridViewItem{
 					Title = "Spare Management",
-					Description = "Spare information view and spare status modification.",
+					Description = "Spare dispensing, spare's category assignment and spare assembly.",
 					Icon = Symbol.PreviewLink,
 					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.SparePages")
+				},
+				new IndexGridViewItem{
+					Title = "Category Management",
+					Description = "Category creation",
+					Icon = Symbol.DisconnectDrive,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.CategoryPages")
+				},
+				new IndexGridViewItem{
+					Title = "Dispatch Management",
+					Description = "Dispatch instruction cover status modification and tracking.",
+					Icon = Symbol.Send,
+					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.DispatchPages")
 				},
 				new IndexGridViewItem{
 					Title = "Invoice Management",
@@ -88,7 +100,7 @@ namespace CherryProject.Panel
 
 		public IndexPage()
         {
-            this.InitializeComponent();
+			this.InitializeComponent();
 
 			_items = GetIndexGridViewItems(SignInManager.CurrentUser.Role.ToRoleEnum());
 
@@ -105,6 +117,12 @@ namespace CherryProject.Panel
 		private void Navigate(object sender, TappedRoutedEventArgs e)
 		{
 			var item = sender as GridViewItem;
+
+			if (item.Tag as string == "Setting")
+			{
+				Frame.Navigate(typeof(SettingPage), null, new DrillInNavigationTransitionInfo());
+				return;
+			}
 
 			for (int i = 0; i < _items.Count; i++)
 			{

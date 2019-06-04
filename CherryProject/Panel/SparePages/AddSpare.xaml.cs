@@ -52,10 +52,6 @@ namespace CherryProject.Panel.SparePages
 			}
 		}
 
-		private void PositionX_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args) => args.Cancel = !sender.Text.IsDoubleNumeric();
-
-		private void PositionY_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args) => args.Cancel = !sender.Text.IsDoubleNumeric();
-
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
 			ContentDialog dialog = new ContentDialog
@@ -70,11 +66,7 @@ namespace CherryProject.Panel.SparePages
 
 			if (result == ContentDialogResult.Primary)
 			{
-				if (string.IsNullOrEmpty(PositionX.Text)
-				|| string.IsNullOrEmpty(PositionY.Text)
-				|| !double.TryParse(PositionX.Text, out double positionX)
-				|| !double.TryParse(PositionY.Text, out double positionY)
-				|| selectedCategory == null)
+				if (selectedCategory == null)
 				{
 					ContentDialog error = new ContentDialog
 					{
@@ -92,55 +84,27 @@ namespace CherryProject.Panel.SparePages
 					{
 						using (var context = new Context())
 						{
-							if (context
-							.Spare
-							.Count(x => x.CategoryId == selectedCategory.Id
-							&& x.PositionXoffset == positionX
-							&& x.PositionYoffset == positionY) 
-							==
-							context
-							.DidSpare
-							.Include(x => x.Spare)
-							.Count(x => x.Spare.CategoryId == selectedCategory.Id
-							&& x.Spare.PositionXoffset == positionX
-							&& x.Spare.PositionYoffset == positionY))
-							{
-								await context.Spare.AddAsync(
-									new Spare()
-									{
-										Id = Guid.Text,
-										CategoryId = CategoryId.Text,
-										PositionXoffset = positionX,
-										PositionYoffset = positionY,
-									}
-								);
-
-								await context.SaveChangesAsync();
-
-								ContentDialog message = new ContentDialog
+							await context.Spare.AddAsync(
+								new Spare()
 								{
-									Title = "Success",
-									Content = "Successfully added spare.",
-									CloseButtonText = "OK",
-									Width = 400
-								};
+									Id = Guid.Text,
+									CategoryId = CategoryId.Text
+								}
+							);
 
-								await message.EnqueueAndShowIfAsync();
+							await context.SaveChangesAsync();
 
-								Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
-							}
-							else
+							ContentDialog message = new ContentDialog
 							{
-								ContentDialog error = new ContentDialog
-								{
-									Title = "Error",
-									Content = "The category position has been placed other spare already. Please pick another location to place the spare",
-									CloseButtonText = "OK",
-									Width = 400
-								};
+								Title = "Success",
+								Content = "Successfully added spare.",
+								CloseButtonText = "OK",
+								Width = 400
+							};
 
-								await error.EnqueueAndShowIfAsync();
-							}
+							await message.EnqueueAndShowIfAsync();
+
+							Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
 						}
 					}
 					catch (Exception err)

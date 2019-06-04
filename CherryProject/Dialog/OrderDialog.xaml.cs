@@ -28,7 +28,6 @@ namespace CherryProject.Dialog
 		private readonly ObservableCollection<string> _searchFilters;
 		private readonly ObservableCollection<Order> _searchOrderGridViewItems;
 		private readonly Dictionary<string, Predicate<Order>> keyValuePairs;
-		private Type searchStatus;
 
 		public OrderDialog()
 		{
@@ -180,7 +179,7 @@ namespace CherryProject.Dialog
 			do
 			{
 				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleManager.FindRoleAsync(x => x.NormalizedName == RoleEnum.Dealer.ToString().ToUpperInvariant())).Id);
+			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleEnum.Dealer.ToRoleAsync()).Id);
 
 			if (button == ContentDialogResult.Primary)
 			{
@@ -250,7 +249,7 @@ namespace CherryProject.Dialog
 			}
 		}
 
-		private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+		private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
 		{
 			Order = (Order)ResultListViewControl.SelectedItem;
 			SelectedTarget.Text = $"Selected: {Order.Dealer.FirstName}'s Order";

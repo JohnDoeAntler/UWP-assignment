@@ -28,29 +28,13 @@
 
 			<StackPanel Spacing="10">
 				<TextBlock Text="Category"/>
-				
+
 				<TextBox x:Name="CategoryId" IsEnabled="False"/>
-				
+
 				<Button x:Name="Select" Content="Select Category" Click="Select_Click"/>
 
 				<TextBlock x:Name="SelectedCategoryTextBlock" Visibility="Collapsed"/>
 
-				<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-			</StackPanel>
-
-			<StackPanel Spacing="10">
-				<TextBlock Text="Position X"/>
-				<TextBox x:Name="PositionX" BeforeTextChanging="PositionX_BeforeTextChanging"/>
-				<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-			</StackPanel>
-
-			<StackPanel Spacing="10">
-				<TextBlock Text="Position Y"/>
-				<TextBox x:Name="PositionY" BeforeTextChanging="PositionY_BeforeTextChanging"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>

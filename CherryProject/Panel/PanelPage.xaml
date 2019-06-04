@@ -58,6 +58,7 @@
 				<Frame x:Name="contentFrame" Padding="20 0"/>
 			</ScrollViewer>
 		</NavigationView>
+		
 		<Button
             VerticalAlignment="Top"
             HorizontalAlignment="Left" 

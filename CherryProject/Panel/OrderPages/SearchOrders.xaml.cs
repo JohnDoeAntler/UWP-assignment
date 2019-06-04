@@ -233,7 +233,7 @@ namespace CherryProject.Panel.OrderPages
 			do
 			{
 				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleManager.FindRoleAsync(x => x.NormalizedName == RoleEnum.Dealer.ToString().ToUpperInvariant())).Id);
+			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleEnum.Dealer.ToRoleAsync()).Id);
 
 			if (button == ContentDialogResult.Primary)
 			{

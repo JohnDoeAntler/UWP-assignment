@@ -19,7 +19,6 @@ namespace CherryProject.Model
 		public virtual DbSet<Dic> Dic { get; set; }
 		public virtual DbSet<Did> Did { get; set; }
 		public virtual DbSet<DidSpare> DidSpare { get; set; }
-		public virtual DbSet<Invoice> Invoice { get; set; }
 		public virtual DbSet<Order> Order { get; set; }
 		public virtual DbSet<OrderProduct> OrderProduct { get; set; }
 		public virtual DbSet<Product> Product { get; set; }
@@ -35,7 +34,6 @@ namespace CherryProject.Model
 				optionsBuilder.UseMySql("server=colourful.dlinkddns.com;uid=system;pwd=F10gNfXZg6sIvBkP;database=system_project");
 			}
 		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Category>(entity =>
@@ -145,7 +143,8 @@ namespace CherryProject.Model
 					.HasName("PRIMARY");
 
 				entity.HasIndex(e => e.SpareId)
-					.HasName("SpareId");
+					.HasName("SpareId")
+					.IsUnique();
 
 				entity.Property(e => e.DidId).HasColumnType("varchar(255)");
 
@@ -161,39 +160,9 @@ namespace CherryProject.Model
 					.HasConstraintName("DidSpare_ibfk_1");
 
 				entity.HasOne(d => d.Spare)
-					.WithMany(p => p.DidSpare)
-					.HasForeignKey(d => d.SpareId)
+					.WithOne(p => p.DidSpare)
+					.HasForeignKey<DidSpare>(d => d.SpareId)
 					.HasConstraintName("DidSpare_ibfk_2");
-			});
-
-			modelBuilder.Entity<Invoice>(entity =>
-			{
-				entity.HasIndex(e => e.DidId)
-					.HasName("OrderId");
-
-				entity.Property(e => e.Id).HasColumnType("varchar(255)");
-
-				entity.Property(e => e.ConcurrencyStamp)
-					.IsRequired()
-					.HasColumnType("longtext");
-
-				entity.Property(e => e.DidId)
-					.IsRequired()
-					.HasColumnType("varchar(255)");
-
-				entity.Property(e => e.Status)
-					.IsRequired()
-					.HasColumnType("varchar(256)");
-
-				entity.Property(e => e.Timestamp)
-					.HasColumnType("timestamp")
-					.HasDefaultValueSql("'CURRENT_TIMESTAMP'")
-					.ValueGeneratedOnAddOrUpdate();
-
-				entity.HasOne(d => d.Did)
-					.WithMany(p => p.Invoice)
-					.HasForeignKey(d => d.DidId)
-					.HasConstraintName("Didid_FK");
 			});
 
 			modelBuilder.Entity<Order>(entity =>
@@ -396,10 +365,6 @@ namespace CherryProject.Model
 				entity.Property(e => e.CategoryId)
 					.IsRequired()
 					.HasColumnType("varchar(255)");
-
-				entity.Property(e => e.PositionXoffset).HasColumnName("PositionXOffset");
-
-				entity.Property(e => e.PositionYoffset).HasColumnName("PositionYOffset");
 
 				entity.HasOne(d => d.Category)
 					.WithMany(p => p.Spare)

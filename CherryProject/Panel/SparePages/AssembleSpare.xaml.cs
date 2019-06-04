@@ -132,12 +132,13 @@ namespace CherryProject.Panel.SparePages
 					{
 						var list = new ObservableCollection<ListViewItem>();
 
-						var spares = context.Spare
-							.Include(x => x.Category)
-							.Include(x => x.DidSpare)
-							.Where(x => x.Category.ProductId == Did.ProductId 
-								&& x.Id.Contains(sender.Text, StringComparison.OrdinalIgnoreCase) 
-								&& !x.DidSpare.Any(y => y.SpareId == x.Id));
+						 var spares = context.Spare
+						 	.Include(x => x.Category)
+						 	.Include(x => x.DidSpare)
+						 	.Where(x => x.Category.ProductId == Did.ProductId
+						 		&& EF.Functions.Like(x.Id, sender.Text + "%")
+						 		&& x.DidSpare == null)
+							.Take(5);
 
 						foreach (var spare in spares)
 						{
@@ -186,7 +187,8 @@ namespace CherryProject.Panel.SparePages
 					{
 						using (var context = new Context())
 						{
-							if (context.Spare.Any(x => x.Id == SpareId.Text))
+							// if the spare has not been assembled and the did product match the spare product
+							if (await context.Spare.Include(x => x.Category).AnyAsync(x => x.Id == SpareId.Text && x.Category.ProductId == Did.ProductId))
 							{
 								await context.DidSpare.AddAsync(new DidSpare()
 								{
@@ -208,6 +210,7 @@ namespace CherryProject.Panel.SparePages
 
 								Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
 							}
+							else throw new Exception();
 						}
 					}
 					catch (Exception err)

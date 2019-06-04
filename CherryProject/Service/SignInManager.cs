@@ -15,7 +15,8 @@ namespace CherryProject.Service
 			Success,
 			UsernameFailure,
 			PasswordFailure,
-			Disabled
+			Disabled,
+			DatabaseFailure
 		}
 	}
 
@@ -25,7 +26,7 @@ namespace CherryProject.Service
 
 		public static async Task<Status> SignInAsync(string username, string password)
 		{
-			using (var context = new Context())
+			try
 			{
 				var result = await UserManager.FindUserAsync(x => x.UserName == username);
 
@@ -43,6 +44,10 @@ namespace CherryProject.Service
 						}else return Status.Disabled;
 					}else return Status.PasswordFailure;
 				}else return Status.UsernameFailure;
+			}
+			catch (Exception)
+			{
+				return Status.DatabaseFailure;
 			}
 		}
 

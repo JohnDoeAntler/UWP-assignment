@@ -73,10 +73,9 @@ namespace CherryProject.Panel
 
 		private void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
 		{
-			Debug.WriteLine("changed");
-
 			if (args.IsSettingsSelected)
 			{
+				Frame.Navigate(typeof(SettingPage), null, new DrillInNavigationTransitionInfo());
 			}
 			else
 			{

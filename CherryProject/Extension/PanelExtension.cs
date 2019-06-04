@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,5 +30,15 @@ namespace CherryProject.Extension
 		public static bool IsDoubleNumeric(this string str) => double.TryParse(str, out _) || string.IsNullOrEmpty(str);
 
 		public static bool IsIntegerNumeric(this string str) => int.TryParse(str, out _) || string.IsNullOrEmpty(str);
+
+		public static void UpdateObservableCollection<T>(this ObservableCollection<T> orignal, IEnumerable<T> list)
+		{
+			orignal.Clear();
+
+			foreach (T element in list)
+			{
+				orignal.Add(element);
+			}
+		}
 	}
 }

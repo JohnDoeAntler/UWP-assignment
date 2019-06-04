@@ -85,6 +85,10 @@ namespace CherryProject.Panel.ProductPages
 				uint didsprcnt = (uint)context.DidSpare.Include(x => x.Did).Count(x => x.Did.ProductId == product.Id);
 
 				displayItems.Add(new ViewTuple("Remaining Stock", sprcnt - didsprcnt));
+
+				uint didcnt = (uint)context.Did.Where(x => x.ProductId == product.Id).Sum(x => x.Quantity);
+
+				displayItems.Add(new ViewTuple("Available Stock", sprcnt - didcnt));
 			}
 		}
 	}

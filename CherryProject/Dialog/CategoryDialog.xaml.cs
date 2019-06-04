@@ -1,4 +1,5 @@
 ﻿using CherryProject.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,7 +42,7 @@ namespace CherryProject.Dialog
 
 			using (var context = new Context())
 			{
-				var result = context.Category.Where(x => x.NormalizedName.Contains(str, StringComparison.OrdinalIgnoreCase));
+				var result = context.Category.Include(x => x.Product).Where(x => x.NormalizedName.Contains(str, StringComparison.OrdinalIgnoreCase));
 
 				foreach (var category in result)
 				{

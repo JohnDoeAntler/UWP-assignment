@@ -67,7 +67,7 @@ namespace CherryProject.Panel
 			string password = PasswordTextBox.Password;
 
 			// The await causes the handler to return immediately.
-			var validation = await Task.Run(() => SignInManager.SignInAsync(username, password));
+			var validation = await Task.Run(async () => await SignInManager.SignInAsync(username, password));
 
 			switch (validation)
 			{
@@ -85,6 +85,10 @@ namespace CherryProject.Panel
 
 				case Status.UsernameFailure:
 					ValidationAlerter.Text = "Invalid username has been entered. please make sure the above information is valid.";
+					break;
+
+				case Status.DatabaseFailure:
+					ValidationAlerter.Text = "Unable to connect to database, please contact our technical support department.";
 					break;
 			}
 

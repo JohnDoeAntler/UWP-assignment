@@ -13,7 +13,8 @@ namespace CherryProject.Extension
 	{
 		public static async Task<User> ModifyAsync(this User user, Action<User> action)
 		{
-			using (var context = new Context()){
+			using (var context = new Context())
+			{
 				var result = context.User.Include(x => x.Role).FirstOrDefault(x => x.Id == user.Id && x.ConcurrencyStamp == user.ConcurrencyStamp);
 
 				var username = result.UserName;
@@ -29,6 +30,7 @@ namespace CherryProject.Extension
 				}
 
 				result.ConcurrencyStamp = Guid.NewGuid().ToString();
+
 				await context.SaveChangesAsync();
 
 				result.Role = await context.Role.FirstOrDefaultAsync(x => x.Id == result.RoleId);
