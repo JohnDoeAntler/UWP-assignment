@@ -39,6 +39,11 @@ namespace CherryProject.Panel.OrderPages
 
 			displayItems = new ObservableCollection<ViewTuple>();
 			items = new ObservableCollection<OrderProductViewModel>();
+
+			// permision control
+			ModifyOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyOrder));
+			EndorseOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(EndorseOrder));
+			CancelOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(CancelOrder));
 		}
 
 		public ObservableCollection<ViewTuple> DisplayItems => displayItems;
@@ -78,7 +83,7 @@ namespace CherryProject.Panel.OrderPages
 			var modifier = await UserManager.FindUserAsync(x => x.Id == order.ModifierId);
 
 			OrderName.Text = $"{dealer.FirstName}'s Order";
-			OrderId.Text = order.Id;
+			OrderId.Text = order.Id.ToString();
 
 			displayItems.Add(new ViewTuple("Dealer Name", $"{dealer.FirstName} {dealer.LastName}"));
 			displayItems.Add(new ViewTuple("Last Modifier Name", $"{modifier.FirstName} {modifier.LastName}"));
@@ -90,14 +95,8 @@ namespace CherryProject.Panel.OrderPages
 			// for printing the list
 			using (var context = new Context())
 			{
-				// temporary set
-				var result = context.OrderProduct.Include(x => x.Product).Where(x => x.OrderId == order.Id);
-
-				//add item to the binding list
-				foreach (var element in result)
-				{
-					items.Add(new OrderProductViewModel(element));
-				}
+				// cast the ordered items into the binding list
+				items.UpdateObservableCollection(context.OrderProduct.Include(x => x.Product).ThenInclude(x => x.PriceHistory).Where(x => x.OrderId == order.Id).Select(x => new OrderProductViewModel(x)));
 			}
 
 			Summary.Visibility = Visibility.Visible;

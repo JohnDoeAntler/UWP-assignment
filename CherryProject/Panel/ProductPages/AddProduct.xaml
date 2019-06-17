@@ -13,81 +13,84 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 		
-		<StackPanel>
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="GUID" Margin="0 0 0 10"/>
-				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="GUID"/>
+				<TextBox x:Name="Guid" IsEnabled="False"/>
 				<Button 
 					x:Name="GenerateGuidBtn"
 					Content="Generate new GUID" 
-					Margin="0 0 0 10"
 					Click="GenerateGuidBtn_OnClick"/>
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Name" Margin="0 0 0 10"/>
-				<TextBox x:Name="Name" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Name"/>
+				<TextBox x:Name="Name"/>
 				<TextBlock Text="The product display name."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Description" Margin="0 0 0 10"/>
-				<TextBox x:Name="Description" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Description" />
+				<TextBox x:Name="Description" />
 				<TextBlock Text="The product description, it would support markdown language format for styling the description."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Price" Margin="0 0 0 10"/>
-				<TextBox x:Name="Price" Margin="0 0 0 10"
-						 BeforeTextChanging="Price_KeyDown"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Price"/>
+				<TextBox x:Name="Price" BeforeTextChanging="Price_KeyDown"/>
 				<TextBlock Text="The product price. You re not permitted to enter any non-numeric character on this text field."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Weight" Margin="0 0 0 10"/>
-				<TextBox x:Name="Weight" Margin="0 0 0 10"
-						 BeforeTextChanging="Weight_KeyDown"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Weight" />
+				<TextBox x:Name="Weight" BeforeTextChanging="Weight_KeyDown"/>
 				<TextBlock Text="The product weight. The weight unit is using kilogram to indicate."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Reorder Level" Margin="0 0 0 10"/>
-				<TextBox x:Name="ReorderLevel" Margin="0 0 0 10"
-						 BeforeTextChanging="ReorderLevel_KeyDown"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Reorder Level" />
+				<TextBox x:Name="ReorderLevel" BeforeTextChanging="ReorderLevel_KeyDown"/>
 				<TextBlock Text="The product reorder level indicates when product quantity fall in specific range (reorder level), it would programmatically send the re-order request to certain department."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Danger Level" Margin="0 0 0 10"/>
-				<TextBox x:Name="DangerLevel" Margin="0 0 0 10"
-						 BeforeTextChanging="DangerLevel_KeyDown"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Danger Level"/>
+				<TextBox x:Name="DangerLevel" BeforeTextChanging="DangerLevel_KeyDown"/>
 				<TextBlock Text="The product danger level indicates when product quantity fall in specific range (danger level), it would programmatically send the re-order request to certain department and stop any order creation behaviour."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Status" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Product Image URL"/>
+				<TextBox x:Name="Url"/>
+				<TextBlock Text="The product display image, it used to identify product appearance."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Status" />
+				<ComboBox x:Name="Status" MinWidth="280" />
 				<TextBlock Text="The product status indicates that the product is available for ordering or not."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel>
 				<Button x:Name="Submit" Content="Add Product" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>

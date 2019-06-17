@@ -14,8 +14,8 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel>
-			<StackPanel Margin="0 0 0 20">
+		<StackPanel Spacing="30">
+			<StackPanel>
 				<TextBlock x:Name="OrderName" TextAlignment="Center" FontSize="36"/>
 				<TextBlock 
 					x:Name="OrderId"
@@ -25,7 +25,6 @@
 			</StackPanel>
 
 			<ListView
-				Margin="0 0 0 20"
 				ItemsSource="{x:Bind DisplayItems}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
@@ -49,7 +48,7 @@
 				</ListView.ItemTemplate>
 			</ListView>
 			
-			<StackPanel Margin="0 0 0 30" Spacing="10">
+			<StackPanel Spacing="10">
 				<TextBlock Text="Products"/>
 				<controls:DataGrid
 					x:Name="DataGridViewControl"
@@ -91,30 +90,27 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 20">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Modify the order by clicking the above button to modify the order information."/>
 				<Button
 					x:Name="ModifyOrder"
 					Content="Modify Order"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Endorse the order by clicking the above button to confirm the order could start to process spare assembling and dispatching." />
 				<Button
 					x:Name="EndorseOrder"
 					Content="Endorse Order"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Cancel the order by clicking the above button to dispose the previous sent order." />
 				<Button
 					x:Name="CancelOrder"

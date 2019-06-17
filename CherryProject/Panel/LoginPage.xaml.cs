@@ -22,7 +22,6 @@ using CherryProject.Service.SignStatus;
 using CherryProject.Extension;
 using System.Threading.Tasks;
 using System.Timers;
-using CherryProject.Data;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -67,7 +66,19 @@ namespace CherryProject.Panel
 			string password = PasswordTextBox.Password;
 
 			// The await causes the handler to return immediately.
-			var validation = await Task.Run(async () => await SignInManager.SignInAsync(username, password));
+			Status validation;
+			Exception _e = null;
+
+			try
+			{
+				validation = await Task.Run(async () => await SignInManager.SignInAsync(username, password));
+			}
+			catch (Exception e)
+			{
+				validation = Status.DatabaseFailure;
+
+				_e = e;
+			}
 
 			switch (validation)
 			{
@@ -88,7 +99,7 @@ namespace CherryProject.Panel
 					break;
 
 				case Status.DatabaseFailure:
-					ValidationAlerter.Text = "Unable to connect to database, please contact our technical support department.";
+					ValidationAlerter.Text = $"Unable to connect to database, please contact our technical support department.\n{_e}";
 					break;
 			}
 

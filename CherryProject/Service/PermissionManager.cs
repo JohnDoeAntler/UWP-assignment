@@ -1,7 +1,13 @@
 ﻿using CherryProject.Model.Enum;
 using CherryProject.Panel.AccountPages;
+using CherryProject.Panel.CategoryPages;
+using CherryProject.Panel.DispatchPages;
+using CherryProject.Panel.InvoicePages;
 using CherryProject.Panel.OrderPages;
+using CherryProject.Panel.OtherPages;
 using CherryProject.Panel.ProductPages;
+using CherryProject.Panel.PromotionPages;
+using CherryProject.Panel.SparePages;
 using CherryProject.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -22,50 +28,131 @@ namespace CherryProject.Service
 			switch (role)
 			{
 				case RoleEnum.Dealer:
-					return new[]{
+					return new[]
+					{
+						// account
 						typeof(ViewAccount),
-						typeof(ViewOrder),
-						typeof(SearchOrders),
+						typeof(ModifyAccount),
+						// dispatch
+						typeof(AcceptDelivery),
+						typeof(ViewDispatachNote),
+						typeof(ViewOrderDispatchStatus),
+						// invoice
+						typeof(PrintInvoice),
+						// order
+						typeof(CancelOrder),
 						typeof(CreateOrder),
 						typeof(ModifyOrder),
-						typeof(CancelOrder),
-						typeof(SearchProducts)
+						typeof(SearchOrders),
+						typeof(ViewOrder),
+						// other
+						typeof(Calendar),
+						// product
+						typeof(SearchProducts),
+						typeof(ViewProduct),
+						// promotion
+						typeof(ViewPromotions),
 					};
 					
 				case RoleEnum.AreaManager:
-					return new []{
-						typeof(ViewAccount),
-						typeof(SearchAccounts),
+					return new[]
+					{
+						// account
 						typeof(CreateAccount),
-						typeof(ModifyAccount),
 						typeof(DisableAccount),
+						typeof(ModifyAccount),
+						typeof(SearchAccounts),
+						typeof(ViewAccount),
+						// dispatch
+						typeof(DeliverOrder),
+						// order
+						typeof(CancelOrder),
+						typeof(CreateOrder),
+						typeof(EndorseOrder),
+						typeof(ModifyOrder),
 						typeof(SearchOrders),
 						typeof(ViewOrder),
-						typeof(SearchOrders),
-						typeof(CreateOrder),
-						typeof(ModifyOrder),
-						typeof(EndorseOrder),
-						typeof(CancelOrder)
+						// other
+						typeof(Calendar),
+						typeof(EmitNotification),
+						// product
+						typeof(SearchProducts),
+						typeof(ViewProduct),
 					};
 					
 				case RoleEnum.SalesManager:
-					return new[]{
+					return new[]
+					{
+						// account
 						typeof(ViewAccount),
+						// category
+						typeof(AddCategory),
+						// other
+						typeof(Calendar),
+						typeof(EmitNotification),
+						// product
+						typeof(AddProduct),
+						typeof(ModifyProduct),
+						typeof(ModifyPromotionStatus),
+						typeof(SearchProducts),
+						typeof(ViewProduct),
+						// promotion
+						typeof(AddPromotion),
+						typeof(ModifyPromotion),
+						typeof(ModifyPromotionStatus),
+						typeof(ViewPromotions),
 					};
 
 				case RoleEnum.SalesOrderOfficer:
-					return new[]{
+					return new[]
+					{
+						// account
+						typeof(SearchAccounts),
 						typeof(ViewAccount),
+						// dispatch
+						typeof(ViewDispatachNote),
+						typeof(ViewOrderDispatchStatus),
+						// order
+						typeof(SearchOrders),
+						typeof(ViewOrder),
+						// other
+						typeof(Calendar),
+						// product
+						typeof(SearchProducts),
+						typeof(ViewProduct),
+						// promotion
+						typeof(ViewPromotions)
 					};
 
 				case RoleEnum.Storemen:
-					return new[]{
+					return new[]
+					{
+						// account
 						typeof(ViewAccount),
+						// order
+						typeof(SearchOrders),
+						typeof(ViewOrder),
+						// other
+						typeof(Calendar),
+						typeof(EmitNotification),
+						// spare
+						typeof(AddSpare),
+						typeof(AddSpares),
+						typeof(AssembleSpare)
 					};
 
 				case RoleEnum.DispatchClerk:
-					return new[]{
+					return new[]
+					{
+						// account
 						typeof(ViewAccount),
+						// dispatch
+						typeof(CompleteDelivery),
+						typeof(ViewDispatachNote),
+						typeof(ViewOrderDispatchStatus),
+						// other
+						typeof(Calendar),
+						typeof(EmitNotification),
 					};
 
 				case RoleEnum.Administrator:

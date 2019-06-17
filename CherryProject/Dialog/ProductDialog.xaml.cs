@@ -1,8 +1,12 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,14 +30,18 @@ namespace CherryProject.Dialog
 		private readonly ObservableCollection<Product> _searchProductGridViewItems;
 		private readonly Dictionary<string, Predicate<Product>> keyValuePairs;
 
-		public ProductDialog()
+		private bool isOrdering;
+
+		public ProductDialog(bool isOrdering = false)
 		{
 			this.InitializeComponent();
 
 			// searching filter list instantiation
 			_searchFilters = new ObservableCollection<string>();
-			_searchProductGridViewItems = new ObservableCollection<Model.Product>();
-			keyValuePairs = new Dictionary<string, Predicate<Model.Product>>();
+			_searchProductGridViewItems = new ObservableCollection<Product>();
+			keyValuePairs = new Dictionary<string, Predicate<Product>>();
+
+			this.isOrdering = isOrdering;
 
 			// update the search result
 			UpdateSearchResult();
@@ -141,7 +149,33 @@ namespace CherryProject.Dialog
 			using (var context = new Context())
 			{
 				// store user
-				IEnumerable<Model.Product> set = context.Product;
+				IEnumerable<Product> set;
+
+				if (isOrdering)
+				{
+					set = context
+							.Product
+							.Include(x => x.Category)
+							.Include(x => x.Did)
+							.Include(x => x.PriceHistory)
+							.Where(x => 
+								x.DangerLevel 
+								< context.Spare.Include(y => y.Category).Where(y => y.Category.ProductId == x.Id).LongCount() 
+								- (context.Did.Any(y => y.ProductId == x.Id) 
+									? context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity) 
+									: 0)
+							);
+				}
+				else
+				{
+					set = context.Product;
+				}
+
+				// filter all non-avaliable product
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer || isOrdering)
+				{
+					set = set.Where(x => x.Status == GeneralStatusEnum.Available);
+				}
 
 				// user filtering
 				foreach (var predicate in keyValuePairs)
@@ -155,13 +189,7 @@ namespace CherryProject.Dialog
 				}
 
 				// clear the result for renew the searching result
-				_searchProductGridViewItems.Clear();
-
-				// re-update the searching result by using foreach statement
-				foreach (var item in set)
-				{
-					_searchProductGridViewItems.Add(item);
-				}
+				_searchProductGridViewItems.UpdateObservableCollection(set);
 
 				// updatae the reminder text
 				ResultAlerter.Text = $"There has only found {_searchProductGridViewItems.Count} result(s).";
@@ -183,10 +211,6 @@ namespace CherryProject.Dialog
 			}
 		}
 
-		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-		{
-			Product = null;
-			this.Hide();
-		}
+		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) => Product = null;
 	}
 }

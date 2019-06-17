@@ -92,7 +92,7 @@ namespace CherryProject.Panel
 
 			if (await dialog.EnqueueAndShowIfAsync() == ContentDialogResult.Primary)
 			{
-				SignInManager.SignOutAsync();
+				SignInManager.SignOut();
 				this.Frame.Navigate(typeof(LoginPage), null, new DrillInNavigationTransitionInfo());
 			}
 		}

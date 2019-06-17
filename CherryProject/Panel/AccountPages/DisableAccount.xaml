@@ -11,13 +11,13 @@
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MaxWidth="460"/>
-		</Grid.ColumnDefinitions>
-		<StackPanel Margin="0 0 0 30">
-			<TextBlock Text="Status" Margin="0 0 0 10"/>
+		</Grid.ColumnDefinitions> 
+		
+		<StackPanel Spacing="10">
+			<TextBlock Text="Status"/>
 			<ComboBox 
 				x:Name="Status" 
-				MinWidth="280" 
-				Margin="0 0 0 10"/>
+				MinWidth="280" />
 			<TextBlock Text="The account status, it determine the account is locked or not."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>

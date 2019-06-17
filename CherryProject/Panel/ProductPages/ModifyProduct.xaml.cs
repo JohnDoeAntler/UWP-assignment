@@ -1,6 +1,8 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,10 +34,7 @@ namespace CherryProject.Panel.ProductPages
 		{
 			this.InitializeComponent();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 		}
 
 		public Product Product { get => product; set => product = value; }
@@ -52,7 +51,7 @@ namespace CherryProject.Panel.ProductPages
 		{
 			base.OnNavigatedTo(e);
 
-			if (e.Parameter is Model.Product product)
+			if (e.Parameter is Product product)
 			{
 				FillInformation(this.product = product);
 			}
@@ -71,29 +70,26 @@ namespace CherryProject.Panel.ProductPages
 			}
 		}
 
-		private void FillInformation(Model.Product product)
+		private void FillInformation(Product product)
 		{
-			Guid.Text = product.Id;
+			Guid.Text = product.Id.ToString();
 			Name.Text = product.Name;
 			Description.Text = product.Description;
-			Price.Text = product.Price.ToString();
 			Weight.Text = product.Weight.ToString();
 			ReorderLevel.Text = product.ReorderLevel.ToString();
 			DangerLevel.Text = product.DangerLevel.ToString();
+			Url.Text = product.IconUrl ?? string.Empty;
 			Status.SelectedItem = product.Status;
+
+			using (var context = new Context())
+			{
+				Price.Text = context.PriceHistory.Where(x => x.ProductId == product.Id).OrderByDescending(x => x.Timestamp).FirstOrDefault().Price.ToString();
+			}
 		}
 
 		private async void Submit_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to modify current product?",
-				PrimaryButtonText = "Modify Product",
-				CloseButtonText = "Cancel"
-			};
-
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -101,23 +97,16 @@ namespace CherryProject.Panel.ProductPages
 				|| string.IsNullOrEmpty(Description.Text)
 				|| string.IsNullOrEmpty(Price.Text)
 				|| string.IsNullOrEmpty(Weight.Text)
+				|| string.IsNullOrEmpty(ReorderLevel.Text)
 				|| string.IsNullOrEmpty(DangerLevel.Text)
 				|| !double.TryParse(Price.Text, out double price)
 				|| !double.TryParse(Weight.Text, out double weight)
 				|| !int.TryParse(ReorderLevel.Text, out int reorderLevel)
 				|| !int.TryParse(DangerLevel.Text, out int dangerLevel)
-				|| string.IsNullOrEmpty(Status.SelectedItem as string)
+				|| Status.SelectedItem == null
 				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -127,37 +116,37 @@ namespace CherryProject.Panel.ProductPages
 							{
 								x.Name = Name.Text;
 								x.Description = Description.Text;
-								x.Price = price;
 								x.Weight = weight;
 								x.ReorderLevel = reorderLevel;
 								x.DangerLevel = dangerLevel;
-								x.Status = Status.SelectedItem as string;
+								x.IconUrl = Url.Text;
+								x.Status = (GeneralStatusEnum) Status.SelectedItem;
 							}
 						);
 
-						ContentDialog message = new ContentDialog
+						using (var context = new Context())
 						{
-							Title = "Success",
-							Content = "Successfully modified product.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+							if (price != context.PriceHistory.Where(x => x.ProductId == product.Id).OrderByDescending(x => x.Timestamp).FirstOrDefault().Price)
+							{
+								await context.PriceHistory.AddAsync(
+									new PriceHistory()
+									{
+										ProductId = product.Id,
+										Price = price
+									}
+								);
 
-						await message.EnqueueAndShowIfAsync();
+								await context.SaveChangesAsync();
+							}
+						}
+
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 
 						Frame.Navigate(typeof(ViewProduct), product, new DrillInNavigationTransitionInfo());
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please make sure the product name has not been registered before.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

@@ -1,4 +1,5 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Service;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Toolkit.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -35,16 +37,10 @@ namespace CherryProject.Panel.AccountPages
             this.InitializeComponent();
 
 			// fill the region combo box
-			CountryProvider.Instance.RegionList.ForEach(x =>
-			{
-				Region.Items.Add(x);
-			});
+			Region.ItemsSource = new ObservableCollection<string>(CountryProvider.Instance.RegionList);
 
 			// fill the role combo box with all role
-			Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>().ToList().ForEach(x =>
-			{
-				Role.Items.Add(x.ToString());
-			});
+			Role.ItemsSource = EnumManager.GetEnumList<RoleEnum>();
 
 			// automatically generate a new guid
 			Guid.Text = System.Guid.NewGuid().ToString();
@@ -68,16 +64,8 @@ namespace CherryProject.Panel.AccountPages
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
 			// instantiate a dialog object
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to create an account?",
-				PrimaryButtonText = "Create Account",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -88,30 +76,20 @@ namespace CherryProject.Panel.AccountPages
 				|| !Email.Text.IsEmail()
 				|| !PhoneNumber.Text.IsPhoneNumber()
 				|| string.IsNullOrEmpty(Region.SelectedItem as string)
-				|| string.IsNullOrEmpty(Role.SelectedItem as string)
+				|| Role.SelectedItem == null
 				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
-					var role = await Role.SelectedItem.ToString().ToRoleAsync();
-
 					try
 					{
 						using (var context = new Context())
 						{
 							var user = await context.User.AddAsync(new User()
 							{
-								Id = Guid.Text,
+								Id = System.Guid.Parse(Guid.Text),
 								UserName = Username.Text,
 								PasswordHash = Password.Password.GetMD5hash(),
 								FirstName = FirstName.Text,
@@ -119,37 +97,22 @@ namespace CherryProject.Panel.AccountPages
 								Email = Email.Text,
 								PhoneNumber = PhoneNumber.Text,
 								Region = Region.SelectedItem as string,
-								RoleId = role.Id,
-								Status = GeneralStatusEnum.Available.ToString(),
+								Role = (RoleEnum)Role.SelectedItem,
+								Status = GeneralStatusEnum.Available,
 								Address = Address.GetText(),
+								IconUrl = Url.Text
 							});
 
-							user.Entity.Role = role;
+							await context.SaveChangesAsync();
 
-							ContentDialog message = new ContentDialog
-							{
-								Title = "Success",
-								Content = "Successfully created user.",
-								CloseButtonText = "OK",
-								Width = 400
-							};
-
-							await message.EnqueueAndShowIfAsync();
+							await new SuccessDialog().EnqueueAndShowIfAsync();
 
 							this.Frame.Navigate(typeof(ViewAccount), user.Entity, new DrillInNavigationTransitionInfo());
 						}
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please re-type the username and make sure the email has not been registered before.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

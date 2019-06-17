@@ -1,5 +1,7 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -171,6 +173,12 @@ namespace CherryProject.Panel.ProductPages
 			{
 				// store user
 				IEnumerable<Product> set = context.Product;
+
+				// filter all non-avaliable product
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+				{
+					set = set.Where(x => x.Status == GeneralStatusEnum.Available);
+				}
 
 				// user filtering
 				foreach (var predicate in keyValuePairs)

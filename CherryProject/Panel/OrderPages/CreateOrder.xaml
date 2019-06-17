@@ -14,8 +14,8 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel>
-			<StackPanel Margin="0 0 0 30" Spacing="10">
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
 				<TextBlock Text="GUID"/>
 				<TextBox x:Name="Guid" IsEnabled="False"/>
 				<Button 
@@ -27,19 +27,19 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30" Spacing="10">
+			<StackPanel x:Name="DealerSelector" Spacing="10">
 				<TextBlock Text="Dealer GUID"/>
 				<TextBox x:Name="DealerGUID" IsEnabled="False"/>
-				<Button 
+				<Button
 					Content="Select Dealer"
 					Click="SelectDealer_Click"/>
-				<TextBlock Name="SelectedUser"/>
+				<TextBlock Name="SelectedUser" Visibility="Collapsed"/>
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30" Spacing="10">
+			<StackPanel Spacing="10">
 				<TextBlock Text="Products"/>
 				<controls:DataGrid
 					x:Name="DataGridViewControl"
@@ -86,23 +86,23 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Delivery Address" Margin="0 0 0 10"/>
-				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Delivery Address"/>
+				<RichEditBox x:Name="Address"/>
 				<TextBlock Text="The account detail address, it would be used on dispatch destination address."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Type" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Type" MinWidth="280" Margin="0 0 0 10" />
+			<StackPanel Spacing="10">
+				<TextBlock Text="Type"/>
+				<ComboBox x:Name="Type" MinWidth="280"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel>
 				<Button x:Name="Submit" Content="Create Order" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>

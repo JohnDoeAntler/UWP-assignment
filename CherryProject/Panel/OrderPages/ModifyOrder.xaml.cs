@@ -42,10 +42,7 @@ namespace CherryProject.Panel.OrderPages
 			items = new ObservableCollection<OrderProductViewModel>();
 
 			// fill the role combo box with all role
-			Enum.GetValues(typeof(OrderTypeEnum)).Cast<OrderTypeEnum>().ToList().ForEach(x =>
-			{
-				Type.Items.Add(x.ToString());
-			});
+			Type.ItemsSource = EnumManager.GetEnumList<OrderTypeEnum>();
 
 			DataGridViewControl.CellEditEnded += DataGridViewControl_CellEditEnded;
 		}
@@ -75,28 +72,41 @@ namespace CherryProject.Panel.OrderPages
 
 			if (e.Parameter is Order order)
 			{
-				// pre define
-				var dealer = await UserManager.FindUserAsync(x => x.Id == order.DealerId);
-				var modifier = await UserManager.FindUserAsync(x => x.Id == order.ModifierId);
-
-				// non order product information required attribute
-				Guid.Text = order.Id;
-				DealerGUID.Text = order.DealerId;
-				SelectedUser.Text = $"{dealer.FirstName} {dealer.LastName}";
-				Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, order.DeliveryAddress);
-				Type.SelectedItem = order.Type;
-
-				this.order = order;
-
-				// required attribute
-				using (var context = new Context())
+				if (order.Status == OrderStatusEnum.Pending)
 				{
-					var result = context.OrderProduct.Include(x => x.Product).Where(x => x.OrderId == order.Id);
+					// pre define
+					var dealer = await UserManager.FindUserAsync(x => x.Id == order.DealerId);
+					var modifier = await UserManager.FindUserAsync(x => x.Id == order.ModifierId);
 
-					foreach (var element in result)
+					// non order product information required attribute
+					Guid.Text = order.Id.ToString();
+					DealerGUID.Text = order.DealerId.ToString();
+					SelectedUser.Text = $"{dealer.FirstName} {dealer.LastName}";
+					Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, order.DeliveryAddress);
+					Type.SelectedItem = order.Type;
+
+					this.order = order;
+
+					// required attribute
+					using (var context = new Context())
 					{
-						items.Add(new OrderProductViewModel(element));
+						// cast the ordered items into the binding list
+						items.UpdateObservableCollection(context.OrderProduct.Include(x => x.Product).ThenInclude(x => x.PriceHistory).Where(x => x.OrderId == order.Id).Select(x => new OrderProductViewModel(x)));
 					}
+				}
+				else
+				{
+					ContentDialog error = new ContentDialog
+					{
+						Title = "Error",
+						Content = $"It is not permitted to modify a non-pending status order.",
+						CloseButtonText = "OK",
+						Width = 400
+					};
+
+					await error.EnqueueAndShowIfAsync();
+
+					Frame.Navigate(typeof(SearchOrders), this.GetType(), new DrillInNavigationTransitionInfo());
 				}
 			}
 			else
@@ -104,39 +114,25 @@ namespace CherryProject.Panel.OrderPages
 				ContentDialog dialog = new ContentDialog
 				{
 					Title = "Alert",
-					Content = "You have to choose a order before modifying it.",
+					Content = "You have to choose a pending order before modifying it.",
 					CloseButtonText = "OK"
 				};
 
 				ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
-				Frame.Navigate(typeof(SearchOrders), typeof(ModifyOrder), new DrillInNavigationTransitionInfo());
+				Frame.Navigate(typeof(SearchOrders), this.GetType(), new DrillInNavigationTransitionInfo());
 			}
 		}
 
 		private async void Add_Click(object sender, RoutedEventArgs e)
 		{
-			ProductDialog dialog = new ProductDialog();
+			ProductDialog dialog = new ProductDialog(true);
 
 			var button = await dialog.EnqueueAndShowIfAsync();
 
 			if (button == ContentDialogResult.Primary)
 			{
-				string id = dialog.Product.Id;
-
-				if (items.Any(x => x.OrderProduct.Product.Id == id))
-				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The product type has exisited on the order items list already.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
-				}
-				else
+				if (!items.Any(x => x.OrderProduct.Product.Id == dialog.Product.Id))
 				{
 					items.Add(
 						new OrderProductViewModel(
@@ -153,30 +149,18 @@ namespace CherryProject.Panel.OrderPages
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to create an order?",
-				PrimaryButtonText = "Modify Order",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
-				if (items.Count == 0 || items.Any(x => x.Quantity < 1))
+				if (Type.SelectedItem == null
+				|| string.IsNullOrEmpty(Address.GetText())
+				|| items.Count == 0
+				|| items.Any(x => x.Quantity < 1)
+				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -185,7 +169,7 @@ namespace CherryProject.Panel.OrderPages
 						var order = await this.order.ModifyAsync(x => {
 							x.ModifierId = SignInManager.CurrentUser.Id;
 							x.DeliveryAddress = Address.GetText();
-							x.Type = Type.SelectedItem as string;
+							x.Type = (OrderTypeEnum) Type.SelectedItem;
 						});
 
 						foreach (var item in items)
@@ -196,29 +180,13 @@ namespace CherryProject.Panel.OrderPages
 
 						await items.Select(x => x.OrderProduct).RemoveExceptAsync();
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully modified product.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await message.EnqueueAndShowIfAsync();
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 
 						Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

@@ -13,15 +13,15 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 		
-		<StackPanel>
-			<StackPanel Margin="0 20">
+		<StackPanel Spacing="30">
+			<StackPanel>
 				<Ellipse Height="200" Width="200">
 					<Ellipse.Fill>
-						<ImageBrush ImageSource="https://i.imgur.com/Yj7sJJz.jpg"/>
+						<ImageBrush x:Name="Icon" ImageSource="https://i.imgur.com/Yj7sJJz.jpg"/>
 					</Ellipse.Fill>
 				</Ellipse>
 			</StackPanel>
-			<StackPanel Margin="0 0 0 20">
+			<StackPanel>
 				<StackPanel
 					Orientation="Horizontal"
 					HorizontalAlignment="Center"
@@ -35,9 +35,7 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
 			</StackPanel>
 
-			<ListView
-				Margin="0 0 0 20"
-				ItemsSource="{x:Bind DisplayItems}">
+			<ListView ItemsSource="{x:Bind DisplayItems}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ListViewItem Padding="10">
@@ -60,20 +58,18 @@
 				</ListView.ItemTemplate>
 			</ListView>
 
-			<StackPanel Margin="0 0 0 20">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Modify the product by clicking the above button to modify the product information."/>
 				<Button
 					x:Name="ModifyProduct"
 					Content="Modify Product"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 20">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Modify the product status by clicking the above button to lock/unlock the product for enabling/disabling anyone to access current product." />
 				<Button
 					x:Name="ModifyProductStatus"

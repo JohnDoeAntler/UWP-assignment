@@ -5,6 +5,7 @@ namespace CherryProject.Model
 {
 	public partial class Dic
 	{
+		private DateTime lastTimeModified = DateTime.UtcNow;
 		private string concurrencyStamp;
 
 		public Dic()
@@ -12,10 +13,10 @@ namespace CherryProject.Model
 			Did = new HashSet<Did>();
 		}
 
-		public string Id { get; set; }
-		public string OrderId { get; set; }
+		public Guid Id { get; set; }
+		public Guid OrderId { get; set; }
 		public string Status { get; set; }
-		public DateTime LastTimeModified { get; set; }
+		public DateTime LastTimeModified { get => lastTimeModified; set => lastTimeModified = value; }
 		public string ConcurrencyStamp { get => concurrencyStamp ?? (concurrencyStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
 
 		public virtual Order Order { get; set; }

@@ -145,7 +145,7 @@ namespace CherryProject.Dialog
 			using (var context = new Context())
 			{
 				// store user
-				IEnumerable<User> set = context.User.Include(x => x.Role);
+				IEnumerable<User> set = context.User;
 
 				// user filtering
 				foreach (var predicate in keyValuePairs)

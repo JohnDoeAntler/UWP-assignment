@@ -39,7 +39,7 @@
 			</StackPanel>
 
 			<StackPanel Margin="0 0 0 30">
-				<Button Content="Add Spare" Click="Submit_Click"/>
+				<Button Content="Add Spares" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

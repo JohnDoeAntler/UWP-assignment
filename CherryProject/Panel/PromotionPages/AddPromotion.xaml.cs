@@ -2,6 +2,7 @@
 using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,10 +37,7 @@ namespace CherryProject.Panel.PromotionPages
 
 			Guid.Text = System.Guid.NewGuid().ToString();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 		}
 
 		private void GenerateGuidBtn_OnClick(object sender, RoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
@@ -54,6 +52,7 @@ namespace CherryProject.Panel.PromotionPages
 			{
 				SelectedProductTextBlock.Visibility = Visibility.Visible;
 				SelectedProductTextBlock.Text = $"Selected product: {(selectedProduct = dialog.Product).Name}";
+				ProductGUID.Text = selectedProduct.Id.ToString();
 			}
 		}
 
@@ -61,91 +60,52 @@ namespace CherryProject.Panel.PromotionPages
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			// instantiate a dialog object
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to add promotion?",
-				PrimaryButtonText = "Add Promotion",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
+
 			if (result == ContentDialogResult.Primary)
 			{
 				if (selectedProduct == null
 				|| string.IsNullOrEmpty(Description.GetText())
 				|| string.IsNullOrEmpty(ImageUrl.Text)
-				|| !decimal.TryParse(Discount.Text, out decimal discount)
-				|| StartTime.Date == null
-				|| EndTime.Date == null
-				|| string.IsNullOrEmpty(Status.SelectedItem as string)
+				|| !double.TryParse(Discount.Text, out double discount)
+				|| !StartTime.SelectedDate.HasValue
+				|| !EndTime.SelectedDate.HasValue
+				|| Status.SelectedItem == null
 				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
 					try
 					{
-						var timestamp = StartTime.Date.Date;
-						var duration = EndTime.Date.ToUnixTimeSeconds() - StartTime.Date.ToUnixTimeSeconds();
-
-						Promotion promotion;
-
 						using (var context = new Context())
 						{
-							var p = await context.Promotion.AddAsync(
+							await context.Promotion.AddAsync(
 								new Promotion()
 								{
-									Id = Guid.Text,
+									Id = System.Guid.Parse(Guid.Text),
 									ProductId = selectedProduct.Id,
 									Description = Description.GetText(),
 									ImageUrl = ImageUrl.Text,
 									Discount = discount,
-									Timestamp = timestamp,
-									Duration = duration,
-									Status = Status.SelectedItem as string
+									StartTime = StartTime.SelectedDate.Value.Date,
+									EndTime = EndTime.SelectedDate.Value.Date,
+									Status = (GeneralStatusEnum) Status.SelectedItem
 								}
 							);
-
-							promotion = p.Entity;
 
 							await context.SaveChangesAsync();
 						}
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully created product.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await message.EnqueueAndShowIfAsync();
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 
 						Frame.Navigate(typeof(ViewPromotions), null, new DrillInNavigationTransitionInfo());
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please verify each input information validation.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

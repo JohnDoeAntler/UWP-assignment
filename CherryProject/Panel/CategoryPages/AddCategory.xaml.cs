@@ -47,60 +47,44 @@ namespace CherryProject.Panel.CategoryPages
 			{
 				SelectedProductTextBlock.Visibility = Visibility.Visible;
 				SelectedProductTextBlock.Text = $"Selected product: {(selectedProduct = dialog.Product).Name}";
+				ProductGUID.Text = selectedProduct.Id.ToString();
 			}
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to add category?",
-				PrimaryButtonText = "Add Category",
-				CloseButtonText = "Cancel"
-			};
-
-			var result = await dialog.EnqueueAndShowIfAsync();
+			var result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
-				try
+				if (string.IsNullOrEmpty(Name.Text)	|| selectedProduct == null)
 				{
-					using (var context = new Context())
-					{
-						await context.Category.AddAsync(new Category()
-						{
-							Id = Guid.Text,
-							Name = Name.Text,
-							ProductId = selectedProduct.Id
-						});
-
-						await context.SaveChangesAsync();
-					}
-
-					ContentDialog message = new ContentDialog
-					{
-						Title = "Success",
-						Content = "Successfully added category.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await message.EnqueueAndShowIfAsync();
-
-					Frame.Navigate(typeof(AddCategory), null, new DrillInNavigationTransitionInfo());
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
-				catch (Exception err)
+				else
 				{
-					ContentDialog error = new ContentDialog
+					try
 					{
-						Title = "Error",
-						Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-						CloseButtonText = "OK",
-						Width = 400
-					};
+						using (var context = new Context())
+						{
+							await context.Category.AddAsync(new Category()
+							{
+								Id = System.Guid.Parse(Guid.Text),
+								Name = Name.Text,
+								ProductId = selectedProduct.Id
+							});
 
-					await error.EnqueueAndShowIfAsync();
+							await context.SaveChangesAsync();
+						}
+
+						await new SuccessDialog().EnqueueAndShowIfAsync();
+
+						Frame.Navigate(typeof(AddCategory), null, new DrillInNavigationTransitionInfo());
+					}
+					catch (Exception)
+					{
+						await new ErrorDialog().EnqueueAndShowIfAsync();
+					}
 				}
 			}
 		}

@@ -1,6 +1,8 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,20 +34,42 @@ namespace CherryProject.Panel.ProductPages
 
 			Guid.Text = System.Guid.NewGuid().ToString();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 		}
 
+		/// <summary>
+		/// re-generate a new id
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void GenerateGuidBtn_OnClick(object sender, RoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
 
+		/// <summary>
+		/// check the price whether numeric
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Price_KeyDown(object sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsDoubleNumeric();
 
+		/// <summary>
+		/// check the weight whether numeric
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Weight_KeyDown(object sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsDoubleNumeric();
 
+		/// <summary>
+		/// check the recorder level whether integer numeric
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void ReorderLevel_KeyDown(TextBox sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsIntegerNumeric();
 
+		/// <summary>
+		/// check the danger level whether integer numeric
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void DangerLevel_KeyDown(object sender, TextBoxBeforeTextChangingEventArgs e) => e.Cancel = !e.NewText.IsIntegerNumeric();
 
 
@@ -56,17 +80,8 @@ namespace CherryProject.Panel.ProductPages
 		/// <param name="e"></param>
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			// instantiate a dialog object
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to create an account?",
-				PrimaryButtonText = "Create Account",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -79,67 +94,59 @@ namespace CherryProject.Panel.ProductPages
 				|| !double.TryParse(Weight.Text, out double weight)
 				|| !int.TryParse(ReorderLevel.Text, out int reorderLevel)
 				|| !int.TryParse(DangerLevel.Text, out int dangerLevel)
-				|| string.IsNullOrEmpty(Status.SelectedItem as string)
+				|| Status.SelectedItem == null
 				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
 					try
 					{
 						Product product;
+
 						using (var context = new Context())
 						{
+							// add the product
 							var p = await context.Product.AddAsync(
 								new Product()
 								{
+									Id = System.Guid.Parse(Guid.Text),
 									Name = Name.Text,
 									Description = Description.Text,
-									Price = price,
 									Weight = weight,
 									ReorderLevel = reorderLevel,
 									DangerLevel = dangerLevel,
-									Status = Status.SelectedItem as string
+									IconUrl = Url.Text,
+									Status = (GeneralStatusEnum)Status.SelectedItem
 								}
 							);
 
+							// get the created product entity
 							product = p.Entity;
 
+							// add the price
+							await context.PriceHistory.AddAsync(
+								new PriceHistory()
+								{
+									ProductId = product.Id,
+									Price = price
+								}
+							);
+
+							// fucking save
 							await context.SaveChangesAsync();
 						}
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully created product.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+						// alert
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 
-						await message.EnqueueAndShowIfAsync();
-
+						// navigation
 						Frame.Navigate(typeof(ViewProduct), product, new DrillInNavigationTransitionInfo());
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please make sure the product name has not been registered before.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

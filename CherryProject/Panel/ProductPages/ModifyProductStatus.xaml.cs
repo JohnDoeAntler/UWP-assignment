@@ -1,6 +1,8 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,23 +28,20 @@ namespace CherryProject.Panel.ProductPages
 	/// </summary>
 	public sealed partial class ModifyProductStatus : Page
 	{
-		private Model.Product product;
+		private Product product;
 
 		public ModifyProductStatus()
 		{
 			this.InitializeComponent();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
 			base.OnNavigatedTo(e);
 
-			if (e.Parameter is Model.Product product)
+			if (e.Parameter is Product product)
 			{
 				Status.SelectedItem = (this.product = product).Status;
 
@@ -65,45 +64,21 @@ namespace CherryProject.Panel.ProductPages
 
 		private async void Status_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to disable/enable current product?",
-				PrimaryButtonText = "Modify Product Status",
-				CloseButtonText = "Cancel"
-			};
-
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				try
 				{
-					product = await product.ModifyAsync(x => x.Status = Status.SelectedItem as string);
+					product = await product.ModifyAsync(x => x.Status = (GeneralStatusEnum) Status.SelectedItem);
 
-					ContentDialog message = new ContentDialog
-					{
-						Title = "Success",
-						Content = "Successfully modified product's status.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await message.EnqueueAndShowIfAsync();
+					await new SuccessDialog().EnqueueAndShowIfAsync();
 
 					this.Frame.Navigate(typeof(ViewProduct), product, new DrillInNavigationTransitionInfo());
 				}
 				catch (Exception)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The error occurred, please try again later.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new ErrorDialog().EnqueueAndShowIfAsync();
 				}
 			}
 		}

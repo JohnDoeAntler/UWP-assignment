@@ -1,4 +1,7 @@
-﻿using CherryProject.Model;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,7 +36,12 @@ namespace CherryProject.Dialog
 			using (var context = new Context())
 			{
 				// var dics = context.Order.Include(x => x.Dic).FirstOrDefault(x => x.Id == order.Id).Dic;
-				var dics = context.Dic.Include(x => x.Did).Include(x => x.Order).ThenInclude(x => x.Dealer);
+				IEnumerable<Dic> dics = context.Dic.Include(x => x.Did).Include(x => x.Order).ThenInclude(x => x.Dealer);
+
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+				{
+					dics = dics.Where(x => x.Order.DealerId == SignInManager.CurrentUser.Id);
+				}
 
 				foreach (var dic in dics)
 				{

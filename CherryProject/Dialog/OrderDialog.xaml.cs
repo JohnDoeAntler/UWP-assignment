@@ -43,6 +43,13 @@ namespace CherryProject.Dialog
 
 			// add a search filter for user input their filtering string.
 			AddSearchFilter();
+
+			// permission control
+			if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+			{
+				DealerSelector.Visibility = Visibility.Collapsed;
+				ModifierSelector.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		public ObservableCollection<string> SearchFilters => _searchFilters;
@@ -60,6 +67,9 @@ namespace CherryProject.Dialog
 			// clear both
 			keyValuePairs.Clear();
 			_searchFilters.Clear();
+			// reset 
+			ResetDealer_Click(null, null);
+			ResetModifier_Click(null, null);
 			// remain a empty searching filter input to user
 			AddSearchFilter();
 			// update the result to display all products
@@ -145,6 +155,12 @@ namespace CherryProject.Dialog
 				// store user
 				IEnumerable<Order> set = context.Order.Include(x => x.Dealer).Include(x => x.OrderProduct);
 
+				// check if dealer
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+				{
+					set = set.Where(x => x.DealerId == SignInManager.CurrentUser.Id);
+				}
+
 				// user filtering
 				foreach (var predicate in keyValuePairs)
 				{
@@ -176,18 +192,21 @@ namespace CherryProject.Dialog
 
 			ContentDialogResult button;
 
+			// loop till selected a user is playing a dealer role.
 			do
 			{
 				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleEnum.Dealer.ToRoleAsync()).Id);
+			} while (button == ContentDialogResult.Primary && dialog.User.Role != RoleEnum.Dealer);
 
 			if (button == ContentDialogResult.Primary)
 			{
 				User dealer = dialog.User;
-				DealerGUID.Text = dealer.Id;
 
+				// control adjustment
+				DealerGUID.Text = dealer.Id.ToString();
 				SelectedDealer.Text = $"Selected Dealer: {dealer.FirstName} {dealer.LastName}";
 
+				// condition adjustment
 				if (keyValuePairs.ContainsKey("Dealer"))
 				{
 					keyValuePairs.Remove("Dealer");
@@ -195,6 +214,7 @@ namespace CherryProject.Dialog
 
 				keyValuePairs.Add("Dealer", x => x.DealerId == dealer.Id);
 
+				// update
 				UpdateSearchResult();
 			}
 		}
@@ -208,10 +228,12 @@ namespace CherryProject.Dialog
 			if (button == ContentDialogResult.Primary)
 			{
 				User modifier = dialog.User;
-				ModifierGUID.Text = modifier.Id;
 
+				// control adjustment
+				ModifierGUID.Text = modifier.Id.ToString();
 				SelectedModifier.Text = $"Selected Modifier: {modifier.FirstName} {modifier.LastName}";
 
+				// condition adjustment
 				if (keyValuePairs.ContainsKey("Modifier"))
 				{
 					keyValuePairs.Remove("Modifier");
@@ -219,6 +241,7 @@ namespace CherryProject.Dialog
 
 				keyValuePairs.Add("Modifier", x => x.ModifierId == modifier.Id);
 
+				// update
 				UpdateSearchResult();
 			}
 		}
@@ -264,10 +287,6 @@ namespace CherryProject.Dialog
 			}
 		}
 
-		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-		{
-			Order = null;
-			this.Hide();
-		}
+		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) => Order = null;
 	}
 }

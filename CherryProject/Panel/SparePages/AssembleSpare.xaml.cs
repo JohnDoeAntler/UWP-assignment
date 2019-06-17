@@ -75,7 +75,7 @@ namespace CherryProject.Panel.SparePages
 					if (button == ContentDialogResult.Primary)
 					{
 						Did = didDialog.Did;
-						DidId.Text = Did.Id;
+						DidId.Text = Did.Id.ToString();
 						SelectedDidTextBlock.Text = $"Selected {orderDialog.Order.Dealer.FirstName}'s DID";
 					}
 				}
@@ -96,7 +96,7 @@ namespace CherryProject.Panel.SparePages
 				if (button == ContentDialogResult.Primary)
 				{
 					Did = didDialog.Did;
-					DidId.Text = Did.Id;
+					DidId.Text = Did.Id.ToString();
 					SelectedDidTextBlock.Text = $"Selected {dicDialog.Dic.Order.Dealer.FirstName}'s DID";
 				}
 			}
@@ -111,7 +111,7 @@ namespace CherryProject.Panel.SparePages
 			if (button == ContentDialogResult.Primary)
 			{
 				Did = didDialog.Did;
-				DidId.Text = Did.Id;
+				DidId.Text = Did.Id.ToString();
 				SelectedDidTextBlock.Text = $"Selected {didDialog.Did.Dic.Order.Dealer.FirstName}'s DID";
 			}
 		}
@@ -136,7 +136,7 @@ namespace CherryProject.Panel.SparePages
 						 	.Include(x => x.Category)
 						 	.Include(x => x.DidSpare)
 						 	.Where(x => x.Category.ProductId == Did.ProductId
-						 		&& EF.Functions.Like(x.Id, sender.Text + "%")
+						 		&& EF.Functions.Like(x.Id.ToString(), sender.Text + "%")
 						 		&& x.DidSpare == null)
 							.Take(5);
 
@@ -144,7 +144,7 @@ namespace CherryProject.Panel.SparePages
 						{
 							list.Add(new ListViewItem()
 							{
-								Content = spare.Id
+								Content = spare.Id.ToString()
 							});
 						}
 
@@ -156,30 +156,13 @@ namespace CherryProject.Panel.SparePages
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to assemble spare?",
-				PrimaryButtonText = "Assemble Spare",
-				CloseButtonText = "Cancel"
-			};
-
-			var result = await dialog.EnqueueAndShowIfAsync();
+			var result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
-				if (Did == null
-				|| string.IsNullOrEmpty(SpareId.Text))
+				if (Did == null	|| string.IsNullOrEmpty(SpareId.Text))
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -187,43 +170,42 @@ namespace CherryProject.Panel.SparePages
 					{
 						using (var context = new Context())
 						{
-							// if the spare has not been assembled and the did product match the spare product
-							if (await context.Spare.Include(x => x.Category).AnyAsync(x => x.Id == SpareId.Text && x.Category.ProductId == Did.ProductId))
+							var did = context.Did.Include(x => x.DidSpare).FirstOrDefault(x => x.Id == this.did.Id);
+
+							if (did.Quantity > did.DidSpare.Count)
 							{
-								await context.DidSpare.AddAsync(new DidSpare()
+								// if the spare has not been assembled and the did product match the spare product
+								if (await context.Spare.Include(x => x.Category).Include(x => x.DidSpare).AnyAsync(x => x.Id == Guid.Parse(SpareId.Text) && x.Category.ProductId == Did.ProductId && x.DidSpare == null))
 								{
-									DidId = Did.Id,
-									SpareId = SpareId.Text
-								});
+									await context.DidSpare.AddAsync(new DidSpare()
+									{
+										DidId = Did.Id,
+										SpareId = Guid.Parse(SpareId.Text)
+									});
 
-								await context.SaveChangesAsync();
+									await context.SaveChangesAsync();
 
-								ContentDialog message = new ContentDialog
+									await new SuccessDialog().EnqueueAndShowIfAsync();
+
+									Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
+								}
+								else throw new Exception();
+							}
+							else
+							{
+								await new ContentDialog()
 								{
-									Title = "Success",
-									Content = "Successfully assembled spare.",
+									Title = "Alert",
+									Content = "You are not permitted to assemble spare into this D.I.D owing to it has been completed already.",
 									CloseButtonText = "OK",
 									Width = 400
-								};
-
-								await message.EnqueueAndShowIfAsync();
-
-								Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
+								}.EnqueueAndShowIfAsync();
 							}
-							else throw new Exception();
 						}
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

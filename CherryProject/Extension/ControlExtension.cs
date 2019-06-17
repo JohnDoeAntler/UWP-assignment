@@ -12,7 +12,12 @@ namespace CherryProject.Extension
 		public static string GetText(this RichEditBox element)
 		{
 			element.Document.GetText(Windows.UI.Text.TextGetOptions.None, out string str);
-			return str;
+			return new String(str.SkipLast(1).ToArray());
+		}
+
+		public static void SetText(this RichEditBox element, string value)
+		{
+			element.Document.SetText(Windows.UI.Text.TextSetOptions.None, value);
 		}
 	}
 }

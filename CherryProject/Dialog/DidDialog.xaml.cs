@@ -31,8 +31,6 @@ namespace CherryProject.Dialog
 
 			using (var context = new Context())
 			{
-				// searchDidGridViewItems = new ObservableCollection<Did>(context.Dic.Include(x => x.Did).FirstOrDefault(x => x.Id == dic.Id).Did);
-
 				searchDidGridViewItems = new ObservableCollection<Did>(
 					context
 						.Did
@@ -41,7 +39,7 @@ namespace CherryProject.Dialog
 						.Include(x => x.Dic)
 							.ThenInclude(x => x.Order)
 								.ThenInclude(x => x.Dealer)
-								.Where(x => x.Quantity != x.DidSpare.Count)
+								.Where(x => x.Quantity > x.DidSpare.Count)
 				);
 			}
 		}
@@ -52,14 +50,12 @@ namespace CherryProject.Dialog
 
 			using (var context = new Context())
 			{
-				// searchDidGridViewItems = new ObservableCollection<Did>(context.Dic.Include(x => x.Did).FirstOrDefault(x => x.Id == dic.Id).Did);
 				searchDidGridViewItems = new ObservableCollection<Did>(
 					context
 						.Did
 						.Include(x => x.DidSpare)
 						.Include(x => x.Product)
-						.Where(x => x.DicId == dic.Id 
-							&& x.Quantity != x.DidSpare.Count)
+						.Where(x => x.DicId == dic.Id && x.Quantity > x.DidSpare.Count)
 				);
 			}
 		}
@@ -97,7 +93,6 @@ namespace CherryProject.Dialog
 		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			Did = null;
-			Hide();
 		}
 	}
 }

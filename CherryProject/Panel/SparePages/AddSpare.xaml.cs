@@ -48,35 +48,19 @@ namespace CherryProject.Panel.SparePages
 			{
 				SelectedCategoryTextBlock.Visibility = Visibility.Visible;
 				SelectedCategoryTextBlock.Text = $"Selected category: {(selectedCategory = dialog.Category).Name}";
-				CategoryId.Text = selectedCategory.Id;
+				CategoryId.Text = selectedCategory.Id.ToString();
 			}
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to add spare?",
-				PrimaryButtonText = "Add Spare",
-				CloseButtonText = "Cancel"
-			};
-
-			var result = await dialog.EnqueueAndShowIfAsync();
+			var result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				if (selectedCategory == null)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -87,37 +71,21 @@ namespace CherryProject.Panel.SparePages
 							await context.Spare.AddAsync(
 								new Spare()
 								{
-									Id = Guid.Text,
-									CategoryId = CategoryId.Text
+									Id = System.Guid.Parse(Guid.Text),
+									CategoryId = System.Guid.Parse(CategoryId.Text)
 								}
 							);
 
 							await context.SaveChangesAsync();
 
-							ContentDialog message = new ContentDialog
-							{
-								Title = "Success",
-								Content = "Successfully added spare.",
-								CloseButtonText = "OK",
-								Width = 400
-							};
-
-							await message.EnqueueAndShowIfAsync();
+							await new SuccessDialog().EnqueueAndShowIfAsync();
 
 							Frame.Navigate(GetType(), null, new DrillInNavigationTransitionInfo());
 						}
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

@@ -13,10 +13,10 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel>
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="GUID" Margin="0 0 0 10"/>
-				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="GUID"/>
+				<TextBox x:Name="Guid" IsEnabled="False"/>
 				<Button 
 					x:Name="GenerateGuidBtn"
 					Content="Generate new GUID" 
@@ -27,17 +27,17 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Name" Margin="0 0 0 10"/>
-				<TextBox x:Name="Name" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Name"/>
+				<TextBox x:Name="Name"/>
 				<TextBlock Text="The category display name. The name of the category should not be null."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Product" Margin="0 0 0 10"/>
-
+			<StackPanel Spacing="10">
+				<TextBlock Text="Product"/>
+				<TextBox x:Name="ProductGUID" IsEnabled="False"/>
 				<Button x:Name="Select" Content="Select Product" Click="Select_Click"/>
 
 				<TextBlock x:Name="SelectedProductTextBlock" Visibility="Collapsed"/>
@@ -47,7 +47,7 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel Spacing="10">
 				<Button x:Name="Submit" Content="Add Category" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>

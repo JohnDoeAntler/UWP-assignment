@@ -39,7 +39,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (e.Parameter is Order order)
 			{
-				if (order.Status == OrderStatusEnum.Pending.ToString())
+				if (order.Status == OrderStatusEnum.Pending)
 				{
 					this.order = order;
 					Submit.Click += Submit_Click;
@@ -89,7 +89,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (result == ContentDialogResult.Primary)
 			{
-				order = await order.ModifyAsync(x => x.Status = OrderStatusEnum.Cancelled.ToString());
+				order = await order.ModifyAsync(x => x.Status = OrderStatusEnum.Cancelled);
 
 				ContentDialog message = new ContentDialog
 				{

@@ -1,0 +1,20 @@
+﻿<ContentDialog
+    x:Class="CherryProject.Dialog.MistakeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Dialog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="ERROR"
+	Width="400"
+    CloseButtonText="Okay"
+    CloseButtonClick="ContentDialog_SecondaryButtonClick">
+
+	<Grid>
+		<TextBlock 
+			x:Name="Description"
+			TextWrapping="Wrap"
+			Text="The information you typed has mistakes, please ensure the input data validation is correct."/>
+	</Grid>
+</ContentDialog>

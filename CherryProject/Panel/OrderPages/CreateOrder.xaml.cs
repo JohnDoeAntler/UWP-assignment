@@ -43,21 +43,19 @@ namespace CherryProject.Panel.OrderPages
 
 			items = new ObservableCollection<OrderProductViewModel>();
 
-			// items.Add(new OrderProductViewModel(
-			// 	new OrderProduct() {
-			// 		ProductId = 
-			// 	})
-			// );
-
 			// fill the role combo box with all role
-			Enum.GetValues(typeof(OrderTypeEnum)).Cast<OrderTypeEnum>().ToList().ForEach(x =>
-			{
-				Type.Items.Add(x.ToString());
-			});
+			Type.ItemsSource = EnumManager.GetEnumList<OrderTypeEnum>();
 
 			Guid.Text = System.Guid.NewGuid().ToString();
 
 			DataGridViewControl.CellEditEnded += DataGridViewControl_CellEditEnded;
+
+			// permission control
+			if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+			{
+				DealerSelector.Visibility = Visibility.Collapsed;
+				dealer = SignInManager.CurrentUser;
+			}
 		}
 
 		public ObservableCollection<OrderProductViewModel> Items => items;
@@ -82,27 +80,13 @@ namespace CherryProject.Panel.OrderPages
 
 		private async void Add_Click(object sender, RoutedEventArgs e)
 		{
-			ProductDialog dialog = new ProductDialog();
+			ProductDialog dialog = new ProductDialog(true);
 
 			var button = await dialog.EnqueueAndShowIfAsync();
 
 			if (button == ContentDialogResult.Primary)
 			{
-				string id = dialog.Product.Id;
-
-				if (items.Any(x => x.OrderProduct.Product.Id == id))
-				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The product type has exisited on the order items list already.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
-				}
-				else
+				if (!items.Any(x => x.OrderProduct.Product.Id == dialog.Product.Id))
 				{
 					items.Add(
 						new OrderProductViewModel(
@@ -123,47 +107,34 @@ namespace CherryProject.Panel.OrderPages
 
 			ContentDialogResult button;
 
+			// select till the selected user is playing a dealer role.
 			do
 			{
 				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleEnum.Dealer.ToRoleAsync()).Id);
+			} while (button == ContentDialogResult.Primary && dialog.User.Role != RoleEnum.Dealer);
 
 			if (button == ContentDialogResult.Primary)
 			{
-				DealerGUID.Text = (dealer = dialog.User).Id;
+				DealerGUID.Text = (dealer = dialog.User).Id.ToString();
+				SelectedUser.Visibility = Visibility.Visible;
 				SelectedUser.Text = $"Selected Dealer: {dealer.FirstName} {dealer.LastName}";
 			}
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to create an order?",
-				PrimaryButtonText = "Create Order",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				if (dealer == null
 				|| Type.SelectedItem == null
+				|| string.IsNullOrEmpty(Address.GetText())
 				|| items.Count == 0
 				|| items.Any(x => x.Quantity < 1))
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -173,12 +144,12 @@ namespace CherryProject.Panel.OrderPages
 						{
 							var order = (await context.Order.AddAsync(new Order()
 							{
-								Id = Guid.Text,
+								Id = System.Guid.Parse(Guid.Text),
 								DealerId = dealer.Id,
 								ModifierId = SignInManager.CurrentUser.Id,
 								DeliveryAddress = Address.GetText(),
-								Type = Type.SelectedItem.ToString(),
-								Status = OrderStatusEnum.Pending.ToString()
+								Type = (OrderTypeEnum) Type.SelectedItem,
+								Status = OrderStatusEnum.Pending
 							})).Entity;
 
 							foreach (var element in items)
@@ -192,30 +163,14 @@ namespace CherryProject.Panel.OrderPages
 
 							await context.SaveChangesAsync();
 
-							ContentDialog message = new ContentDialog
-							{
-								Title = "Success",
-								Content = "Successfully created order.",
-								CloseButtonText = "OK",
-								Width = 400
-							};
-
-							await message.EnqueueAndShowIfAsync();
+							await new SuccessDialog().EnqueueAndShowIfAsync();
 
 							Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
 						}
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

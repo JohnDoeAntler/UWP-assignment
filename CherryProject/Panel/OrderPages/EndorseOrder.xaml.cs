@@ -1,6 +1,7 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Panel.DispatchPages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +40,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (e.Parameter is Order order)
 			{
-				if (order.Status == OrderStatusEnum.Pending.ToString())
+				if (order.Status == OrderStatusEnum.Pending)
 				{
 					this.order = order;
 					Submit.Click += Submit_Click;
@@ -89,7 +90,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (result == ContentDialogResult.Primary)
 			{
-				order = await order.ModifyAsync(x => x.Status = OrderStatusEnum.Endorsed.ToString());
+				order = await order.ModifyAsync(x => x.Status = OrderStatusEnum.Endorsed);
 
 				ContentDialog message = new ContentDialog
 				{
@@ -101,7 +102,7 @@ namespace CherryProject.Panel.OrderPages
 
 				await message.EnqueueAndShowIfAsync();
 
-				Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
+				Frame.Navigate(typeof(DeliverOrder), order, new DrillInNavigationTransitionInfo());
 			}
 		}
 	}

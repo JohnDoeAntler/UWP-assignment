@@ -58,11 +58,10 @@
 						SelectionMode="Single"
 						IsItemClickEnabled="True"
 						ItemsSource="{x:Bind Dics}"
-						Width="460"
-						IsEnabled="False">
+						Width="460">
 						<ListView.ItemTemplate>
 							<DataTemplate x:DataType="model:Dic">
-								<ListViewItem IsTapEnabled="False">
+								<ListViewItem Tapped="ListViewItem_Tapped">
 									<StackPanel 
 										Padding="12"
 										Orientation="Horizontal">

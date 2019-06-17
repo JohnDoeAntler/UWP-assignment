@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,9 +34,11 @@ namespace CherryProject.Extension
 
 		public static void UpdateObservableCollection<T>(this ObservableCollection<T> orignal, IEnumerable<T> list)
 		{
+			Debug.WriteLine(typeof(T));
+
 			orignal.Clear();
 
-			foreach (T element in list)
+			foreach (var element in list)
 			{
 				orignal.Add(element);
 			}

@@ -37,6 +37,25 @@ namespace CherryProject.Panel.DispatchPages
 			this.InitializeComponent();
 		}
 
+		protected override async void OnNavigatedTo(NavigationEventArgs e)
+		{
+			base.OnNavigatedTo(e);
+
+			if (e.Parameter is Order order)
+			{
+				using (var context = new Context())
+				{
+					order = await context.Order.Include(x => x.Dealer).FirstOrDefaultAsync(x => x.Id == order.Id && x.ConcurrencyStamp == order.ConcurrencyStamp);
+
+					if (order != null)
+					{
+						OrderGUID.Text = (this.order = order).Id.ToString();
+						SelectedOrder.Text = $"Selected Order: {order.Dealer.FirstName}'s Order";
+					}
+				}
+			}
+		}
+
 		private async void SelectOrder_Click(object sender, RoutedEventArgs e)
 		{
 			OrderDialog dialog = new OrderDialog();
@@ -80,53 +99,41 @@ namespace CherryProject.Panel.DispatchPages
 
 					button = await dialog.EnqueueAndShowIfAsync();
 				} while (button == ContentDialogResult.Primary
-					&& !((isEndorsed = dialog.Order.Status.Equals(OrderStatusEnum.Endorsed.ToString()))
+					&& !((isEndorsed = dialog.Order.Status == OrderStatusEnum.Endorsed)
 					&& (isIncomplete = dialog.Order.OrderProduct.Sum(x => x.Quantity) > context.Did.Include(x => x.Dic).Where(x => x.Dic.OrderId == dialog.Order.Id).Sum(x => x.Quantity))));
 			}
 
 			if (button == ContentDialogResult.Primary)
 			{
-				OrderGUID.Text = (order = dialog.Order).Id;
+				OrderGUID.Text = (order = dialog.Order).Id.ToString();
 				SelectedOrder.Text = $"Selected Order: {order.Dealer.FirstName}'s Order";
 			}
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to deliver an order?",
-				PrimaryButtonText = "Deliver Order",
-				CloseButtonText = "Cancel"
-			};
-
 			// alert user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				if (order == null)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
 					try
 					{
+						var completion = true;
+
+						var isZero = true;
+
 						using (var context = new Context())
 						{
 							var dic = (await context.Dic.AddAsync(new Dic()
 							{
-								Id = GuidHelper.CreateNewGuid().ToString(),
+								Id = GuidHelper.CreateNewGuid(),
 								OrderId = order.Id,
 								Status = DicStatusEnum.Dispatching.ToString()
 							})).Entity;
@@ -136,12 +143,11 @@ namespace CherryProject.Panel.DispatchPages
 							foreach (var orderProduct in orderProducts)
 							{
 								// dispatched items
-								uint dispatched = (uint)context.Did.Include(x => x.Dic).Include(x => x.DidSpare).Where(x => x.Dic.OrderId == orderProduct.OrderId && x.ProductId == orderProduct.ProductId).Sum(x => x.DidSpare.Count);
-
-								Debug.WriteLine($"Ordered item count : {orderProduct.Quantity}");
-								Debug.WriteLine($"Dispatched item count : {dispatched}");
+								uint dispatched = (uint) context.Did.Include(x => x.Dic).Where(x => x.Dic.OrderId == orderProduct.OrderId && x.ProductId == orderProduct.ProductId).Sum(x => x.Quantity);
 
 								uint quantity = 0;
+
+								// if the product of order is not equeueing completely, still missing something to dispatch
 								if ((quantity = orderProduct.Quantity - dispatched) > 0)
 								{
 									var product = orderProduct.Product;
@@ -153,51 +159,77 @@ namespace CherryProject.Panel.DispatchPages
 									// uint didsprcnt = (uint)context.DidSpare.Include(x => x.Did).Count(x => x.Did.ProductId == orderProduct.ProductId);
 									uint didcnt = (uint)context.Did.Where(x => x.ProductId == orderProduct.ProductId).Sum(x => x.Quantity);
 
-									Debug.WriteLine($"Total item count : {sprcnt}");
-									Debug.WriteLine($"Sold item count : {didcnt}\n");
-
 									uint remaining = 0;
 
 									// only non-danger level product could be added on did
 									if ((remaining = sprcnt - didcnt) > product.DangerLevel)
 									{
+										uint real;
+
+										// if remaining stock does not able to complete the ordered quantity
+										if (remaining < quantity)
+										{
+											// move all the remaining stock to roder.
+											real = remaining;
+											// the order is not completed.
+											completion = false;
+										}
+										else
+										{
+											real = quantity;
+										}
+
+										// if there has at least 1 DID
+										isZero = false;
+
+										// add the did into database
 										await context.Did.AddAsync(
 											new Did()
 											{
-												Id = GuidHelper.CreateNewGuid().ToString(),
+												Id = GuidHelper.CreateNewGuid(),
 												DicId = dic.Id,
 												ProductId = orderProduct.ProductId,
-												Quantity = remaining >= quantity ? quantity : remaining,
+												Quantity = real,
 											}
 										);
+									}
+									else
+									{
+										// system ignored order because of insufficient stocking and reached danger-level
+										completion = false;
 									}
 								}
 							}
 
-							await context.SaveChangesAsync();
+							// if there has at least 1 DID and 1 DIC
+							if (!isZero)
+							{
+								await context.SaveChangesAsync();
+							}
 						}
 
-						ContentDialog message = new ContentDialog
+						if (!completion)
 						{
-							Title = "Success",
-							Content = "Successfully sent a deliver order request.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+							await new ContentDialog()
+							{
+								Title = "Alert",
+								Content = "Some of ordered items might be missing because of the system has no sufficient stock to supply.",
+								CloseButtonText = "OK",
+								Width = 400
+							}.EnqueueAndShowIfAsync();
+						}
+						
+						// if the dic exists on database
+						if (!isZero)
+						{
+							await new SuccessDialog().EnqueueAndShowIfAsync();
 
-						await message.EnqueueAndShowIfAsync();
+							Frame.Navigate(typeof(ViewOrderDispatchStatus), order, new DrillInNavigationTransitionInfo());
+						}
 					}
 					catch (Exception err)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

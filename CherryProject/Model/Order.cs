@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CherryProject.Model.Enum;
+using System;
 using System.Collections.Generic;
 
 namespace CherryProject.Model
 {
 	public partial class Order
 	{
+		private DateTime lastTimeModified = DateTime.UtcNow;
 		private string concurrencyStamp;
 
 		public Order()
@@ -13,13 +15,13 @@ namespace CherryProject.Model
 			OrderProduct = new HashSet<OrderProduct>();
 		}
 
-		public string Id { get; set; }
-		public string DealerId { get; set; }
-		public string ModifierId { get; set; }
-		public string Type { get; set; }
-		public string Status { get; set; }
+		public Guid Id { get; set; }
+		public Guid DealerId { get; set; }
+		public Guid ModifierId { get; set; }
 		public string DeliveryAddress { get; set; }
-		public DateTime LastTimeModified { get; set; }
+		public OrderTypeEnum Type { get; set; }
+		public OrderStatusEnum Status { get; set; }
+		public DateTime LastTimeModified { get => lastTimeModified; set => lastTimeModified = value; }
 		public string ConcurrencyStamp { get => concurrencyStamp ?? (concurrencyStamp = Guid.NewGuid().ToString()); set => concurrencyStamp = value; }
 
 		public virtual User Dealer { get; set; }

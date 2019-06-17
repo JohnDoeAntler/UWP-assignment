@@ -36,7 +36,7 @@ namespace CherryProject.Panel
 		public PanelPage()
 		{
 			this.InitializeComponent();
-			this.items = IndexPage.GetIndexGridViewItems(SignInManager.CurrentUser.Role.ToRoleEnum());
+			this.items = IndexPage.GetIndexGridViewItems(SignInManager.CurrentUser.Role);
 
 			Window.Current.SetTitleBar(titleBar);
 		}
@@ -71,34 +71,6 @@ namespace CherryProject.Panel
 			Frame.Navigate(typeof(IndexPage), null, new DrillInNavigationTransitionInfo());
 		}
 
-		private void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-		{
-			if (args.IsSettingsSelected)
-			{
-				Frame.Navigate(typeof(SettingPage), null, new DrillInNavigationTransitionInfo());
-			}
-			else
-			{
-				NavigationViewItem item = args.SelectedItem as NavigationViewItem;
-
-				if (item.Tag as string == "MainPage")
-				{
-					Frame.Navigate(typeof(IndexPage), null, new DrillInNavigationTransitionInfo());
-				}else
-				{
-					foreach (var view in panel.Views)
-					{
-						if (view.Name == item.Tag as string)
-						{
-							contentFrame.Navigate(view, null, new DrillInNavigationTransitionInfo());
-
-							header.Text = view.ClassNameToString();
-						}
-					}
-				}
-			}
-		}
-
 		private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
 		{
 			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
@@ -111,7 +83,7 @@ namespace CherryProject.Panel
 				{
 					var list = new ObservableCollection<NavigationViewItemBase>(
 						PermissionManager
-							.GetPermission(SignInManager.CurrentUser.Role.ToRoleEnum())
+							.GetPermission(SignInManager.CurrentUser.Role)
 							.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
 							.Take(5)
 							.Select(x => new NavigationViewItem()
@@ -183,6 +155,36 @@ namespace CherryProject.Panel
 					item.Views = item.Views.OrderBy(x => x != result);
 
 					Frame.Navigate(typeof(PanelPage), item, new DrillInNavigationTransitionInfo());
+				}
+			}
+		}
+
+		private void NavigationViewControl_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+		{
+
+			if (args.IsSettingsInvoked)
+			{
+				Frame.Navigate(typeof(SettingPage), null, new DrillInNavigationTransitionInfo());
+			}
+			else
+			{
+				var item = args.InvokedItem as string;
+
+				if (item as string == "Main Page")
+				{
+					Frame.Navigate(typeof(IndexPage), null, new DrillInNavigationTransitionInfo());
+				}
+				else
+				{
+					foreach (var view in panel.Views)
+					{
+						if (view.ClassNameToString() == item)
+						{
+							contentFrame.Navigate(view, null, new DrillInNavigationTransitionInfo());
+
+							header.Text = view.ClassNameToString();
+						}
+					}
 				}
 			}
 		}

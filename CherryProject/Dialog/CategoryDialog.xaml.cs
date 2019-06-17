@@ -42,7 +42,7 @@ namespace CherryProject.Dialog
 
 			using (var context = new Context())
 			{
-				var result = context.Category.Include(x => x.Product).Where(x => x.NormalizedName.Contains(str, StringComparison.OrdinalIgnoreCase));
+				var result = context.Category.Include(x => x.Product).Where(x => EF.Functions.Like(x.NormalizedName, str + "%"));
 
 				foreach (var category in result)
 				{

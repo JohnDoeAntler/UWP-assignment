@@ -18,13 +18,14 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>CherryProject_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <AppInstallerUri>https://colourful.dlinkddns.com</AppInstallerUri>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+    <AppxPackageDir>C:\Users\yosug\source\repos\CherryProject\CherryProject\AppPackages\</AppxPackageDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -126,9 +127,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\DummyData.cs" />
     <Compile Include="Dialog\CategoryDialog.xaml.cs">
       <DependentUpon>CategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\ConfirmationDialog.xaml.cs">
+      <DependentUpon>ConfirmationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\DicDialog.xaml.cs">
       <DependentUpon>DicDialog.xaml</DependentUpon>
@@ -136,8 +139,17 @@
     <Compile Include="Dialog\DidDialog.xaml.cs">
       <DependentUpon>DidDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialog\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\MistakeDialog.xaml.cs">
+      <DependentUpon>MistakeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialog\OrderDialog.xaml.cs">
       <DependentUpon>OrderDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\SuccessDialog.xaml.cs">
+      <DependentUpon>SuccessDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\UserDialog.xaml.cs">
       <DependentUpon>UserDialog.xaml</DependentUpon>
@@ -150,7 +162,7 @@
     <Compile Include="Extension\PanelExtension.cs" />
     <Compile Include="Extension\MD5Hasher.cs" />
     <Compile Include="Extension\ProductExtension.cs" />
-    <Compile Include="Extension\RoleExtension.cs" />
+    <Compile Include="Extension\PromotionExtension.cs" />
     <Compile Include="Extension\SpareExtension.cs" />
     <Compile Include="Extension\UserExtension.cs" />
     <Compile Include="Model\Category.cs" />
@@ -164,9 +176,9 @@
     <Compile Include="Model\Enum\GeneralStatusEnum.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\OrderProduct.cs" />
+    <Compile Include="Model\PriceHistory.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Promotion.cs" />
-    <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Spare.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\User.cs" />
@@ -185,8 +197,14 @@
     <Compile Include="Panel\AccountPages\ViewAccount.xaml.cs">
       <DependentUpon>ViewAccount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel\DispatchPages\AcceptDelivery.xaml.cs">
+      <DependentUpon>AcceptDelivery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\DispatchPages\CompleteDelivery.xaml.cs">
       <DependentUpon>CompleteDelivery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panel\DispatchPages\ViewDispatachNote.xaml.cs">
+      <DependentUpon>ViewDispatachNote.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\DispatchPages\ViewOrderDispatchStatus.xaml.cs">
       <DependentUpon>ViewOrderDispatchStatus.xaml</DependentUpon>
@@ -194,8 +212,8 @@
     <Compile Include="Panel\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panel\InvoicePages\CompleteInvoice.xaml.cs">
-      <DependentUpon>CompleteInvoice.xaml</DependentUpon>
+    <Compile Include="Panel\InvoicePages\PrintInvoice.xaml.cs">
+      <DependentUpon>PrintInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -277,8 +295,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\CountryProvider.cs" />
+    <Compile Include="Service\EnumManager.cs" />
     <Compile Include="Service\PermissionManager.cs" />
-    <Compile Include="Service\RoleManager.cs" />
     <Compile Include="Service\SelectionManager.cs" />
     <Compile Include="Service\SignInManager.cs" />
     <Compile Include="Service\StorageManager.cs" />
@@ -313,6 +331,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialog\ConfirmationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\DicDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -321,7 +343,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialog\ErrorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\MistakeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialog\OrderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\SuccessDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,7 +383,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Panel\DispatchPages\AcceptDelivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panel\DispatchPages\CompleteDelivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\DispatchPages\ViewDispatachNote.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -361,7 +403,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Panel\InvoicePages\CompleteInvoice.xaml">
+    <Page Include="Panel\InvoicePages\PrintInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

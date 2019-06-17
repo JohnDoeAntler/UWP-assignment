@@ -1,5 +1,6 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
+using CherryProject.Service;
 using CherryProject.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -35,7 +37,12 @@ namespace CherryProject.Panel.ProductPages
 			this.InitializeComponent();
 
 			displayItems = new ObservableCollection<ViewTuple>();
+
+			// permission control
+			ModifyProduct.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyProduct));
+			ModifyProductStatus.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyProductStatus));
 		}
+
 		public ObservableCollection<ViewTuple> DisplayItems => displayItems;
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -46,6 +53,7 @@ namespace CherryProject.Panel.ProductPages
 			{
 				SetProductInformation(product);
 
+				// add event listener
 				ModifyProduct.Click += (sender, args) => Frame.Navigate(typeof(ModifyProduct), product, new DrillInNavigationTransitionInfo());
 				ModifyProductStatus.Click += (sender, args) => Frame.Navigate(typeof(ModifyProductStatus), product, new DrillInNavigationTransitionInfo());
 			}
@@ -67,28 +75,40 @@ namespace CherryProject.Panel.ProductPages
 		private void SetProductInformation(Product product)
 		{
 			ProductName.Text = product.Name;
-			ProductId.Text = product.Id;
+			ProductId.Text = product.Id.ToString();
 
 			displayItems.Add(new ViewTuple("Description", product.Description));
-			displayItems.Add(new ViewTuple("Price", $"$ {product.Price}"));
-			displayItems.Add(new ViewTuple("Weight", $"{product.Weight} kg"));
-			// dealer should not be able to see danger level
-			displayItems.Add(new ViewTuple("Reorder Level", product.ReorderLevel));
-			displayItems.Add(new ViewTuple("Danger Level", product.DangerLevel));
-			displayItems.Add(new ViewTuple("Status", product.Status));
 
 			using (var context = new Context())
 			{
-				// total (sold + existign) spare count
-				uint sprcnt = (uint)context.Spare.Include(x => x.Category).Count(x => x.Category.ProductId == product.Id);
-				// sold spare count
-				uint didsprcnt = (uint)context.DidSpare.Include(x => x.Did).Count(x => x.Did.ProductId == product.Id);
+				// display price
+				displayItems.Add(new ViewTuple("Price", context.PriceHistory.Where(x => x.ProductId == product.Id).OrderByDescending(x => x.Timestamp).FirstOrDefault().Price));
+				// displayItems.Add(new ViewTuple("Price", $"$ {product.Price}"));
+				displayItems.Add(new ViewTuple("Weight", $"{product.Weight} kg"));
 
-				displayItems.Add(new ViewTuple("Remaining Stock", sprcnt - didsprcnt));
+				if (SignInManager.CurrentUser.Role != Model.Enum.RoleEnum.Dealer)
+				{
+					// dealer should not be able to see danger level
+					displayItems.Add(new ViewTuple("Reorder Level", product.ReorderLevel));
+					displayItems.Add(new ViewTuple("Danger Level", product.DangerLevel));
+					displayItems.Add(new ViewTuple("Status", product.Status));
 
-				uint didcnt = (uint)context.Did.Where(x => x.ProductId == product.Id).Sum(x => x.Quantity);
+					// total (sold + existign) spare count
+					uint sprcnt = (uint)context.Spare.Include(x => x.Category).Count(x => x.Category.ProductId == product.Id);
+					// sold spare count
+					uint didsprcnt = (uint)context.DidSpare.Include(x => x.Did).Count(x => x.Did.ProductId == product.Id);
 
-				displayItems.Add(new ViewTuple("Available Stock", sprcnt - didcnt));
+					displayItems.Add(new ViewTuple("Remaining Stock", sprcnt - didsprcnt));
+
+					uint didcnt = (uint)context.Did.Where(x => x.ProductId == product.Id).Sum(x => x.Quantity);
+
+					displayItems.Add(new ViewTuple("Available Stock", sprcnt - didcnt));
+				}
+			}
+
+			if (Uri.TryCreate(product.IconUrl, UriKind.Absolute, out Uri iconUrl) && iconUrl != null && (iconUrl.Scheme == Uri.UriSchemeHttp || iconUrl.Scheme == Uri.UriSchemeHttps))
+			{
+				Icon.ImageSource = new BitmapImage(iconUrl);
 			}
 		}
 	}

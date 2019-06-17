@@ -13,10 +13,10 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 
-		<StackPanel>
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="GUID" Margin="0 0 0 10"/>
-				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="GUID"/>
+				<TextBox x:Name="Guid" IsEnabled="False"/>
 				<Button 
 					x:Name="GenerateGuidBtn"
 					Content="Generate new GUID" 
@@ -27,9 +27,9 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Product" Margin="0 0 0 10"/>
-
+			<StackPanel Spacing="10">
+				<TextBlock Text="Product"/>
+				<TextBox x:Name="ProductGUID" IsEnabled="False"/>
 				<Button x:Name="Select" Content="Select Product" Click="Select_Click"/>
 
 				<TextBlock x:Name="SelectedProductTextBlock" Visibility="Collapsed"/>
@@ -39,48 +39,48 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Description" Margin="0 0 0 10"/>
-				<RichEditBox x:Name="Description" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Description"/>
+				<RichEditBox x:Name="Description"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Image URL" Margin="0 0 0 10"/>
-				<TextBox x:Name="ImageUrl" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Promotion Image URL"/>
+				<TextBox x:Name="ImageUrl"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Discount" Margin="0 0 0 10"/>
-				<TextBox x:Name="Discount" Margin="0 0 0 10" BeforeTextChanging="Discount_BeforeTextChanging"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Discount"/>
+				<TextBox x:Name="Discount" BeforeTextChanging="Discount_BeforeTextChanging"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Promotion Duration" Margin="0 0 0 10"/>
-				<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-				<DatePicker x:Name="StartTime" Header="Start Time" Margin="0 0 0 10"/>
-				<DatePicker x:Name="EndTime" Header="End Time" Margin="0 0 0 10"/>
-			</StackPanel>
-
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Status" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Promotion Duration"/>
+				<DatePicker x:Name="StartTime" Header="Start Time"/>
+				<DatePicker x:Name="EndTime" Header="End Time"/>
 				<TextBlock Text="xxx."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="Status"/>
+				<ComboBox x:Name="Status" MinWidth="280"/>
+				<TextBlock Text="xxx."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
 				<Button x:Name="Submit" Content="Add Promotion" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>

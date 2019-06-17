@@ -29,12 +29,12 @@
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 		<NavigationView x:Name="NavigationViewControl"
-            PaneDisplayMode="Top"
+            PaneDisplayMode="Left"
 			IsPaneToggleButtonVisible="False"
             IsBackButtonVisible="Collapsed"
             IsBackEnabled="True"
             Margin="0 0 0 0"
-			SelectionChanged="OnSelectionChanged">
+			ItemInvoked="NavigationViewControl_ItemInvoked">
 			<NavigationView.AutoSuggestBox>
 				<AutoSuggestBox
 					PlaceholderText="Search"
@@ -55,7 +55,7 @@
 						Margin="5 50 0 0"/>
 			</NavigationView.Header>
 			<ScrollViewer>
-				<Frame x:Name="contentFrame" Padding="20 0"/>
+				<Frame x:Name="contentFrame" Padding="20 0" Margin="0 0 0 30"/>
 			</ScrollViewer>
 		</NavigationView>
 		

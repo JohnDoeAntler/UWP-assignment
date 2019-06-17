@@ -31,65 +31,82 @@ namespace CherryProject.Panel
     /// </summary>
     public sealed partial class IndexPage : Page
 	{
-		private static readonly IEnumerable<IndexGridViewItem> _indexGridViewItems =
-			new[]{
+		private static IEnumerable<IndexGridViewItem> IndexGridViewItems => 
+			new[]
+			{
 				new IndexGridViewItem{
 					Title = "Account Management",
 					Description = "Account observation, creation, modification and remove control.",
 					Icon = Symbol.ContactInfo,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.AccountPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.AccountPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Order Processing",
 					Description = "Order processing view, statistics and trend calculation, creation, modification and remove.",
 					Icon = Symbol.MoveToFolder,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.OrderPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.OrderPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Product Management",
 					Description = "Product supplement, modification and view.",
 					Icon = Symbol.Page2,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.ProductPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.ProductPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Promotion Management",
 					Description = "Promotion view, supplement and modification.",
 					Icon = Symbol.Pictures,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.PromotionPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.PromotionPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Spare Management",
 					Description = "Spare dispensing, spare's category assignment and spare assembly.",
 					Icon = Symbol.PreviewLink,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.SparePages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.SparePages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Category Management",
 					Description = "Category creation",
 					Icon = Symbol.DisconnectDrive,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.CategoryPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.CategoryPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Dispatch Management",
 					Description = "Dispatch instruction cover status modification and tracking.",
 					Icon = Symbol.Send,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.DispatchPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.DispatchPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Invoice Management",
 					Description = "Invoice generation and invoice content and status modification.",
 					Icon = Symbol.AlignCenter,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.InvoicePages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.InvoicePages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
 					Title = "Other",
 					Description = "Emit notification, etc.",
 					Icon = Symbol.Comment,
-					Views = PermissionManager.GetTypesInNamespace("CherryProject.Panel.OtherPages")
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.OtherPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				}
 			};
-
-		private static IEnumerable<IndexGridViewItem> IndexGridViewItems => _indexGridViewItems;
 
 		public static ObservableCollection<IndexGridViewItem> GetIndexGridViewItems(RoleEnum role)
 			=> new ObservableCollection<IndexGridViewItem>(IndexGridViewItems.Where(x => x.Views.Any(y => PermissionManager.GetPermission(role).Any(z => y.Name == z.Name))));
@@ -102,7 +119,7 @@ namespace CherryProject.Panel
         {
 			this.InitializeComponent();
 
-			_items = GetIndexGridViewItems(SignInManager.CurrentUser.Role.ToRoleEnum());
+			_items = GetIndexGridViewItems(SignInManager.CurrentUser.Role);
 
 			_items.Add(new IndexGridViewItem()
 			{
@@ -144,20 +161,21 @@ namespace CherryProject.Panel
 				{
 					var list = new ObservableCollection<NavigationViewItemBase>(
 						PermissionManager
-							.GetPermission(SignInManager.CurrentUser.Role.ToRoleEnum())
+							.GetPermission(SignInManager.CurrentUser.Role)
 							.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
 							.Take(5)
-							.Select(x => new NavigationViewItem()
-							{
-								Content = x.ClassNameToString(),
-								Icon = new SymbolIcon(
-									_items
-										.FirstOrDefault(y => y.Views.Any(z => z.Name == x.Name))
-										.Icon
-								)
-							}
-						)
-					);
+							.Select(x => 
+								new NavigationViewItem()
+								{
+									Content = x.ClassNameToString(),
+									Icon = new SymbolIcon(
+										_items
+											.FirstOrDefault(y => y.Views.Any(z => z.Name == x.Name))
+											.Icon
+									)
+								}
+							)
+						);
 
 					if (list.Count != 0)
 					{

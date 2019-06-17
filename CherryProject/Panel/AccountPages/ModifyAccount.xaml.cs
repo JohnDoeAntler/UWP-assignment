@@ -1,10 +1,12 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Service;
 using Microsoft.Toolkit.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -43,15 +45,17 @@ namespace CherryProject.Panel.AccountPages
 				Region.Items.Add(x);
 			});
 
-			Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>().ToList().ForEach(x =>
-			{
-				Role.Items.Add(x.ToString());
-			});
+			Role.ItemsSource = EnumManager.GetEnumList<RoleEnum>();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
+
+			// permission control
+			if (SignInManager.CurrentUser.Role != RoleEnum.AreaManager
+			&& SignInManager.CurrentUser.Role != RoleEnum.Administrator)
 			{
-				Status.Items.Add(x.ToString());
-			});
+				Role.IsEnabled = false;
+				Status.IsEnabled = false;
+			}
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -61,6 +65,10 @@ namespace CherryProject.Panel.AccountPages
 			if (e.Parameter is User user)
 			{
 				FillInformation(this.user = user);
+			}
+			else if (!PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(DisableAccount)))
+			{
+				FillInformation(this.user = SignInManager.CurrentUser);
 			}
 			else
 			{
@@ -76,7 +84,7 @@ namespace CherryProject.Panel.AccountPages
 
 				if (result == ContentDialogResult.Primary)
 				{
-					this.Frame.Navigate(typeof(SearchAccounts), this.GetType(), new DrillInNavigationTransitionInfo());
+					Frame.Navigate(typeof(SearchAccounts), this.GetType(), new DrillInNavigationTransitionInfo());
 				}
 				else
 				{
@@ -87,30 +95,23 @@ namespace CherryProject.Panel.AccountPages
 
 		private void FillInformation(User user)
 		{
-			Guid.Text = user.Id;
+			Guid.Text = user.Id.ToString();
 			Username.Text = user.UserName;
 			Password.Password = user.PasswordHash;
 			FirstName.Text = user.FirstName;
 			LastName.Text = user.LastName;
 			Email.Text = user.Email;
 			PhoneNumber.Text = user.PhoneNumber;
-			Role.SelectedItem = user.Role.Name;
+			Role.SelectedItem = user.Role;
 			Region.SelectedItem = user.Region;
-			Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, user.Address);
+			Address.SetText(user.Address);
 			Status.SelectedItem = user.Status;
+			Url.Text = user.IconUrl ?? string.Empty;
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to modify current account?",
-				PrimaryButtonText = "Modify Account",
-				CloseButtonText = "Cancel"
-			};
-
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
@@ -123,26 +124,16 @@ namespace CherryProject.Panel.AccountPages
 					|| !Email.Text.IsEmail()
 					|| !PhoneNumber.Text.IsPhoneNumber()
 					|| string.IsNullOrEmpty(Region.SelectedItem as string)
-					|| string.IsNullOrEmpty(Role.SelectedItem as string)
-					|| string.IsNullOrEmpty(Status.SelectedItem as string)
+					|| Role.SelectedValue == null
+					|| Status.SelectedValue == null
 				)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
 					try
 					{
-						var roleId = (await Role.SelectedItem.ToString().ToRoleAsync()).Id;
-
 						user = await user.ModifyAsync(x =>
 							{
 								x.UserName = Username.Text;
@@ -152,35 +143,20 @@ namespace CherryProject.Panel.AccountPages
 								x.Email = Email.Text;
 								x.PhoneNumber = PhoneNumber.Text;
 								x.Region = Region.SelectedItem as string;
-								x.RoleId = roleId;
-								x.Status = Status.SelectedItem as string;
+								x.Role = (RoleEnum) Role.SelectedItem;
+								x.Status = (GeneralStatusEnum) Status.SelectedItem;
 								x.Address = Address.GetText();
+								x.IconUrl = Url.Text;
 							}
 						);
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully modified user.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 
-						await message.EnqueueAndShowIfAsync();
-
-						this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
+						Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 					}
 					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = "The information you typed might duplicated, please re-type the username and make sure the email has not been registered before.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

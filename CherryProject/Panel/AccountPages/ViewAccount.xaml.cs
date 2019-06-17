@@ -1,5 +1,7 @@
-﻿using CherryProject.Model;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
 using CherryProject.Service;
+using CherryProject.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +17,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,17 +29,20 @@ namespace CherryProject.Panel.AccountPages
     /// </summary>
     public sealed partial class ViewAccount : Page
     {
-		private readonly ObservableCollection<Tuple<string, string>> _displayItems;
-		public ObservableCollection<Tuple<string, string>> DisplayItems => _displayItems;
+		private readonly ObservableCollection<ViewTuple> _displayItems;
 
 		public ViewAccount()
         {
             this.InitializeComponent();
 
-			_displayItems = new ObservableCollection<Tuple<string, string>>();
+			_displayItems = new ObservableCollection<ViewTuple>();
 
-			DataContext = _displayItems;
+			// permision control
+			ModifyAccount.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyAccount));
+			DisableAccount.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(DisableAccount));
 		}
+
+		public ObservableCollection<ViewTuple> DisplayItems => _displayItems;
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
@@ -55,12 +61,17 @@ namespace CherryProject.Panel.AccountPages
 			LastName.Text = user.LastName;
 			Username.Text = user.UserName;
 
-			_displayItems.Add(("Email",			user.Email).ToTuple<string, string>());
-			_displayItems.Add(("Phone Number",	user.PhoneNumber).ToTuple<string, string>());
-			_displayItems.Add(("Region",		user.Region).ToTuple<string, string>());
-			_displayItems.Add(("Address",		user.Address).ToTuple<string, string>());
-			_displayItems.Add(("Role",			user.Role.Name).ToTuple<string, string>());
-			_displayItems.Add(("Status",		user.Status).ToTuple<string, string>());
+			_displayItems.Add(new ViewTuple("Email",		user.Email));
+			_displayItems.Add(new ViewTuple("Phone Number",	user.PhoneNumber));
+			_displayItems.Add(new ViewTuple("Region",		user.Region));
+			_displayItems.Add(new ViewTuple("Address",		user.Address));
+			_displayItems.Add(new ViewTuple("Role",			user.Role));
+			_displayItems.Add(new ViewTuple("Status",		user.Status));
+
+			if (Uri.TryCreate(user.IconUrl, UriKind.Absolute, out Uri iconUrl) && iconUrl != null && (iconUrl.Scheme == Uri.UriSchemeHttp || iconUrl.Scheme == Uri.UriSchemeHttps))
+			{
+				Icon.ImageSource = new BitmapImage(iconUrl);
+			}
 		}
 	}
 }

@@ -34,7 +34,11 @@ namespace CherryProject.ViewModel
 
 		public string ProductName => OrderProduct.Product.Name;
 
-		public double Price => Quantity * OrderProduct.Product.Price;
+		public double Price {
+			get {
+				return Quantity * OrderProduct.Product.PriceHistory.Where(x => x.Timestamp < OrderProduct.LastTimeModified).OrderByDescending(x => x.Timestamp).FirstOrDefault().Price;
+			}
+		}
 
 		public double Weight => Quantity * OrderProduct.Product.Weight;
 

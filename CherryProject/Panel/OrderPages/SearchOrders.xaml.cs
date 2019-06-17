@@ -49,6 +49,13 @@ namespace CherryProject.Panel.OrderPages
 
 			// add a search filter for user input their filtering string.
 			AddSearchFilter();
+
+			// permission control
+			if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+			{
+				DealerSelector.Visibility = Visibility.Collapsed;
+				ModifierSelector.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		public ObservableCollection<string> SearchFilters => _searchFilters;
@@ -65,6 +72,9 @@ namespace CherryProject.Panel.OrderPages
 			// clear both
 			keyValuePairs.Clear();
 			_searchFilters.Clear();
+			// reset 
+			ResetDealer_Click(null, null);
+			ResetModifier_Click(null, null);
 			// remain a empty searching filter input to user
 			AddSearchFilter();
 			// update the result to display all products
@@ -176,6 +186,12 @@ namespace CherryProject.Panel.OrderPages
 				// store user
 				IEnumerable<Order> set = context.Order.Include(x => x.Dealer).Include(x => x.OrderProduct);
 
+				// check if dealer
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+				{
+					set = set.Where(x => x.DealerId == SignInManager.CurrentUser.Id);
+				}
+
 				// user filtering
 				foreach (var predicate in keyValuePairs)
 				{
@@ -188,13 +204,7 @@ namespace CherryProject.Panel.OrderPages
 				}
 
 				// clear the result for renew the searching result
-				_searchOrderGridViewItems.Clear();
-
-				// re-update the searching result by using foreach statement
-				foreach (var item in set)
-				{
-					_searchOrderGridViewItems.Add(item);
-				}
+				_searchOrderGridViewItems.UpdateObservableCollection(set);
 
 				// updatae the reminder text
 				ResultAlerter.Text = $"There has only found {_searchOrderGridViewItems.Count} result(s).";
@@ -233,12 +243,12 @@ namespace CherryProject.Panel.OrderPages
 			do
 			{
 				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.RoleId != (await RoleEnum.Dealer.ToRoleAsync()).Id);
+			} while (button == ContentDialogResult.Primary && dialog.User.Role != RoleEnum.Dealer);
 
 			if (button == ContentDialogResult.Primary)
 			{
 				User dealer = dialog.User;
-				DealerGUID.Text = dealer.Id;
+				DealerGUID.Text = dealer.Id.ToString();
 
 				SelectedDealer.Text = $"Selected Dealer: {dealer.FirstName} {dealer.LastName}";
 
@@ -262,7 +272,7 @@ namespace CherryProject.Panel.OrderPages
 			if (button == ContentDialogResult.Primary)
 			{
 				User modifier = dialog.User;
-				ModifierGUID.Text = modifier.Id;
+				ModifierGUID.Text = modifier.Id.ToString();
 
 				SelectedModifier.Text = $"Selected Modifier: {modifier.FirstName} {modifier.LastName}";
 

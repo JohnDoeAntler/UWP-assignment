@@ -13,26 +13,26 @@
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
 		
-		<StackPanel>
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="GUID" Margin="0 0 0 10"/>
-				<TextBox x:Name="Guid" IsEnabled="False" Margin="0 0 0 10"/>
+		<StackPanel Spacing="30">
+			<StackPanel>
+				<TextBlock Text="GUID" />
+				<TextBox x:Name="Guid" IsEnabled="False" />
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Username" Margin="0 0 0 10"/>
-				<TextBox x:Name="Username" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Username" />
+				<TextBox x:Name="Username" />
 				<TextBlock Text="The account username. The length of username should not be less than 6."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Password" Margin="0 0 0 10"/>
-				<PasswordBox x:Name="Password" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Password" />
+				<PasswordBox x:Name="Password" />
 				<TextBlock Text="The account password. The length of password should not be less than 8."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
@@ -43,65 +43,73 @@
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<StackPanel Margin="0 0 0 30">
-					<TextBlock Text="First Name" Margin="0 0 0 10"/>
+				<StackPanel Spacing="10">
+					<TextBlock Text="First Name"/>
 					<TextBox x:Name="FirstName"/>
 				</StackPanel>
-				<StackPanel Margin="0 0 0 30" Grid.Column="1">
-					<TextBlock Text="Last Name" Margin="0 0 0 10"/>
+				<StackPanel Spacing="10" Grid.Column="1">
+					<TextBlock Text="Last Name"/>
 					<TextBox x:Name="LastName"/>
 				</StackPanel>
 			</Grid>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Email" Margin="0 0 0 10"/>
-				<TextBox x:Name="Email" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Email" />
+				<TextBox x:Name="Email" />
 				<TextBlock Text="The account contact use email, it would be used on account recovery or account confirmation."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Phone Number" Margin="0 0 0 10"/>
-				<TextBox x:Name="PhoneNumber" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Phone Number" />
+				<TextBox x:Name="PhoneNumber" />
 				<TextBlock Text="The account contact use phone number, it would be used on account recovery or identity verification."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Role" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Role" MinWidth="280" Margin="0 0 0 10" />
+			<StackPanel Spacing="10">
+				<TextBlock Text="Role" />
+				<ComboBox x:Name="Role" MinWidth="280" />
 				<TextBlock Text="The account role, the selected role would decide the permissions the account granted."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Region" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Region" MinWidth="280" Margin="0 0 0 10" />
+			<StackPanel Spacing="10">
+				<TextBlock Text="Region" />
+				<ComboBox x:Name="Region" MinWidth="280"  />
 				<TextBlock Text="The account user region, the selected region would decide the whole spare dispatchment."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Address" Margin="0 0 0 10"/>
-				<RichEditBox x:Name="Address" Margin="0 0 0 10"/>
+			<StackPanel Spacing="10">
+				<TextBlock Text="Address" />
+				<RichEditBox x:Name="Address" />
 				<TextBlock Text="The account detail address, it would be used on sending important notification."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Icon URL"/>
+				<TextBox x:Name="Url"/>
+				<TextBlock Text="The account display icon, it used to identify user face or customization."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30">
-				<TextBlock Text="Status" Margin="0 0 0 10"/>
-				<ComboBox x:Name="Status" MinWidth="280" Margin="0 0 0 10" />
+			<StackPanel Spacing="10">
+				<TextBlock Text="Status" />
+				<ComboBox x:Name="Status" MinWidth="280"  />
 				<TextBlock Text="The account status, it determine the account is locked or not."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
-			<StackPanel Margin="0 0 0 30" Orientation="Horizontal" Spacing="10">
+			<StackPanel  Orientation="Horizontal" Spacing="10">
 				<Button x:Name="Submit" Content="Modify Account" Click="Submit_Click"/>
 			</StackPanel>
 		</StackPanel>

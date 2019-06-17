@@ -1,9 +1,11 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -33,10 +35,7 @@ namespace CherryProject.Panel.AccountPages
         {
             this.InitializeComponent();
 
-			Enum.GetValues(typeof(GeneralStatusEnum)).Cast<GeneralStatusEnum>().ToList().ForEach(x =>
-			{
-				Status.Items.Add(x.ToString());
-			});
+			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -66,45 +65,21 @@ namespace CherryProject.Panel.AccountPages
 
 		private async void Status_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to disable/enable current account?",
-				PrimaryButtonText = "Disable Account",
-				CloseButtonText = "Cancel"
-			};
-
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			var result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			if (result == ContentDialogResult.Primary)
 			{
 				try
 				{
-					user = await user.ModifyAsync(x => x.Status = Status.SelectedItem as string);
+					user = await user.ModifyAsync(x => x.Status = (GeneralStatusEnum) Status.SelectedItem);
 
-					ContentDialog message = new ContentDialog
-					{
-						Title = "Success",
-						Content = "Successfully disabled user.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await message.EnqueueAndShowIfAsync();
+					await new SuccessDialog().EnqueueAndShowIfAsync();
 
 					this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 				}
 				catch (Exception)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed might duplicated, please re-type the username and make sure the email has not been registered before.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new ErrorDialog().EnqueueAndShowIfAsync();
 				}
 			}
 		}

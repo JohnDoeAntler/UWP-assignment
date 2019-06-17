@@ -5,9 +5,40 @@
     xmlns:local="using:CherryProject.Panel.PromotionPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+	xmlns:model="using:CherryProject.Model"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
+		<StackPanel Spacing="30">
+			<FlipView x:Name="Promotions" MaxHeight="460">
+				<FlipView.ItemTemplate>
+					<DataTemplate x:DataType="model:Promotion">
+						<Grid>
+							<Image Source="{x:Bind ImageUrl}" Stretch="UniformToFill" VerticalAlignment="Top"/>
+							<Border Background="#77000000" Height="60" VerticalAlignment="Bottom">
+								<TextBlock Text="{x:Bind Description}" Padding="12,12" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
+							</Border>
+						</Grid>
+					</DataTemplate>
+				</FlipView.ItemTemplate>
+			</FlipView>
+
+			<StackPanel MaxWidth="460" HorizontalAlignment="Left" Spacing="30">
+				<StackPanel Spacing="10">
+					<TextBlock
+						TextWrapping="WrapWholeWords"
+						Text="xxx." />
+					<Button x:Name="ModifyPromotion" Content="Modify Promotion"/>
+				</StackPanel>
+
+				<StackPanel Spacing="10">
+					<TextBlock
+						TextWrapping="WrapWholeWords"
+						Text="xxx." />
+					<Button x:Name="ModifyPromotionStatus" Content="Modify Promotion Status"/>
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
 	</Grid>
 </Page>

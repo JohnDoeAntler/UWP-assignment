@@ -9,6 +9,7 @@ namespace CherryProject.Model.Enum
 	public enum DicStatusEnum
 	{
 		Dispatching,
-		Dispatched
+		Dispatched,
+		Accepted
 	}
 }

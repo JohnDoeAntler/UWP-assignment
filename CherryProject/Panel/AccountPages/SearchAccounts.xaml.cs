@@ -1,4 +1,5 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Dialog;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Service;
 using CherryProject.ViewModel;
@@ -139,7 +140,7 @@ namespace CherryProject.Panel.AccountPages
 			using (var context = new Context())
 			{
 				// store user
-				IEnumerable<User> set = context.User.Include(x => x.Role);
+				IEnumerable<User> set = context.User;
 
 				// user filtering
 				foreach (var predicate in keyValuePairs)
@@ -178,20 +179,8 @@ namespace CherryProject.Panel.AccountPages
 
 		private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
 		{
-			// abstract a common factor
-			string str = (searchStatus == null ? "View" : "Select");
-
-			// create a dialog
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = $"Are you ensure to {str.ToLower()} tapped account?",
-				PrimaryButtonText = $"{str} Account",
-				CloseButtonText = "Cancel"
-			};
-
 			// display the dialog to user
-			ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
+			ContentDialogResult result = await new ConfirmationDialog().EnqueueAndShowIfAsync();
 
 			// if user selected "{str} account" button
 			if (result == ContentDialogResult.Primary)

@@ -42,7 +42,6 @@
 									<ComboBoxItem Content="GUID"/>
 									<ComboBoxItem Content="Name"/>
 									<ComboBoxItem Content="Description"/>
-									<ComboBoxItem Content="Price"/>
 									<ComboBoxItem Content="Weight"/>
 									<ComboBoxItem Content="Danger Level"/>
 									<ComboBoxItem Content="Status"/>
@@ -118,20 +117,12 @@
 											TextWrapping="WrapWholeWords" 
 											TextTrimming="Clip" 
 											Text="{x:Bind Name}"/>
-										<StackPanel Orientation="Horizontal">
-											<TextBlock
-												Style="{ThemeResource CaptionTextBlockStyle}"
-												Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
-												TextWrapping="WrapWholeWords"
-												TextTrimming="Clip" 
-												Text="Price: $"/>
-											<TextBlock
-												Style="{ThemeResource CaptionTextBlockStyle}"
-												Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
-												TextWrapping="WrapWholeWords"
-												TextTrimming="Clip" 
-												Text="{x:Bind Price}"/>
-										</StackPanel>
+										<TextBlock
+											Style="{ThemeResource CaptionTextBlockStyle}"
+											Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" 
+											TextWrapping="WrapWholeWords"
+											TextTrimming="Clip" 
+											Text="{x:Bind Description}"/>
 									</StackPanel>
 								</StackPanel>
 							</ListViewItem>

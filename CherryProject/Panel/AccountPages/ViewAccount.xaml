@@ -12,15 +12,17 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MaxWidth="460"/>
 		</Grid.ColumnDefinitions>
-		<StackPanel>
-			<StackPanel Margin="0 20">
+		<StackPanel Spacing="30">
+			
+			<StackPanel>
 				<Ellipse Height="200" Width="200">
 					<Ellipse.Fill>
-						<ImageBrush ImageSource="ms-appx:///Assets/Account.jpg"/>
+						<ImageBrush x:Name="Icon" ImageSource="ms-appx:///Assets/Account.jpg"/>
 					</Ellipse.Fill>
 				</Ellipse>
 			</StackPanel>
-			<StackPanel Margin="0 0 0 20">
+			
+			<StackPanel>
 				<StackPanel
 					Orientation="Horizontal"
 					HorizontalAlignment="Center"
@@ -35,9 +37,7 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
 			</StackPanel>
 
-			<ListView
-				Margin="0 0 0 20"
-				ItemsSource="{Binding}">
+			<ListView ItemsSource="{x:Bind DisplayItems}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ListViewItem Padding="10">
@@ -49,8 +49,8 @@
 									 Height="40"
 									 Width="2"/>
 								<StackPanel>
-									<TextBlock Text="{Binding Item1}" FontWeight="Bold"/>
-									<TextBlock Text="{Binding Item2}" 
+									<TextBlock Text="{Binding Header}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding Content}" 
 										Style="{ThemeResource BodyTextBlockStyle}"
 										Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 								</StackPanel>
@@ -60,20 +60,18 @@
 				</ListView.ItemTemplate>
 			</ListView>
 
-			<StackPanel Margin="0 0 0 20">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Modify the account by clicking the above button to modify the account information."/>
 				<Button
 					x:Name="ModifyAccount"
 					Content="Modify Account"/>
 			</StackPanel>
 
-			<StackPanel Margin="0 0 0 30">
+			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
-					Margin="0 0 0 10"
 					Text="Disable the account by clicking the above button to lock the account prevent anyone to access current account." />
 				<Button
 					x:Name="DisableAccount"

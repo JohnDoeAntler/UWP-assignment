@@ -14,7 +14,7 @@ namespace CherryProject.Service
 		{
 			using (var context = new Context())
 			{
-				return await context.User.Include(x => x.Role).FirstOrDefaultAsync(x => predicate(x));
+				return await context.User.FirstOrDefaultAsync(x => predicate(x));
 			}
 		}
 	}

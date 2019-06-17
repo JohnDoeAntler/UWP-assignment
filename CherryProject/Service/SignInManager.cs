@@ -1,11 +1,17 @@
 ﻿using CherryProject.Extension;
 using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Panel;
 using CherryProject.Service.SignStatus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace CherryProject.Service
 {
@@ -37,22 +43,50 @@ namespace CherryProject.Service
 					if (result.PasswordHash.Equals(password.GetMD5hash()))
 					{
 						// if the account is not disabled.
-						if (!result.Status.Equals("Disabled", StringComparison.OrdinalIgnoreCase))
+						if (result.Status != GeneralStatusEnum.Disabled)
 						{
 							CurrentUser = result;
-							return Status.Success;
+
+							await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+							{
+								for (; ; )
+								{
+									// 1 min refresh
+									await Task.Delay(60000);
+
+									if (CurrentUser != null)
+									{
+										if (!await ValidateSecurityStamp())
+										{
+											SignOut();
+
+											Frame navigationFrame = Window.Current.Content as Frame;
+											navigationFrame.Navigate(typeof(LoginPage), null, new DrillInNavigationTransitionInfo());
+
+											break;
+										}
+									}
+									else
+									{
+										break;
+									}
+								}
+							});
+
+						return Status.Success;
 						}else return Status.Disabled;
 					}else return Status.PasswordFailure;
 				}else return Status.UsernameFailure;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				return Status.DatabaseFailure;
+				Debug.WriteLine(e);
+				throw e;
 			}
 		}
 
-		public static void SignOutAsync() => CurrentUser = null;
+		public static void SignOut() => CurrentUser = null;
 
-		public static async Task<bool> ValidateSecurityStamp() => (await UserManager.FindUserAsync(x => x.Id == CurrentUser.Id)).SecurityStamp == CurrentUser.SecurityStamp;
+		public static async Task<bool> ValidateSecurityStamp() => (await UserManager.FindUserAsync(x => x.Id == CurrentUser.Id)).SecurityStamp == (CurrentUser?.SecurityStamp ?? string.Empty);
 	}
 }
