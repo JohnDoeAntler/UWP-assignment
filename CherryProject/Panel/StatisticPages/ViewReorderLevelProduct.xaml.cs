@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -34,7 +35,17 @@ namespace CherryProject.Panel.StatisticPages
 
 			using (var context = new Context())
 			{
-				products = new ObservableCollection<ProductViewModel>(context.Product.Include(x => x.PriceHistory).Where(x => x.DangerLevel > context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity)).Select(x => new ProductViewModel(x, context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity))));
+				products = new ObservableCollection<ProductViewModel>();
+
+				foreach (var item in context.Product.Include(x => x.PriceHistory))
+				{
+					long stock;
+
+					if (item.ReorderLevel > (stock = context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == item.Id) - context.Did.Where(y => y.ProductId == item.Id).Sum(x => x.Quantity)))
+					{
+						products.Add(new ProductViewModel(item, stock));
+					}
+				}
 			}
 		}
 

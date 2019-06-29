@@ -38,11 +38,12 @@ namespace CherryProject.Panel.DispatchPages
 
 		private async void SelectDic_Click(object sender, RoutedEventArgs e)
 		{
-			DicDialog dialog = new DicDialog();
+			DicDialog dialog = new DicDialog(x => x.Status == DicStatusEnum.Dispatching.ToString());
 
 			ContentDialogResult button;
 
 			bool isCompleted = false;
+			bool isDispatching = false;
 
 			using (var context = new Context())
 			{
@@ -64,11 +65,25 @@ namespace CherryProject.Panel.DispatchPages
 
 							await error.EnqueueAndShowIfAsync();
 						}
+						else if (!isDispatching)
+						{
+							ContentDialog error = new ContentDialog
+							{
+								Title = "Alert",
+								Content = "You are not permitted to complete a non-dispatching DIC delivery.",
+								CloseButtonText = "OK",
+								Width = 400
+							};
+
+							await error.EnqueueAndShowIfAsync();
+						}
 					}
 
 					button = await dialog.EnqueueAndShowIfAsync();
 
-				} while (button == ContentDialogResult.Primary && !(isCompleted = context.DidSpare.Count(x => dialog.Dic.Did.Any(y => y.Id == x.DidId)) == dialog.Dic.Did.Sum(x => x.Quantity)));
+				} while (button == ContentDialogResult.Primary 
+					&& !((isDispatching = dialog.Dic.Status == DicStatusEnum.Dispatching.ToString()) 
+					&& (isCompleted = context.DidSpare.Count(x => dialog.Dic.Did.Any(y => y.Id == x.DidId)) == dialog.Dic.Did.Sum(x => x.Quantity))));
 			}
 
 			if (button == ContentDialogResult.Primary)

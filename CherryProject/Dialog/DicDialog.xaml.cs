@@ -58,14 +58,23 @@ namespace CherryProject.Dialog
 			}
 		}
 
-		public DicDialog(Order order)
+		public DicDialog(Predicate<Dic> predicate)
 		{
 			this.InitializeComponent();
+
+			searchDicGridViewItems = new ObservableCollection<Dic>();
 
 			using (var context = new Context())
 			{
 				// var dics = context.Order.Include(x => x.Dic).FirstOrDefault(x => x.Id == order.Id).Dic;
-				var dics = context.Dic.Include(x => x.Did).Include(x => x.Order).ThenInclude(x => x.Dealer).Where(x => x.OrderId == order.Id);
+				IEnumerable<Dic> dics = context.Dic.Include(x => x.Did).Include(x => x.Order).ThenInclude(x => x.Dealer);
+
+				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
+				{
+					dics = dics.Where(x => x.Order.DealerId == SignInManager.CurrentUser.Id);
+				}
+
+				dics = dics.Where(x => predicate(x));
 
 				foreach (var dic in dics)
 				{

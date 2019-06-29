@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -52,10 +53,61 @@ namespace CherryProject.Service
 
 							await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
 							{
-								while (true)
+								using (var context = new Context())
+								{
+									if (CurrentUser.Role == RoleEnum.SalesManager || CurrentUser.Role == RoleEnum.Administrator)
+									{
+										IEnumerable<Product> GetProducts(Expression<Func<Product, int>> e)
+										{
+											return context.Product.Where(x => e.Compile()(x) > context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity));
+										}
+
+										foreach (var item in GetProducts(x => x.ReorderLevel))
+										{
+											NotificationManager.SendNotification(new Notification()
+											{
+												Sender = new User()
+												{
+													IconUrl = item.IconUrl
+												},
+												Header = "Product Supplement Alert",
+												Content = $"{item.Name} has reached reorder level. Please dispense or resupply spare parts.",
+												Type = NotificationTypeEnum.Product,
+												ObjectId = item.Id
+											});
+										}
+
+										foreach (var item in GetProducts(x => x.DangerLevel))
+										{
+											NotificationManager.SendNotification(new Notification()
+											{
+												Sender = new User()
+												{
+													IconUrl = item.IconUrl
+												},
+												Header = "Product Supplement Alert",
+												Content = $"{item.Name} has reached danger level. Please dispense or resupply spare parts.",
+												Type = NotificationTypeEnum.Product,
+												ObjectId = item.Id
+											});
+										}
+									}
+								}
+
+								for (int i = 0; ; i++)
 								{
 									if (CurrentUser != null)
 									{
+										if (!await ValidateSecurityStamp())
+										{
+											SignOut();
+
+											Frame navigationFrame = Window.Current.Content as Frame;
+											navigationFrame.Navigate(typeof(LoginPage), null, new DrillInNavigationTransitionInfo());
+
+											break;
+										}
+
 										using (var context = new Context())
 										{
 											IQueryable<Notification> notifications;
@@ -66,32 +118,32 @@ namespace CherryProject.Service
 												// sales manager
 												// storemen
 												default:
-												{
-													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
+													{
+														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
 
-													break;
-												}
+														break;
+													}
 
 												case RoleEnum.AreaManager:
-												{
-													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
+													{
+														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
 
-													break;
-												}
+														break;
+													}
 
 												case RoleEnum.DispatchClerk:
-												{
-													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order) && x.IsReceived == false);
+													{
+														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order) && x.IsReceived == false);
 
-													break;
-												}
+														break;
+													}
 
 												case RoleEnum.Administrator:
-												{
-													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId) && x.IsReceived == false);
+													{
+														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId) && x.IsReceived == false);
 
-													break;
-												}
+														break;
+													}
 											}
 
 											foreach (var notification in notifications)
@@ -112,16 +164,6 @@ namespace CherryProject.Service
 											}
 
 											await context.SaveChangesAsync();
-										}
-
-										if (!await ValidateSecurityStamp())
-										{
-											SignOut();
-
-											Frame navigationFrame = Window.Current.Content as Frame;
-											navigationFrame.Navigate(typeof(LoginPage), null, new DrillInNavigationTransitionInfo());
-
-											break;
 										}
 									}
 									else
@@ -148,6 +190,6 @@ namespace CherryProject.Service
 
 		public static void SignOut() => CurrentUser = null;
 
-		public static async Task<bool> ValidateSecurityStamp() => (await UserManager.FindUserAsync(x => x.Id == CurrentUser.Id)).SecurityStamp == (CurrentUser?.SecurityStamp ?? string.Empty);
+		public static async Task<bool> ValidateSecurityStamp() => (await UserManager.FindUserAsync(x => x.Id == CurrentUser.Id)).SecurityStamp == CurrentUser?.SecurityStamp;
 	}
 }

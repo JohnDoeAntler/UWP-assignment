@@ -62,7 +62,7 @@ namespace CherryProject.Panel.SparePages
 
 			if (button == ContentDialogResult.Primary)
 			{
-				var dicDialog = new DicDialog(orderDialog.Order);
+				var dicDialog = new DicDialog(x => x.Id == orderDialog.Order.Id);
 
 				button = await dicDialog.EnqueueAndShowIfAsync();
 

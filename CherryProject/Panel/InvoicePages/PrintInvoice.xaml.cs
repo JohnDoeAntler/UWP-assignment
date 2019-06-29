@@ -41,7 +41,7 @@ namespace CherryProject.Panel.InvoicePages
 
 		private async void SelectDic_Click(object sender, RoutedEventArgs e)
 		{
-			OrderDialog dialog = new OrderDialog();
+			OrderDialog dialog = new OrderDialog(x => x.Status == OrderStatusEnum.Endorsed);
 
 			ContentDialogResult button;
 

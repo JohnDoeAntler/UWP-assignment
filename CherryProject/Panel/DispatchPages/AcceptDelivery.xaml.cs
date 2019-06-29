@@ -37,7 +37,7 @@ namespace CherryProject.Panel.DispatchPages
 
 		private async void SelectDic_Click(object sender, RoutedEventArgs e)
 		{
-			DicDialog dialog = new DicDialog();
+			DicDialog dialog = new DicDialog(x => x.Status == DicStatusEnum.Dispatched.ToString());
 
 			ContentDialogResult button;
 

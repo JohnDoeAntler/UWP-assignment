@@ -31,10 +31,10 @@
 							FontSize="12"
 							Binding="{Binding Price}"/>
 				<controls:DataGridTextColumn
-							Header="Danger Level"
+							Header="Reorder Level"
 							Width="*"
 							FontSize="12"
-							Binding="{Binding DangerLevel}"/>
+							Binding="{Binding ReorderLevel}"/>
 				<controls:DataGridTextColumn
 							Header="Available Stock"
 							Width="*"

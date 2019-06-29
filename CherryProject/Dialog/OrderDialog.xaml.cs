@@ -28,6 +28,7 @@ namespace CherryProject.Dialog
 		private readonly ObservableCollection<string> _searchFilters;
 		private readonly ObservableCollection<Order> _searchOrderGridViewItems;
 		private readonly Dictionary<string, Predicate<Order>> keyValuePairs;
+		private readonly Predicate<Order> restriction;
 
 		public OrderDialog()
 		{
@@ -37,6 +38,25 @@ namespace CherryProject.Dialog
 			_searchFilters = new ObservableCollection<string>();
 			_searchOrderGridViewItems = new ObservableCollection<Order>();
 			keyValuePairs = new Dictionary<string, Predicate<Order>>();
+
+			// update the search result
+			UpdateSearchResult();
+
+			// add a search filter for user input their filtering string.
+			AddSearchFilter();
+		}
+
+		public OrderDialog(Predicate<Order> predicate)
+		{
+			this.InitializeComponent();
+
+			// searching filter list instantiation
+			_searchFilters = new ObservableCollection<string>();
+			_searchOrderGridViewItems = new ObservableCollection<Order>();
+			keyValuePairs = new Dictionary<string, Predicate<Order>>();
+
+			// restriction that add an filter on updating result
+			restriction = predicate;
 
 			// update the search result
 			UpdateSearchResult();
@@ -149,6 +169,12 @@ namespace CherryProject.Dialog
 				if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
 				{
 					set = set.Where(x => x.DealerId == SignInManager.CurrentUser.Id);
+				}
+
+				// restriction
+				if (restriction != null)
+				{
+					set = set.Where(x => restriction(x));
 				}
 
 				// user filtering
