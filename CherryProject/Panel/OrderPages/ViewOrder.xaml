@@ -109,6 +109,13 @@
 			<StackPanel Spacing="10">
 				<TextBlock 
 					TextWrapping="WrapWholeWords"
+					Text="Unreserve the order by clicking the above button to alter the order from reserve state to purchase state."/>
+				<Button x:Name="UnreserveOrder" Content="Unreserve Order"/>
+			</StackPanel>
+
+			<StackPanel Spacing="10">
+				<TextBlock 
+					TextWrapping="WrapWholeWords"
 					Text="Cancel the order by clicking the above button to dispose the previous sent order." />
 				<Button
 					x:Name="CancelOrder"

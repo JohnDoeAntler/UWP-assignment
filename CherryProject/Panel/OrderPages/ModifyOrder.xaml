@@ -85,14 +85,6 @@
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<StackPanel Spacing="10">
-				<TextBlock Text="Type"/>
-				<ComboBox x:Name="Type" MinWidth="280"/>
-				<TextBlock Text="The order type."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-			</StackPanel>
-
 			<StackPanel >
 				<Button x:Name="Submit" Content="Modify Order" Click="Submit_Click"/>
 			</StackPanel>

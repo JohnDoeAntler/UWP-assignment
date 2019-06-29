@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="CherryProject.Panel.OrderPages.UnreserveOrder"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.OrderPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="10">
+			<TextBlock Text="Unreserve Order"/>
+			<Button x:Name="Submit" Content="Unreserve Order"/>
+			<TextBlock 
+				Text="Unreserve the order by clicking the above button to alter the order from reserve state to purchase state."
+				Style="{ThemeResource BodyTextBlockStyle}"
+				Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+		</StackPanel>
+	</Grid>
+</Page>

@@ -43,9 +43,6 @@ namespace CherryProject.Panel.OrderPages
 
 			items = new ObservableCollection<OrderProductViewModel>();
 
-			// fill the role combo box with all role
-			Type.ItemsSource = EnumManager.GetEnumList<OrderTypeEnum>();
-
 			DataGridViewControl.CellEditEnded += DataGridViewControl_CellEditEnded;
 		}
 
@@ -93,7 +90,6 @@ namespace CherryProject.Panel.OrderPages
 					DealerGUID.Text = order.DealerId.ToString();
 					SelectedUser.Text = $"{dealer.FirstName} {dealer.LastName}";
 					Address.Document.SetText(Windows.UI.Text.TextSetOptions.None, order.DeliveryAddress);
-					Type.SelectedItem = order.Type;
 
 					this.order = order;
 
@@ -164,8 +160,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (result == ContentDialogResult.Primary)
 			{
-				if (Type.SelectedItem == null
-				|| string.IsNullOrEmpty(Address.GetText())
+				if (string.IsNullOrEmpty(Address.GetText())
 				|| items.Count == 0
 				|| items.Any(x => x.Quantity < 1)
 				)
@@ -179,7 +174,6 @@ namespace CherryProject.Panel.OrderPages
 						var order = await this.order.ModifyAsync(x => {
 							x.ModifierId = SignInManager.CurrentUser.Id;
 							x.DeliveryAddress = Address.GetText();
-							x.Type = (OrderTypeEnum) Type.SelectedItem;
 						});
 
 						foreach (var item in items)

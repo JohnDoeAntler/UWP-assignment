@@ -60,7 +60,7 @@ namespace CherryProject.Panel.DispatchPages
 
 		private async void SelectOrder_Click(object sender, RoutedEventArgs e)
 		{
-			OrderDialog dialog = new OrderDialog(x => x.Status == OrderStatusEnum.Endorsed);
+			OrderDialog dialog = new OrderDialog(x => x.Status == OrderStatusEnum.Endorsed && x.Type == OrderTypeEnum.Purchase);
 
 			ContentDialogResult button;
 

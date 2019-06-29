@@ -45,6 +45,7 @@ namespace CherryProject.Panel.OrderPages
 			// permision control
 			ModifyOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyOrder));
 			EndorseOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(EndorseOrder));
+			UnreserveOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(EndorseOrder));
 			CancelOrder.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(CancelOrder));
 		}
 
@@ -62,6 +63,7 @@ namespace CherryProject.Panel.OrderPages
 
 				ModifyOrder.Click += (sender, args) => Frame.Navigate(typeof(ModifyOrder), order, new DrillInNavigationTransitionInfo());
 				EndorseOrder.Click += (sender, args) => Frame.Navigate(typeof(EndorseOrder), order, new DrillInNavigationTransitionInfo());
+				UnreserveOrder.Click += (sender, args) => Frame.Navigate(typeof(UnreserveOrder), order, new DrillInNavigationTransitionInfo());
 				CancelOrder.Click += (sender, args) => Frame.Navigate(typeof(CancelOrder), order, new DrillInNavigationTransitionInfo());
 			}
 			else if (e.Parameter is Guid id)
@@ -77,6 +79,7 @@ namespace CherryProject.Panel.OrderPages
 
 				ModifyOrder.Click += (sender, args) => Frame.Navigate(typeof(ModifyOrder), tmp, new DrillInNavigationTransitionInfo());
 				EndorseOrder.Click += (sender, args) => Frame.Navigate(typeof(EndorseOrder), tmp, new DrillInNavigationTransitionInfo());
+				UnreserveOrder.Click += (sender, args) => Frame.Navigate(typeof(UnreserveOrder), tmp, new DrillInNavigationTransitionInfo());
 				CancelOrder.Click += (sender, args) => Frame.Navigate(typeof(CancelOrder), tmp, new DrillInNavigationTransitionInfo());
 			}
 			else
@@ -122,7 +125,6 @@ namespace CherryProject.Panel.OrderPages
 				Summary.Visibility = Visibility.Visible;
 				Summary.Text = $"Total price: ${items.Sum(x => x.Price * (promotions.FirstOrDefault(y => y.ProductId == x.OrderProduct.ProductId)?.Discount ?? 1.0))}, Total weight: {items.Sum(x => x.Weight)}\r\n{text}";
 			}
-
 		}
 	}
 }

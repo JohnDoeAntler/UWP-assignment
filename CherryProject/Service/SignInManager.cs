@@ -73,7 +73,8 @@ namespace CherryProject.Service
 												Header = "Product Supplement Alert",
 												Content = $"{item.Name} has reached reorder level. Please dispense or resupply spare parts.",
 												Type = NotificationTypeEnum.Product,
-												ObjectId = item.Id
+												ObjectId = item.Id,
+												Timestamp = DateTime.Now
 											});
 										}
 
@@ -88,7 +89,8 @@ namespace CherryProject.Service
 												Header = "Product Supplement Alert",
 												Content = $"{item.Name} has reached danger level. Please dispense or resupply spare parts.",
 												Type = NotificationTypeEnum.Product,
-												ObjectId = item.Id
+												ObjectId = item.Id,
+												Timestamp = DateTime.Now
 											});
 										}
 									}

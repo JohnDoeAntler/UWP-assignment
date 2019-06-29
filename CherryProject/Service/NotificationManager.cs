@@ -37,7 +37,11 @@ namespace CherryProject.Service
 		{
 			ToastContent toast = new ToastContent()
 			{
-				Launch = "SMLC Notifications Visualizer",
+				Launch = new QueryString()
+				{
+					{ "Type", notification.Type.ToString() },
+					{ "ObjectId", notification.ObjectId.ToString() }
+				}.ToString(),
 
 				Visual = new ToastVisual()
 				{
@@ -61,9 +65,16 @@ namespace CherryProject.Service
 							{
 								Text = notification.Content
 							},
+						},
+
+						Attribution = new ToastGenericAttributionText()
+						{
+							Text = "SMLC Notifications Visualizer"
 						}
 					}
 				},
+
+				DisplayTimestamp = notification.Timestamp,
 
 				Actions = new ToastActionsCustom()
 				{

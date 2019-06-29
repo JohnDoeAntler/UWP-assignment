@@ -45,6 +45,7 @@ namespace CherryProject.Service
 						typeof(CreateOrder),
 						typeof(ModifyOrder),
 						typeof(SearchOrders),
+						typeof(UnreserveOrder),
 						typeof(ViewPromotion),
 						// other
 						typeof(Calendar),

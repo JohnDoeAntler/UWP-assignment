@@ -236,6 +236,9 @@
     <Compile Include="Panel\OrderPages\SearchOrders.xaml.cs">
       <DependentUpon>SearchOrders.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel\OrderPages\UnreserveOrder.xaml.cs">
+      <DependentUpon>UnreserveOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\OrderPages\ViewOrder.xaml.cs">
       <DependentUpon>ViewOrder.xaml</DependentUpon>
     </Compile>
@@ -431,6 +434,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\OrderPages\SearchOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\OrderPages\UnreserveOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
