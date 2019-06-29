@@ -176,6 +176,7 @@ namespace CherryProject.Dialog
 		{
 			User = (User) ResultListViewControl.SelectedItem;
 			SelectedTarget.Text = $"Selected: {User.FirstName} {User.LastName}";
+			SelectedTarget.Visibility = Visibility.Visible;
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -183,6 +184,7 @@ namespace CherryProject.Dialog
 			if (User == null)
 			{
 				SelectedTarget.Text = $"Please select a user or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}

@@ -23,29 +23,29 @@
 					<Grid>
 						<Image Source="{x:Bind ImageUrl}" Stretch="UniformToFill" VerticalAlignment="Top"/>
 						<Border Background="#33000000" VerticalAlignment="Bottom">
-							<StackPanel Spacing="5">
+							<StackPanel Spacing="5" Padding="10 5">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<TextBlock Text="Promotion Description:" Style="{StaticResource TitleTextBlockStyle}" Margin="0 0 5 0"/>
 									<TextBlock Text="{x:Bind Description}" Style="{StaticResource TitleTextBlockStyle}"/>
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Text="Promotion Discount:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="Promotion Discount:" Style="{StaticResource BodyTextBlockStyle}"/>
 									<TextBlock Text="{x:Bind Discount}" Style="{StaticResource BodyTextBlockStyle}"/>
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Text="Benefited Product:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="Benefited Product:" Style="{StaticResource BodyTextBlockStyle}"/>
 									<TextBlock Text="{x:Bind Product.Name}" Style="{StaticResource BodyTextBlockStyle}"/>
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Text="Promotion Start Datetime:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="Promotion Start Datetime:" Style="{StaticResource BodyTextBlockStyle}"/>
 									<TextBlock Text="{x:Bind StartTime}" Style="{StaticResource BodyTextBlockStyle}"/>
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal" Spacing="10">
-									<TextBlock Text="Promotion End Datetime:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="Promotion End Datetime:" Style="{StaticResource BodyTextBlockStyle}"/>
 									<TextBlock Text="{x:Bind EndTime}" Style="{StaticResource BodyTextBlockStyle}"/>
 								</StackPanel>
 							</StackPanel>

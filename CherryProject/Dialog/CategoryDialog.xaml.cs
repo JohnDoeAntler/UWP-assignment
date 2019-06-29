@@ -57,6 +57,7 @@ namespace CherryProject.Dialog
 		{
 			Category = (Category)ResultListViewControl.SelectedItem;
 			SelectedTarget.Text = $"Selected: {Category.Name}";
+			SelectedTarget.Visibility = Visibility.Visible;
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -64,6 +65,7 @@ namespace CherryProject.Dialog
 			if (Category == null)
 			{
 				SelectedTarget.Text = $"Please select a category or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}

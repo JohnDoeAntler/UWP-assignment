@@ -92,6 +92,7 @@ namespace CherryProject.Dialog
 			{
 				Dic = dic;
 				SelectedTarget.Text = $"Selected: {Dic.Id}";
+				SelectedTarget.Visibility = Visibility.Visible;
 			}
 		}
 
@@ -100,6 +101,7 @@ namespace CherryProject.Dialog
 			if (Dic == null)
 			{
 				SelectedTarget.Text = $"Please select a despatch instruction cover or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}

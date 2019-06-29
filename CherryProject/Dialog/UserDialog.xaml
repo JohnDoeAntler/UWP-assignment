@@ -92,7 +92,7 @@
 				<Button Content="Reset searching filters." Click="Button_Reset"/>
 			</StackPanel>
 
-			<TextBlock x:Name="ResultAlerter" Text="There has only found 2 result(s)." Margin="0 0 0 10"/>
+			<TextBlock x:Name="ResultAlerter" Text="There has only found 0 result(s)." Margin="0 0 0 10"/>
 
 			<ScrollViewer
 				Height="236"
@@ -141,7 +141,7 @@
 				</ListView>
 			</ScrollViewer>
 
-			<TextBlock Name="SelectedTarget"/>
+			<TextBlock Name="SelectedTarget" Visibility="Collapsed"/>
 		</StackPanel>
 	</Grid>
 </ContentDialog>

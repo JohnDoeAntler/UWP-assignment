@@ -43,13 +43,6 @@ namespace CherryProject.Dialog
 
 			// add a search filter for user input their filtering string.
 			AddSearchFilter();
-
-			// permission control
-			if (SignInManager.CurrentUser.Role == RoleEnum.Dealer)
-			{
-				DealerSelector.Visibility = Visibility.Collapsed;
-				ModifierSelector.Visibility = Visibility.Collapsed;
-			}
 		}
 
 		public ObservableCollection<string> SearchFilters => _searchFilters;
@@ -67,9 +60,6 @@ namespace CherryProject.Dialog
 			// clear both
 			keyValuePairs.Clear();
 			_searchFilters.Clear();
-			// reset 
-			ResetDealer_Click(null, null);
-			ResetModifier_Click(null, null);
 			// remain a empty searching filter input to user
 			AddSearchFilter();
 			// update the result to display all products
@@ -186,96 +176,11 @@ namespace CherryProject.Dialog
 			}
 		}
 
-		private async void SelectDealer_Click(object sender, RoutedEventArgs e)
-		{
-			var dialog = new UserDialog();
-
-			ContentDialogResult button;
-
-			// loop till selected a user is playing a dealer role.
-			do
-			{
-				button = await dialog.EnqueueAndShowIfAsync();
-			} while (button == ContentDialogResult.Primary && dialog.User.Role != RoleEnum.Dealer);
-
-			if (button == ContentDialogResult.Primary)
-			{
-				User dealer = dialog.User;
-
-				// control adjustment
-				DealerGUID.Text = dealer.Id.ToString();
-				SelectedDealer.Text = $"Selected Dealer: {dealer.FirstName} {dealer.LastName}";
-
-				// condition adjustment
-				if (keyValuePairs.ContainsKey("Dealer"))
-				{
-					keyValuePairs.Remove("Dealer");
-				}
-
-				keyValuePairs.Add("Dealer", x => x.DealerId == dealer.Id);
-
-				// update
-				UpdateSearchResult();
-			}
-		}
-
-		private async void SelectModifier_Click(object sender, RoutedEventArgs e)
-		{
-			var dialog = new UserDialog();
-
-			var button = await dialog.EnqueueAndShowIfAsync();
-
-			if (button == ContentDialogResult.Primary)
-			{
-				User modifier = dialog.User;
-
-				// control adjustment
-				ModifierGUID.Text = modifier.Id.ToString();
-				SelectedModifier.Text = $"Selected Modifier: {modifier.FirstName} {modifier.LastName}";
-
-				// condition adjustment
-				if (keyValuePairs.ContainsKey("Modifier"))
-				{
-					keyValuePairs.Remove("Modifier");
-				}
-
-				keyValuePairs.Add("Modifier", x => x.ModifierId == modifier.Id);
-
-				// update
-				UpdateSearchResult();
-			}
-		}
-
-		private void ResetDealer_Click(object sender, RoutedEventArgs e)
-		{
-			DealerGUID.Text = string.Empty;
-			SelectedDealer.Text = string.Empty;
-
-			if (keyValuePairs.ContainsKey("Dealer"))
-			{
-				keyValuePairs.Remove("Dealer");
-
-				UpdateSearchResult();
-			}
-		}
-
-		private void ResetModifier_Click(object sender, RoutedEventArgs e)
-		{
-			ModifierGUID.Text = string.Empty;
-			SelectedModifier.Text = string.Empty;
-
-			if (keyValuePairs.ContainsKey("Modifier"))
-			{
-				keyValuePairs.Remove("Modifier");
-
-				UpdateSearchResult();
-			}
-		}
-
 		private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
 		{
 			Order = (Order)ResultListViewControl.SelectedItem;
 			SelectedTarget.Text = $"Selected: {Order.Dealer.FirstName}'s Order";
+			SelectedTarget.Visibility = Visibility.Visible;
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -283,6 +188,7 @@ namespace CherryProject.Dialog
 			if (Order == null)
 			{
 				SelectedTarget.Text = $"Please select an order or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}

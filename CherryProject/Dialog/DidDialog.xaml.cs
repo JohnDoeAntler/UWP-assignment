@@ -72,11 +72,13 @@ namespace CherryProject.Dialog
 				{
 					Did = did;
 					SelectedTarget.Text = $"Selected: {Did.Id}";
+					SelectedTarget.Visibility = Visibility.Visible;
 				}
 				else
 				{
 					Did = null;
 					SelectedTarget.Text = $"The tapped despatch instruction detail has been assembled completely. Please choose another one.";
+					SelectedTarget.Visibility = Visibility.Visible;
 				}
 			}
 		}
@@ -86,6 +88,7 @@ namespace CherryProject.Dialog
 			if (Did == null)
 			{
 				SelectedTarget.Text = $"Please select a despatch instruction detail or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}

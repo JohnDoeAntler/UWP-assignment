@@ -75,8 +75,7 @@
 				Name="SelectedTarget"
 				TextWrapping="WrapWholeWords" 
 				TextTrimming="Clip"
-				MaxWidth="460"
-				Margin="0 20 0 0"/>
+				MaxWidth="460" Visibility="Collapsed"/>
 		</StackPanel>
     </Grid>
 </ContentDialog>

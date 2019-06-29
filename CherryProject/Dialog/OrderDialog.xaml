@@ -15,7 +15,7 @@
 
     <Grid>
 		<StackPanel Spacing="30">
-			<ScrollViewer Height="560">
+			<ScrollViewer>
 				<StackPanel>
 					<TextBlock Text="Enter the account information below for searching filtering." Margin="0 0 0 10"
 					TextWrapping="Wrap"
@@ -27,50 +27,6 @@
 						MaxWidth="460"
 						HorizontalAlignment="Left"
 						Margin="0 0 0 10"/>
-
-					<StackPanel 
-						x:Name="DealerSelector"
-						Margin="0 0 0 30"
-						Spacing="10" 
-						MaxWidth="460"
-						HorizontalAlignment="Left">
-						<TextBlock Text="Dealer GUID"/>
-						<TextBox x:Name="DealerGUID" IsEnabled="False"/>
-						<StackPanel Orientation="Horizontal" Spacing="10">
-							<Button 
-							Content="Select Dealer"
-							Click="SelectDealer_Click"/>
-							<Button 
-							Content="Reset Dealer"
-							Click="ResetDealer_Click"/>
-						</StackPanel>
-						<TextBlock Name="SelectedDealer"/>
-						<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
-						Style="{ThemeResource BodyTextBlockStyle}"
-						Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-					</StackPanel>
-
-					<StackPanel 
-						x:Name="ModifierSelector"
-						Margin="0 0 0 30" 
-						Spacing="10"
-						MaxWidth="460" 
-						HorizontalAlignment="Left">
-						<TextBlock Text="Modifier GUID"/>
-						<TextBox x:Name="ModifierGUID" IsEnabled="False"/>
-						<StackPanel Orientation="Horizontal" Spacing="10">
-							<Button 
-							Content="Select Modifier"
-							Click="SelectModifier_Click"/>
-							<Button
-							Content="Reset Modifier"
-							Click="ResetModifier_Click"/>
-						</StackPanel>
-						<TextBlock Name="SelectedModifier"/>
-						<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
-						Style="{ThemeResource BodyTextBlockStyle}"
-						Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-					</StackPanel>
 
 					<ListView
 						x:Name="ListViewControl"
@@ -131,7 +87,7 @@
 						<Button Content="Reset searching filters." Click="Button_Reset"/>
 					</StackPanel>
 
-					<TextBlock x:Name="ResultAlerter" Text="There has only found 2 result(s)." Margin="0 0 0 10"/>
+					<TextBlock x:Name="ResultAlerter" Text="There has only found 0 result(s)." Margin="0 0 0 10"/>
 
 					<ScrollViewer
 						Height="236"
@@ -181,7 +137,7 @@
 				</StackPanel>
 			</ScrollViewer>
 
-			<TextBlock Name="SelectedTarget"/>
+			<TextBlock Name="SelectedTarget" Visibility="Collapsed"/>
 		</StackPanel>
 	</Grid>
 </ContentDialog>

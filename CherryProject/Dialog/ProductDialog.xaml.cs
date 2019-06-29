@@ -200,6 +200,7 @@ namespace CherryProject.Dialog
 		{
 			Product = (Product) ResultListViewControl.SelectedItem;
 			SelectedTarget.Text = $"Selected: {Product.Name}";
+			SelectedTarget.Visibility = Visibility.Visible;
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -207,6 +208,7 @@ namespace CherryProject.Dialog
 			if (Product == null)
 			{
 				SelectedTarget.Text = $"Please select a product or else cancel the select dialog.";
+				SelectedTarget.Visibility = Visibility.Visible;
 				args.Cancel = true;
 			}
 		}
