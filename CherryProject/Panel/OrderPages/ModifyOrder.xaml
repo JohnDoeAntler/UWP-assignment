@@ -72,9 +72,7 @@
 					Content="Add Product"
 					Click="Add_Click"/>
 
-				<TextBlock x:Name="Summary" Visibility="Collapsed"/>
-
-				<TextBlock Text="xxx."
+				<TextBlock x:Name="Summary" Visibility="Collapsed"
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -90,7 +88,7 @@
 			<StackPanel Spacing="10">
 				<TextBlock Text="Type"/>
 				<ComboBox x:Name="Type" MinWidth="280"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The order type."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

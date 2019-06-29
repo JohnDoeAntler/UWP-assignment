@@ -40,5 +40,7 @@ namespace CherryProject.Model
 
 		public virtual ICollection<Order> OrderDealer { get; set; }
 		public virtual ICollection<Order> OrderModifier { get; set; }
+		public virtual ICollection<Notification> NotificationRecipient { get; set; }
+		public virtual ICollection<Notification> NotificationSender { get; set; }
 	}
 }

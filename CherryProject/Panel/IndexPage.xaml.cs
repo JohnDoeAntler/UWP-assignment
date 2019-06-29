@@ -99,6 +99,14 @@ namespace CherryProject.Panel
 						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
 				},
 				new IndexGridViewItem{
+					Title = "Statistic Calculation",
+					Description = "Calculate important statistic of some entity.",
+					Icon = Symbol.Map,
+					Views = PermissionManager
+						.GetTypesInNamespace("CherryProject.Panel.StatisticPages")
+						.Intersect(PermissionManager.GetPermission(SignInManager.CurrentUser.Role))
+				},
+				new IndexGridViewItem{
 					Title = "Other",
 					Description = "Emit notification, etc.",
 					Icon = Symbol.Comment,
@@ -113,7 +121,7 @@ namespace CherryProject.Panel
 
 		private ObservableCollection<IndexGridViewItem> _items;
 
-		private ObservableCollection<IndexGridViewItem> Items { get => this._items; }
+		private ObservableCollection<IndexGridViewItem> Items { get => _items; }
 
 		public IndexPage()
         {
@@ -161,21 +169,22 @@ namespace CherryProject.Panel
 				{
 					var list = new ObservableCollection<NavigationViewItemBase>(
 						PermissionManager
-							.GetPermission(SignInManager.CurrentUser.Role)
-							.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
-							.Take(5)
-							.Select(x => 
-								new NavigationViewItem()
-								{
-									Content = x.ClassNameToString(),
-									Icon = new SymbolIcon(
-										_items
-											.FirstOrDefault(y => y.Views.Any(z => z.Name == x.Name))
-											.Icon
-									)
-								}
-							)
-						);
+						.GetPermission(SignInManager.CurrentUser.Role, false)
+						.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
+						.Take(5)
+						.Select(x => 
+							new NavigationViewItem()
+							{
+								Content = x.ClassNameToString(),
+								Icon = new SymbolIcon(
+									_items
+									.Where(y => y.Views != null)
+									.FirstOrDefault(y => y.Views.Any(z => z.Name == x.Name))
+									.Icon
+								)
+							}
+						)
+					);
 
 					if (list.Count != 0)
 					{
@@ -233,7 +242,7 @@ namespace CherryProject.Panel
 				// Use args.QueryText to determine what to do.
 
 				var result = PermissionManager
-						.GetPermission(RoleEnum.Administrator)
+						.GetPermission(SignInManager.CurrentUser.Role, false)
 						.FirstOrDefault(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase));
 
 				if (result != null)

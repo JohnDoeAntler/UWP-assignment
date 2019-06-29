@@ -87,7 +87,7 @@ namespace CherryProject.Panel.AccountPages
 					{
 						using (var context = new Context())
 						{
-							var user = await context.User.AddAsync(new User()
+							var user = (await context.User.AddAsync(new User()
 							{
 								Id = System.Guid.Parse(Guid.Text),
 								UserName = Username.Text,
@@ -101,13 +101,15 @@ namespace CherryProject.Panel.AccountPages
 								Status = GeneralStatusEnum.Available,
 								Address = Address.GetText(),
 								IconUrl = Url.Text
-							});
+							})).Entity;
 
 							await context.SaveChangesAsync();
 
+							NotificationManager.CreateNotification(user.Id, "Welcome", $"Hello, {user.FirstName} {user.LastName}, it is your first time login. If you have any trouble on using the system, please contract our technical support.", NotificationTypeEnum.Account, user.Id);
+
 							await new SuccessDialog().EnqueueAndShowIfAsync();
 
-							this.Frame.Navigate(typeof(ViewAccount), user.Entity, new DrillInNavigationTransitionInfo());
+							this.Frame.Navigate(typeof(ViewAccount), user, new DrillInNavigationTransitionInfo());
 						}
 					}
 					catch (Exception)

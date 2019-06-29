@@ -9,7 +9,7 @@
   <Identity
     Name="f1f1dca4-8be3-4fde-b5d9-b682e5cd3a0b"
     Publisher="CN=yosug"
-    Version="1.0.6.0" />
+    Version="1.0.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="f1f1dca4-8be3-4fde-b5d9-b682e5cd3a0b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

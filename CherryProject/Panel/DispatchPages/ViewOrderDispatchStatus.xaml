@@ -21,7 +21,7 @@
 				<Button 
 					Content="Select Order"
 					Click="SelectOrder_Click"/>
-				<TextBlock Name="SelectedOrder"/>
+				<TextBlock Name="SelectedOrder" Visibility="Collapsed"/>
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>

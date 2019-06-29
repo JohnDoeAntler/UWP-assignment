@@ -1,4 +1,5 @@
-﻿using CherryProject.Dialog;
+﻿using CherryProject.Attribute;
+using CherryProject.Dialog;
 using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
@@ -27,10 +28,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CherryProject.Panel.OrderPages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ModifyOrder : Page
+	/// <summary>
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// </summary>
+	[Hidden]
+	public sealed partial class ModifyOrder : Page
 	{
 		private Order order;
 		private readonly ObservableCollection<OrderProductViewModel> items;
@@ -63,7 +65,15 @@ namespace CherryProject.Panel.OrderPages
 
 			//
 			Summary.Visibility = Visibility.Visible;
-			Summary.Text = $"Total price: {items.Sum(x => x.Price)}, Total weight: {items.Sum(x => x.Weight)}";
+
+			using (var context = new Context())
+			{
+				IEnumerable<Promotion> promotions = items.SelectMany(x => context.Promotion.Include(y => y.Product).Where(y => y.StartTime <= x.OrderProduct.LastTimeModified && y.EndTime > x.OrderProduct.LastTimeModified && x.OrderProduct.ProductId == y.ProductId)).OrderBy(x => x.Discount);
+
+				var text = promotions.Select(x => $"Promotion: {x.Description}\tName: {x.Product.Name}\tDiscount: {x.Discount}\r\n").Aggregate("", (p, n) => p + n);
+
+				Summary.Text = $"Total price: ${items.Sum(x => x.Price * (promotions.FirstOrDefault(y => y.ProductId == x.OrderProduct.ProductId)?.Discount ?? 1.0))}, Total weight: {items.Sum(x => x.Weight)}\r\n{text}";
+			}
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -180,9 +190,14 @@ namespace CherryProject.Panel.OrderPages
 
 						await items.Select(x => x.OrderProduct).RemoveExceptAsync();
 
+						if (order.DealerId != SignInManager.CurrentUser.Id)
+						{
+							NotificationManager.CreateNotification(order.DealerId, "An Order Has Been Modified", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has modified one of your order pending requests.", NotificationTypeEnum.Order, order.Id);
+						}
+
 						await new SuccessDialog().EnqueueAndShowIfAsync();
 
-						Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
+						Frame.Navigate(typeof(ViewPromotion), order, new DrillInNavigationTransitionInfo());
 					}
 					catch (Exception)
 					{

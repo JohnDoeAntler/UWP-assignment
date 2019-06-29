@@ -1,4 +1,5 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Attribute;
+using CherryProject.Extension;
 using CherryProject.Model.Enum;
 using CherryProject.Service;
 using CherryProject.ViewModel;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -45,25 +47,56 @@ namespace CherryProject.Panel
 		{
 			base.OnNavigatedTo(e);
 
-			panel = (IndexGridViewItem) e.Parameter;
-
-			foreach (var t in panel.Views.OrderBy(x => x.Name))
+			if (e.Parameter is IndexGridViewItem panel)
 			{
-				NavigationViewControl.MenuItems.Add(
-					new NavigationViewItem()
+				this.panel = panel;
+
+				foreach (var t in panel.Views.OrderBy(x => x.Name))
+				{
+					if (t.GetCustomAttribute<HiddenAttribute>() == null)
 					{
-						Content = t.ClassNameToString(),
-						Tag = t.Name,
-						Icon = new SymbolIcon(panel.Icon),
+						NavigationViewControl.MenuItems.Add(
+							new NavigationViewItem()
+							{
+								Content = t.ClassNameToString(),
+								Tag = t.Name,
+								Icon = new SymbolIcon(panel.Icon),
+							}
+						);
 					}
-				);
+				}
+
+				NavigationViewControl.PaneTitle = panel.Title;
+
+				contentFrame.Navigate(panel.Views.FirstOrDefault(x => x.GetCustomAttribute<HiddenAttribute>() == null), null, new DrillInNavigationTransitionInfo());
+
+				header.Text = panel.Views.FirstOrDefault(x => x.GetCustomAttribute<HiddenAttribute>() == null).ClassNameToString();
 			}
+			else if (e.Parameter is Tuple<IndexGridViewItem, Guid> tuple)
+			{
+				this.panel = tuple.Item1;
 
-			NavigationViewControl.PaneTitle = panel.Title;
+				foreach (var t in tuple.Item1.Views.OrderBy(x => x.Name))
+				{
+					if (t.GetCustomAttribute<HiddenAttribute>() == null)
+					{
+						NavigationViewControl.MenuItems.Add(
+							new NavigationViewItem()
+							{
+								Content = t.ClassNameToString(),
+								Tag = t.Name,
+								Icon = new SymbolIcon(tuple.Item1.Icon),
+							}
+						);
+					}
+				}
 
-			contentFrame.Navigate(panel.Views.FirstOrDefault(), null, new DrillInNavigationTransitionInfo());
+				NavigationViewControl.PaneTitle = tuple.Item1.Title;
 
-			header.Text = panel.Views.First().ClassNameToString();
+				contentFrame.Navigate(tuple.Item1.Views.FirstOrDefault(), tuple.Item2, new DrillInNavigationTransitionInfo());
+
+				header.Text = tuple.Item1.Views.FirstOrDefault(x => x.GetCustomAttribute<HiddenAttribute>() == null).ClassNameToString();
+			}
 		}
 
 		private void OnBackRequested(object sender, RoutedEventArgs e)
@@ -83,7 +116,7 @@ namespace CherryProject.Panel
 				{
 					var list = new ObservableCollection<NavigationViewItemBase>(
 						PermissionManager
-							.GetPermission(SignInManager.CurrentUser.Role)
+							.GetPermission(SignInManager.CurrentUser.Role, false)
 							.Where(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
 							.Take(5)
 							.Select(x => new NavigationViewItem()
@@ -146,7 +179,7 @@ namespace CherryProject.Panel
 				// Use args.QueryText to determine what to do.
 
 				var result = PermissionManager
-						.GetPermission(RoleEnum.Administrator)
+						.GetPermission(SignInManager.CurrentUser.Role, false)
 						.FirstOrDefault(x => x.ClassNameToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase));
 
 				if (result != null)

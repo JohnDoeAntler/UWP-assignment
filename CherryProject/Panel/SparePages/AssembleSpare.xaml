@@ -28,13 +28,13 @@
 
 				<TextBlock x:Name="SelectedDidTextBlock" Visibility="Collapsed"/>
 
-				<TextBlock Text="xxx."
+				<TextBlock Text="The dispatch instruction detail that be assembled a spare part."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 			
 			<StackPanel Spacing="10">
-				<TextBlock Text="Spare"/>
+				<TextBlock Text="Spare GUID"/>
 
 				<AutoSuggestBox 
 					x:Name="SpareId" 
@@ -43,7 +43,7 @@
 					TextChanged="SpareId_TextChanged"
 					MaxSuggestionListHeight="300"/>
 
-				<TextBlock Text="xxx."
+				<TextBlock Text="The spare part."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

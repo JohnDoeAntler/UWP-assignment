@@ -21,7 +21,7 @@
 				<Button 
 					Content="Select DIC"
 					Click="SelectDic_Click"/>
-				<TextBlock Name="SelectedDic"/>
+				<TextBlock Name="SelectedDic" Visibility="Collapsed"/>
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
@@ -48,7 +48,7 @@
 						TextChanged="SearchBox_TextChanged"/>
 				</StackPanel>
 
-				<TextBlock x:Name="ResultAlerter" Text="There has only found 2 result(s)." />
+				<TextBlock x:Name="ResultAlerter" Text="There has only found 0 result(s)." />
 
 				<ScrollViewer
 				Height="236"

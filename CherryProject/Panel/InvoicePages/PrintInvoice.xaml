@@ -8,7 +8,25 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
 
-    </Grid>
+		<StackPanel Spacing="30">
+			<StackPanel Spacing="10">
+				<TextBlock Text="Dispatch Instruction Cover GUID"/>
+				<TextBox x:Name="DicGUID" IsEnabled="False"/>
+				<Button 
+					Content="Select DIC"
+					Click="SelectDic_Click"/>
+				<TextBlock Name="SelectedDic" Visibility="Collapsed"/>
+				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
+					Style="{ThemeResource BodyTextBlockStyle}"
+					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			</StackPanel>
+
+			<Button x:Name="Submit" Content="Print Invoice" Click="Submit_Click" IsEnabled="False"/>
+		</StackPanel>
+	</Grid>
 </Page>

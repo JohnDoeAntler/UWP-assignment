@@ -16,9 +16,10 @@
 		<StackPanel Margin="0 0 0 30">
 			<TextBlock Text="Endorse Order" Margin="0 0 0 10"/>
 			<Button x:Name="Submit" Content="Endorse Order"/>
-			<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			<TextBlock 
+				Text="Endorse the order by clicking the above button to confirm the order could start to process spare assembling and dispatching."
+				Style="{ThemeResource BodyTextBlockStyle}"
+				Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 		</StackPanel>
 	</Grid>
 </Page>

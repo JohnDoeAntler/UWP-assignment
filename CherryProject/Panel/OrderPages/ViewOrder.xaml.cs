@@ -1,4 +1,5 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Attribute;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Service;
 using CherryProject.ViewModel;
@@ -24,16 +25,17 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CherryProject.Panel.OrderPages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ViewOrder : Page
+	/// <summary>
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// </summary>
+	[Hidden]
+	public sealed partial class ViewPromotion : Page
     {
 		private readonly ObservableCollection<ViewTuple> displayItems;
 
 		private readonly ObservableCollection<OrderProductViewModel> items;
 
-		public ViewOrder()
+		public ViewPromotion()
         {
             this.InitializeComponent();
 
@@ -62,6 +64,21 @@ namespace CherryProject.Panel.OrderPages
 				EndorseOrder.Click += (sender, args) => Frame.Navigate(typeof(EndorseOrder), order, new DrillInNavigationTransitionInfo());
 				CancelOrder.Click += (sender, args) => Frame.Navigate(typeof(CancelOrder), order, new DrillInNavigationTransitionInfo());
 			}
+			else if (e.Parameter is Guid id)
+			{
+				Order tmp;
+
+				using (var context = new Context())
+				{
+					tmp = context.Order.FirstOrDefault(x => x.Id == id);
+				}
+
+				SetOrderInformation(tmp);
+
+				ModifyOrder.Click += (sender, args) => Frame.Navigate(typeof(ModifyOrder), tmp, new DrillInNavigationTransitionInfo());
+				EndorseOrder.Click += (sender, args) => Frame.Navigate(typeof(EndorseOrder), tmp, new DrillInNavigationTransitionInfo());
+				CancelOrder.Click += (sender, args) => Frame.Navigate(typeof(CancelOrder), tmp, new DrillInNavigationTransitionInfo());
+			}
 			else
 			{
 				ContentDialog dialog = new ContentDialog
@@ -73,7 +90,7 @@ namespace CherryProject.Panel.OrderPages
 
 				ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
-				Frame.Navigate(typeof(SearchOrders), typeof(ViewOrder), new DrillInNavigationTransitionInfo());
+				Frame.Navigate(typeof(SearchOrders), typeof(ViewPromotion), new DrillInNavigationTransitionInfo());
 			}
 		}
 
@@ -91,16 +108,21 @@ namespace CherryProject.Panel.OrderPages
 			displayItems.Add(new ViewTuple("Type", order.Type));
 			displayItems.Add(new ViewTuple("Status", order.Status));
 			displayItems.Add(new ViewTuple("Last Time Modified", string.Format("{0:G}", order.LastTimeModified)));
-
+			
 			// for printing the list
 			using (var context = new Context())
 			{
 				// cast the ordered items into the binding list
 				items.UpdateObservableCollection(context.OrderProduct.Include(x => x.Product).ThenInclude(x => x.PriceHistory).Where(x => x.OrderId == order.Id).Select(x => new OrderProductViewModel(x)));
+
+				IEnumerable<Promotion> promotions = items.SelectMany(x => context.Promotion.Include(y => y.Product).Where(y => y.StartTime <= x.OrderProduct.LastTimeModified && y.EndTime > x.OrderProduct.LastTimeModified && x.OrderProduct.ProductId == y.ProductId)).OrderBy(x => x.Discount);
+
+				var text = promotions.Select(x => $"Promotion: {x.Description}\tName: {x.Product.Name}\tDiscount: {x.Discount}\r\n").Aggregate("", (p, n) => p + n);
+
+				Summary.Visibility = Visibility.Visible;
+				Summary.Text = $"Total price: ${items.Sum(x => x.Price * (promotions.FirstOrDefault(y => y.ProductId == x.OrderProduct.ProductId)?.Discount ?? 1.0))}, Total weight: {items.Sum(x => x.Weight)}\r\n{text}";
 			}
 
-			Summary.Visibility = Visibility.Visible;
-			Summary.Text = $"Total price: {items.Sum(x => x.Price)}, Total weight: {items.Sum(x => x.Weight)}";
 		}
 	}
 }

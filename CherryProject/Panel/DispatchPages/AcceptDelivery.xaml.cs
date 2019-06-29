@@ -2,6 +2,7 @@
 using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.Service;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -73,32 +74,18 @@ namespace CherryProject.Panel.DispatchPages
 			{
 				DicGUID.Text = (dic = dialog.Dic).Id.ToString();
 				SelectedDic.Text = $"Selected DIC: {dic.Id}";
+				SelectedDic.Visibility = Visibility.Visible;
+				Submit.IsEnabled = true;
 			}
 		}
 
 		private async void Submit_Click(object sender, RoutedEventArgs e)
 		{
-			ContentDialog dialog = new ContentDialog
-			{
-				Title = "Confirmation",
-				Content = "Are you ensure to accept the delivery?",
-				PrimaryButtonText = "Accept Delivery",
-				CloseButtonText = "Cancel"
-			};
-
-			if (await dialog.EnqueueAndShowIfAsync() == ContentDialogResult.Primary)
+			if (await new ConfirmationDialog().EnqueueAndShowIfAsync() == ContentDialogResult.Primary)
 			{
 				if (dic == null)
 				{
-					ContentDialog error = new ContentDialog
-					{
-						Title = "Error",
-						Content = "The information you typed has mistakes, please ensure the input data validation is correct.",
-						CloseButtonText = "OK",
-						Width = 400
-					};
-
-					await error.EnqueueAndShowIfAsync();
+					await new MistakeDialog().EnqueueAndShowIfAsync();
 				}
 				else
 				{
@@ -112,27 +99,13 @@ namespace CherryProject.Panel.DispatchPages
 							await context.SaveChangesAsync();
 						}
 
-						ContentDialog message = new ContentDialog
-						{
-							Title = "Success",
-							Content = "Successfully accepted an delivery.",
-							CloseButtonText = "OK",
-							Width = 400
-						};
+						NotificationManager.CreateNotification(SignInManager.CurrentUser.Id, "An Order Delivery Has Been Accepted", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has accepted an order delivery.", NotificationTypeEnum.Dic, dic.OrderId);
 
-						await message.EnqueueAndShowIfAsync();
+						await new SuccessDialog().EnqueueAndShowIfAsync();
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
-						ContentDialog error = new ContentDialog
-						{
-							Title = "Error",
-							Content = $"The information you typed might duplicated, please try again later.\n{err.ToString()}",
-							CloseButtonText = "OK",
-							Width = 400
-						};
-
-						await error.EnqueueAndShowIfAsync();
+						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}
 				}
 			}

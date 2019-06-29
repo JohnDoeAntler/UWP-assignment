@@ -19,7 +19,8 @@ namespace CherryProject.Model
         public virtual DbSet<Dic> Dic { get; set; }
         public virtual DbSet<Did> Did { get; set; }
         public virtual DbSet<DidSpare> DidSpare { get; set; }
-        public virtual DbSet<Order> Order { get; set; }
+		public virtual DbSet<Notification> Notification { get; set; }
+		public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderProduct> OrderProduct { get; set; }
         public virtual DbSet<PriceHistory> PriceHistory { get; set; }
         public virtual DbSet<Product> Product { get; set; }
@@ -166,7 +167,58 @@ namespace CherryProject.Model
                     .HasConstraintName("DidSpare_ibfk_2");
             });
 
-            modelBuilder.Entity<Order>(entity =>
+			modelBuilder.Entity<Notification>(entity =>
+			{
+				entity.HasIndex(e => e.RecipientId)
+					.HasName("RecipientId");
+
+				entity.HasIndex(e => e.SenderId)
+					.HasName("SenderId");
+
+				entity.Property(e => e.Id).HasColumnType("varchar(255)");
+
+				entity.Property(e => e.Content)
+					.IsRequired()
+					.HasColumnType("varchar(256)");
+
+				entity.Property(e => e.Header)
+					.IsRequired()
+					.HasColumnType("varchar(256)");
+
+				entity.Property(e => e.IsReceived).HasColumnType("bit(1)");
+
+				entity.Property(e => e.ObjectId)
+					.IsRequired()
+					.HasColumnType("varchar(255)");
+
+				entity.Property(e => e.RecipientId)
+					.IsRequired()
+					.HasColumnType("varchar(255)");
+
+				entity.Property(e => e.SenderId)
+					.IsRequired()
+					.HasColumnType("varchar(255)");
+
+				entity.Property(e => e.Timestamp)
+					.HasColumnType("timestamp")
+					.HasDefaultValueSql("'CURRENT_TIMESTAMP'");
+
+				entity.Property(e => e.Type)
+					.IsRequired()
+					.HasColumnType("enum('Account','Order','Product','Promotion','Dic')");
+
+				entity.HasOne(d => d.Recipient)
+					.WithMany(p => p.NotificationRecipient)
+					.HasForeignKey(d => d.RecipientId)
+					.HasConstraintName("Notification_ibfk_1");
+
+				entity.HasOne(d => d.Sender)
+					.WithMany(p => p.NotificationSender)
+					.HasForeignKey(d => d.SenderId)
+					.HasConstraintName("Notification_ibfk_2");
+			});
+
+			modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasIndex(e => e.DealerId)
                     .HasName("USER");

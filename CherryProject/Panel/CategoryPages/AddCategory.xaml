@@ -42,7 +42,7 @@
 
 				<TextBlock x:Name="SelectedProductTextBlock" Visibility="Collapsed"/>
 
-				<TextBlock Text="xxx."
+				<TextBlock Text="The product type that category dedicated contains for."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

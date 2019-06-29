@@ -73,7 +73,15 @@ namespace CherryProject.Panel.OrderPages
 			}
 
 			Summary.Visibility = Visibility.Visible;
-			Summary.Text = $"Total price: {items.Sum(x => x.Price)}, Total weight: {items.Sum(x => x.Weight)}";
+
+			using (var context = new Context())
+			{
+				IEnumerable<Promotion> promotions = items.SelectMany(x => context.Promotion.Include(y => y.Product).Where(y => y.StartTime <= x.OrderProduct.LastTimeModified && y.EndTime > x.OrderProduct.LastTimeModified && x.OrderProduct.ProductId == y.ProductId)).OrderBy(x => x.Discount);
+
+				var text = promotions.Select(x => $"Promotion: {x.Description}\tName: {x.Product.Name}\tDiscount: {x.Discount}\r\n").Aggregate("", (p, n) => p + n);
+
+				Summary.Text = $"Total price: ${items.Sum(x => x.Price * (promotions.FirstOrDefault(y => y.ProductId == x.OrderProduct.ProductId)?.Discount ?? 1.0))}, Total weight: {items.Sum(x => x.Weight)}\r\n{text}";
+			}
 		}
 
 		private void GenerateGuidBtn_Click(object sender, RoutedEventArgs e) => Guid.Text = System.Guid.NewGuid().ToString();
@@ -86,7 +94,7 @@ namespace CherryProject.Panel.OrderPages
 
 			if (button == ContentDialogResult.Primary)
 			{
-				if (!items.Any(x => x.OrderProduct.Product.Id == dialog.Product.Id))
+				if (!items.Any(x => x.OrderProduct.ProductId == dialog.Product.Id))
 				{
 					items.Add(
 						new OrderProductViewModel(
@@ -161,11 +169,20 @@ namespace CherryProject.Panel.OrderPages
 								await context.OrderProduct.AddAsync(orderProduct);
 							}
 
+							if (dealer.Id != SignInManager.CurrentUser.Id)
+							{
+								NotificationManager.CreateNotification(dealer.Id, "New Order Discovered", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has helped you to create a new order.", NotificationTypeEnum.Order, order.Id);
+							}
+							else
+							{
+								NotificationManager.CreateNotification(dealer.Id, "New Order Discovered", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has created an order.", NotificationTypeEnum.Order, order.Id);
+							}
+
 							await context.SaveChangesAsync();
 
 							await new SuccessDialog().EnqueueAndShowIfAsync();
 
-							Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
+							Frame.Navigate(typeof(ViewPromotion), order, new DrillInNavigationTransitionInfo());
 						}
 					}
 					catch (Exception)

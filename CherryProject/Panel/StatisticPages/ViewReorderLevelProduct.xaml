@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="CherryProject.Panel.StatisticPages.ViewReorderLevelProduct"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CherryProject.Panel.StatisticPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<controls:DataGrid
+					x:Name="DataGridViewControl"
+					AutoGenerateColumns="False"
+					GridLinesVisibility="All"
+					CanUserResizeColumns="True"
+					CanUserSortColumns="True"
+					CanUserReorderColumns="True"
+					IsReadOnly="False"
+					ItemsSource="{x:Bind Products}">
+			<controls:DataGrid.Columns>
+				<controls:DataGridTextColumn
+							Header="Product Name"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding Name}"/>
+				<controls:DataGridTextColumn
+							Header="Product Price"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding Price}"/>
+				<controls:DataGridTextColumn
+							Header="Danger Level"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding DangerLevel}"/>
+				<controls:DataGridTextColumn
+							Header="Available Stock"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding AvailableStock}"/>
+				<controls:DataGridTextColumn
+							Header="Status"
+							Width="*"
+							FontSize="12"
+							Binding="{Binding Status}"/>
+			</controls:DataGrid.Columns>
+		</controls:DataGrid>
+	</Grid>
+</Page>

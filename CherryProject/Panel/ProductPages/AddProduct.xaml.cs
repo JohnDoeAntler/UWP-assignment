@@ -138,6 +138,11 @@ namespace CherryProject.Panel.ProductPages
 							await context.SaveChangesAsync();
 						}
 
+						if ((GeneralStatusEnum)Status.SelectedItem == GeneralStatusEnum.Available)
+						{
+							NotificationManager.CreateNotification(SignInManager.CurrentUser.Id, "New Product Released", "To check it out, press \"View\" button to have a took on it.", NotificationTypeEnum.Product, product.Id);
+						}
+
 						// alert
 						await new SuccessDialog().EnqueueAndShowIfAsync();
 

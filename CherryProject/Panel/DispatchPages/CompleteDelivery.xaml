@@ -20,13 +20,13 @@
 				<Button 
 					Content="Select DIC"
 					Click="SelectDic_Click"/>
-				<TextBlock Name="SelectedDic"/>
+				<TextBlock Name="SelectedDic" Visibility="Collapsed"/>
 				<TextBlock Text="An globally unique identifier which generated along with account creation. You are not permitted to modify this text field by hand-typing."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
 
-			<Button x:Name="Submit" Content="Complete Delivery" Click="Submit_Click"/>
+			<Button x:Name="Submit" Content="Complete Delivery" Click="Submit_Click" IsEnabled="False"/>
 		</StackPanel>
 	</Grid>
 </Page>

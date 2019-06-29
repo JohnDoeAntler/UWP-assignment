@@ -50,8 +50,7 @@ namespace CherryProject.Panel.AccountPages
 			Status.ItemsSource = EnumManager.GetEnumList<GeneralStatusEnum>();
 
 			// permission control
-			if (SignInManager.CurrentUser.Role != RoleEnum.AreaManager
-			&& SignInManager.CurrentUser.Role != RoleEnum.Administrator)
+			if (SignInManager.CurrentUser.Role != RoleEnum.AreaManager && SignInManager.CurrentUser.Role != RoleEnum.Administrator)
 			{
 				Role.IsEnabled = false;
 				Status.IsEnabled = false;
@@ -66,7 +65,7 @@ namespace CherryProject.Panel.AccountPages
 			{
 				FillInformation(this.user = user);
 			}
-			else if (!PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(DisableAccount)))
+			else if (!PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(SearchAccounts)))
 			{
 				FillInformation(this.user = SignInManager.CurrentUser);
 			}
@@ -135,20 +134,25 @@ namespace CherryProject.Panel.AccountPages
 					try
 					{
 						user = await user.ModifyAsync(x =>
-							{
-								x.UserName = Username.Text;
-								x.PasswordHash = x.PasswordHash == Password.Password ? x.PasswordHash : Password.Password.GetMD5hash();
-								x.FirstName = FirstName.Text;
-								x.LastName = LastName.Text;
-								x.Email = Email.Text;
-								x.PhoneNumber = PhoneNumber.Text;
-								x.Region = Region.SelectedItem as string;
-								x.Role = (RoleEnum) Role.SelectedItem;
-								x.Status = (GeneralStatusEnum) Status.SelectedItem;
-								x.Address = Address.GetText();
-								x.IconUrl = Url.Text;
-							}
-						);
+						{
+							x.UserName = Username.Text;
+							x.PasswordHash = x.PasswordHash == Password.Password ? x.PasswordHash : Password.Password.GetMD5hash();
+							x.FirstName = FirstName.Text;
+							x.LastName = LastName.Text;
+							x.Email = Email.Text;
+							x.PhoneNumber = PhoneNumber.Text;
+							x.Region = Region.SelectedItem as string;
+							x.Role = (RoleEnum)Role.SelectedItem;
+							x.Status = (GeneralStatusEnum)Status.SelectedItem;
+							x.Address = Address.GetText();
+							x.IconUrl = Url.Text;
+						});
+
+						// if the modifier != modified user
+						if (user.Id != SignInManager.CurrentUser.Id)
+						{
+							NotificationManager.CreateNotification(user.Id, "Your Account Has Been Modified", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has modified your account information.", NotificationTypeEnum.Account, user.Id);
+						}
 
 						await new SuccessDialog().EnqueueAndShowIfAsync();
 

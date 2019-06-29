@@ -39,7 +39,6 @@ namespace CherryProject.Panel.AccountPages
 
 			// permision control
 			ModifyAccount.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyAccount));
-			DisableAccount.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(DisableAccount));
 		}
 
 		public ObservableCollection<ViewTuple> DisplayItems => _displayItems;
@@ -48,11 +47,23 @@ namespace CherryProject.Panel.AccountPages
 		{
 			base.OnNavigatedTo(e);
 
-			var user = e.Parameter is User ? e.Parameter as User: SignInManager.CurrentUser;
+			// for notification navigation parameter
+			if (e.Parameter is Guid id)
+			{
+				using (var context = new Context())
+				{
+					var user = context.User.FirstOrDefault(x => x.Id == id);
+					SetProfileInformation(user);
+					ModifyAccount.Click += (sender, args) => Frame.Navigate(typeof(ModifyAccount), user, new DrillInNavigationTransitionInfo());
+				}
+			}
+			else
+			{
+				var user = e.Parameter is User ? e.Parameter as User: SignInManager.CurrentUser;
 
-			SetProfileInformation(user);
-			ModifyAccount.Click += (sender, args) => Frame.Navigate(typeof(ModifyAccount), user, new DrillInNavigationTransitionInfo());
-			DisableAccount.Click += (sender, args) => Frame.Navigate(typeof(DisableAccount), user, new DrillInNavigationTransitionInfo());
+				SetProfileInformation(user);
+				ModifyAccount.Click += (sender, args) => Frame.Navigate(typeof(ModifyAccount), user, new DrillInNavigationTransitionInfo());
+			}
 		}
 
 		private void SetProfileInformation(User user)

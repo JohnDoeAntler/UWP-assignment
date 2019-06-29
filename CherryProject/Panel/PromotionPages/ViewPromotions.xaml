@@ -10,34 +10,57 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-		<StackPanel Spacing="30">
-			<FlipView x:Name="Promotions" MaxHeight="460">
-				<FlipView.ItemTemplate>
-					<DataTemplate x:DataType="model:Promotion">
-						<Grid>
-							<Image Source="{x:Bind ImageUrl}" Stretch="UniformToFill" VerticalAlignment="Top"/>
-							<Border Background="#77000000" Height="60" VerticalAlignment="Bottom">
-								<TextBlock Text="{x:Bind Description}" Padding="12,12" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
-							</Border>
-						</Grid>
-					</DataTemplate>
-				</FlipView.ItemTemplate>
-			</FlipView>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
 
-			<StackPanel MaxWidth="460" HorizontalAlignment="Left" Spacing="30">
-				<StackPanel Spacing="10">
-					<TextBlock
-						TextWrapping="WrapWholeWords"
-						Text="xxx." />
-					<Button x:Name="ModifyPromotion" Content="Modify Promotion"/>
-				</StackPanel>
+		<Grid.RowSpacing>30</Grid.RowSpacing>
+		
+		<FlipView x:Name="Promotions">
+			<FlipView.ItemTemplate>
+				<DataTemplate x:DataType="model:Promotion">
+					<Grid>
+						<Image Source="{x:Bind ImageUrl}" Stretch="UniformToFill" VerticalAlignment="Top"/>
+						<Border Background="#33000000" VerticalAlignment="Bottom">
+							<StackPanel Spacing="5">
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="Promotion Description:" Style="{StaticResource TitleTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="{x:Bind Description}" Style="{StaticResource TitleTextBlockStyle}"/>
+								</StackPanel>
 
-				<StackPanel Spacing="10">
-					<TextBlock
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="Promotion Discount:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="{x:Bind Discount}" Style="{StaticResource BodyTextBlockStyle}"/>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="Benefited Product:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="{x:Bind Product.Name}" Style="{StaticResource BodyTextBlockStyle}"/>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="Promotion Start Datetime:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="{x:Bind StartTime}" Style="{StaticResource BodyTextBlockStyle}"/>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<TextBlock Text="Promotion End Datetime:" Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 5 0"/>
+									<TextBlock Text="{x:Bind EndTime}" Style="{StaticResource BodyTextBlockStyle}"/>
+								</StackPanel>
+							</StackPanel>
+						</Border>
+					</Grid>
+				</DataTemplate>
+			</FlipView.ItemTemplate>
+		</FlipView>
+
+		<StackPanel MaxWidth="460" HorizontalAlignment="Left" Spacing="30" Grid.Row="1">
+			<StackPanel Spacing="10">
+				<TextBlock
 						TextWrapping="WrapWholeWords"
-						Text="xxx." />
-					<Button x:Name="ModifyPromotionStatus" Content="Modify Promotion Status"/>
-				</StackPanel>
+						Text="Modify the promotion by clicking the above button to modify the promotion information." />
+				<Button x:Name="ModifyPromotion" Content="Modify Promotion"/>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

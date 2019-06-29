@@ -30,7 +30,6 @@ namespace CherryProject.Panel.DispatchPages
 	public sealed partial class ViewOrderDispatchStatus : Page
 	{
 		private ObservableCollection<Dic> dics;
-		private Order order;
 
 		public ViewOrderDispatchStatus()
 		{
@@ -75,7 +74,7 @@ namespace CherryProject.Panel.DispatchPages
 
 			if (button == ContentDialogResult.Primary)
 			{
-				UpdateResult(order = dialog.Order);
+				UpdateResult(dialog.Order);
 			}
 		}
 
@@ -83,6 +82,7 @@ namespace CherryProject.Panel.DispatchPages
 		{
 			OrderGUID.Text = order.Id.ToString();
 			SelectedOrder.Text = $"Selected Order: {order.Dealer.FirstName}'s Order";
+			SelectedOrder.Visibility = Visibility.Visible;
 
 			using (var context = new Context())
 			{
@@ -103,7 +103,7 @@ namespace CherryProject.Panel.DispatchPages
 
 					// sum those value for displaying the result of each progress
 					assembled += now;
-					dispatched += dic.Status == "Dispatched" ? total : 0;
+					dispatched += dic.Status == DicStatusEnum.Dispatched.ToString() || dic.Status == DicStatusEnum.Accepted.ToString() ? total : 0;
 					all += total;
 				}
 
@@ -146,6 +146,13 @@ namespace CherryProject.Panel.DispatchPages
 			if (e.Parameter is Order order)
 			{
 				UpdateResult(order);
+			}
+			else if (e.Parameter is Guid id)
+			{
+				using (var context = new Context())
+				{
+					UpdateResult(context.Order.Include(x => x.Dealer).FirstOrDefault(x => x.Id == id));
+				}
 			}
 		}
 	}

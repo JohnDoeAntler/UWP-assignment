@@ -33,7 +33,7 @@
 
 				<TextBlock x:Name="SelectedProductTextBlock" Visibility="Collapsed"/>
 
-				<TextBlock Text="xxx."
+				<TextBlock Text="The selected product would be activated promotion feature that multiply product price with discount value during specific datetime."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -41,7 +41,7 @@
 			<StackPanel Spacing="10">
 				<TextBlock Text="Description"/>
 				<RichEditBox x:Name="Description"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The promotion description."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -49,7 +49,7 @@
 			<StackPanel Spacing="10">
 				<TextBlock Text="Promotion Image URL"/>
 				<TextBox x:Name="ImageUrl"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The promotion display image."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -57,7 +57,7 @@
 			<StackPanel Spacing="10">
 				<TextBlock Text="Discount"/>
 				<TextBox x:Name="Discount" BeforeTextChanging="Discount_BeforeTextChanging"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The numeric value that would multiply product price."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -66,7 +66,7 @@
 				<TextBlock Text="Promotion Duration"/>
 				<DatePicker x:Name="StartTime" Header="Start Time"/>
 				<DatePicker x:Name="EndTime" Header="End Time"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The promotion activation start time and duration."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>
@@ -74,7 +74,7 @@
 			<StackPanel Spacing="10">
 				<TextBlock Text="Status"/>
 				<ComboBox x:Name="Status" MinWidth="280"/>
-				<TextBlock Text="xxx."
+				<TextBlock Text="The promotion activation."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

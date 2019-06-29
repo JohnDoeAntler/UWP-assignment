@@ -66,15 +66,6 @@
 					x:Name="ModifyProduct"
 					Content="Modify Product"/>
 			</StackPanel>
-
-			<StackPanel Spacing="10">
-				<TextBlock 
-					TextWrapping="WrapWholeWords"
-					Text="Modify the product status by clicking the above button to lock/unlock the product for enabling/disabling anyone to access current product." />
-				<Button
-					x:Name="ModifyProductStatus"
-					Content="Modify Product Status"/>
-			</StackPanel>
 		</StackPanel>
 	</Grid>
 </Page>

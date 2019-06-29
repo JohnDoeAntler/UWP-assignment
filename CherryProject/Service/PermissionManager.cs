@@ -1,4 +1,5 @@
-﻿using CherryProject.Model.Enum;
+﻿using CherryProject.Attribute;
+using CherryProject.Model.Enum;
 using CherryProject.Panel.AccountPages;
 using CherryProject.Panel.CategoryPages;
 using CherryProject.Panel.DispatchPages;
@@ -23,7 +24,7 @@ namespace CherryProject.Service
 {
 	public class PermissionManager
 	{
-		public static IEnumerable<Type> GetPermission(RoleEnum role)
+		public static IEnumerable<Type> GetPermission(RoleEnum role, bool showHidden = true)
 		{
 			switch (role)
 			{
@@ -44,7 +45,7 @@ namespace CherryProject.Service
 						typeof(CreateOrder),
 						typeof(ModifyOrder),
 						typeof(SearchOrders),
-						typeof(ViewOrder),
+						typeof(ViewPromotion),
 						// other
 						typeof(Calendar),
 						// product
@@ -59,7 +60,6 @@ namespace CherryProject.Service
 					{
 						// account
 						typeof(CreateAccount),
-						typeof(DisableAccount),
 						typeof(ModifyAccount),
 						typeof(SearchAccounts),
 						typeof(ViewAccount),
@@ -71,10 +71,9 @@ namespace CherryProject.Service
 						typeof(EndorseOrder),
 						typeof(ModifyOrder),
 						typeof(SearchOrders),
-						typeof(ViewOrder),
+						typeof(ViewPromotion),
 						// other
 						typeof(Calendar),
-						typeof(EmitNotification),
 						// product
 						typeof(SearchProducts),
 						typeof(ViewProduct),
@@ -89,17 +88,14 @@ namespace CherryProject.Service
 						typeof(AddCategory),
 						// other
 						typeof(Calendar),
-						typeof(EmitNotification),
 						// product
 						typeof(AddProduct),
 						typeof(ModifyProduct),
-						typeof(ModifyPromotionStatus),
 						typeof(SearchProducts),
 						typeof(ViewProduct),
 						// promotion
 						typeof(AddPromotion),
 						typeof(ModifyPromotion),
-						typeof(ModifyPromotionStatus),
 						typeof(ViewPromotions),
 					};
 
@@ -114,7 +110,7 @@ namespace CherryProject.Service
 						typeof(ViewOrderDispatchStatus),
 						// order
 						typeof(SearchOrders),
-						typeof(ViewOrder),
+						typeof(ViewPromotion),
 						// other
 						typeof(Calendar),
 						// product
@@ -131,10 +127,9 @@ namespace CherryProject.Service
 						typeof(ViewAccount),
 						// order
 						typeof(SearchOrders),
-						typeof(ViewOrder),
+						typeof(ViewPromotion),
 						// other
 						typeof(Calendar),
-						typeof(EmitNotification),
 						// spare
 						typeof(AddSpare),
 						typeof(AddSpares),
@@ -152,24 +147,24 @@ namespace CherryProject.Service
 						typeof(ViewOrderDispatchStatus),
 						// other
 						typeof(Calendar),
-						typeof(EmitNotification),
 					};
 
 				case RoleEnum.Administrator:
-					return GetTypesInNamespace("CherryProject.Panel.");
+					return GetTypesInNamespace("CherryProject.Panel.", showHidden);
 
 				default:
 					return null;
 			}
 		}
 
-		public static IEnumerable<Type> GetTypesInNamespace(string @namespace) 
+		public static IEnumerable<Type> GetTypesInNamespace(string @namespace, bool showHidden = true) 
 			=> Assembly
 			.GetExecutingAssembly()
 			.GetTypes()
 			.Where(x => x.Namespace != null 
 				&& x.Namespace.Contains(@namespace)
-				&& typeof(Page).IsAssignableFrom(x))
+				&& typeof(Page).IsAssignableFrom(x)
+				&& (showHidden ? true : x.GetCustomAttribute<HiddenAttribute>() == null))
 			.ToArray();
 	}
 }

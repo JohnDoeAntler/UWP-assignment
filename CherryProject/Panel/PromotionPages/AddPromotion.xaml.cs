@@ -99,6 +99,11 @@ namespace CherryProject.Panel.PromotionPages
 							await context.SaveChangesAsync();
 						}
 
+						if ((GeneralStatusEnum)Status.SelectedItem == GeneralStatusEnum.Available)
+						{
+							NotificationManager.CreateNotification(SignInManager.CurrentUser.Id, "New Promotion Released", "To check it out, press \"View\" button to have a took on it.", NotificationTypeEnum.Promotion, System.Guid.Parse(Guid.Text));
+						}
+
 						await new SuccessDialog().EnqueueAndShowIfAsync();
 
 						Frame.Navigate(typeof(ViewPromotions), null, new DrillInNavigationTransitionInfo());

@@ -27,7 +27,7 @@
 			</StackPanel>
 
 			<StackPanel Spacing="10">
-				<TextBlock Text="Category"/>
+				<TextBlock Text="Category GUID"/>
 
 				<TextBox x:Name="CategoryId" IsEnabled="False"/>
 
@@ -35,7 +35,7 @@
 
 				<TextBlock x:Name="SelectedCategoryTextBlock" Visibility="Collapsed"/>
 
-				<TextBlock Text="xxx."
+				<TextBlock Text="The category that receive the spare part supplement."
 					Style="{ThemeResource BodyTextBlockStyle}"
 					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 			</StackPanel>

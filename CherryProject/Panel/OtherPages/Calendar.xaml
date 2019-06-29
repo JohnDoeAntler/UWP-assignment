@@ -9,5 +9,8 @@
     Background="Transparent">
 
     <Grid>
+		<StackPanel>
+			<CalendarView></CalendarView>
+		</StackPanel>
     </Grid>
 </Page>

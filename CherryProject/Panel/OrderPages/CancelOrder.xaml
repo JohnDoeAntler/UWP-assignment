@@ -16,9 +16,10 @@
 		<StackPanel Margin="0 0 0 30">
 			<TextBlock Text="Cancel Order" Margin="0 0 0 10"/>
 			<Button x:Name="Submit" Content="Cancel Order"/>
-			<TextBlock Text="xxx."
-					Style="{ThemeResource BodyTextBlockStyle}"
-					Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+			<TextBlock 
+				Text="Cancel the order by clicking the above button to dispose the previous sent order."
+				Style="{ThemeResource BodyTextBlockStyle}"
+				Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
 		</StackPanel>
 	</Grid>
 </Page>

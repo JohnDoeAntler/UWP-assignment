@@ -3,6 +3,7 @@ using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Panel.OrderPages;
+using CherryProject.Service;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -107,6 +108,8 @@ namespace CherryProject.Panel.DispatchPages
 			{
 				OrderGUID.Text = (order = dialog.Order).Id.ToString();
 				SelectedOrder.Text = $"Selected Order: {order.Dealer.FirstName}'s Order";
+				SelectedOrder.Visibility = Visibility.Visible;
+				Submit.IsEnabled = true;
 			}
 		}
 
@@ -207,27 +210,39 @@ namespace CherryProject.Panel.DispatchPages
 								await context.SaveChangesAsync();
 							}
 						}
-
-						if (!completion)
-						{
-							await new ContentDialog()
-							{
-								Title = "Alert",
-								Content = "Some of ordered items might be missing because of the system has no sufficient stock to supply.",
-								CloseButtonText = "OK",
-								Width = 400
-							}.EnqueueAndShowIfAsync();
-						}
 						
 						// if the dic exists on database
 						if (!isZero)
 						{
+							if (!completion)
+							{
+								await new ContentDialog()
+								{
+									Title = "ALERT",
+									Content = "Some of ordered items might be missing because of the system has no sufficient stock to supply.",
+									CloseButtonText = "OK",
+									Width = 400
+								}.EnqueueAndShowIfAsync();
+							}
+
+							NotificationManager.CreateNotification(order.DealerId, "An Order Is Being Processing", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has decided to process one of your order requests.", NotificationTypeEnum.Dic, order.Id);
+
 							await new SuccessDialog().EnqueueAndShowIfAsync();
 
 							Frame.Navigate(typeof(ViewOrderDispatchStatus), order, new DrillInNavigationTransitionInfo());
 						}
+						else
+						{
+							await new ContentDialog()
+							{
+								Title = "ALERT",
+								Content = "Because of insufficient stock supplyment, there has no order could be requested to be delivered.",
+								CloseButtonText = "OK",
+								Width = 400
+							}.EnqueueAndShowIfAsync();
+						}
 					}
-					catch (Exception err)
+					catch (Exception)
 					{
 						await new ErrorDialog().EnqueueAndShowIfAsync();
 					}

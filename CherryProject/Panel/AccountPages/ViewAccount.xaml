@@ -68,15 +68,6 @@
 					x:Name="ModifyAccount"
 					Content="Modify Account"/>
 			</StackPanel>
-
-			<StackPanel Spacing="10">
-				<TextBlock 
-					TextWrapping="WrapWholeWords"
-					Text="Disable the account by clicking the above button to lock the account prevent anyone to access current account." />
-				<Button
-					x:Name="DisableAccount"
-					Content="Disable Account"/>
-			</StackPanel>
 		</StackPanel>
 	</Grid>
 </Page>

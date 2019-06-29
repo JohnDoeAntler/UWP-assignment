@@ -1,7 +1,9 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Attribute;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Panel.DispatchPages;
+using CherryProject.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +27,7 @@ namespace CherryProject.Panel.OrderPages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+	[Hidden]
     public sealed partial class EndorseOrder : Page
 	{
 		private Order order;
@@ -99,6 +102,11 @@ namespace CherryProject.Panel.OrderPages
 					CloseButtonText = "OK",
 					Width = 400
 				};
+
+				if (order.DealerId != SignInManager.CurrentUser.Id)
+				{
+					NotificationManager.CreateNotification(order.DealerId, "An Order Has Been Endorsed", $"{SignInManager.CurrentUser.FirstName} {SignInManager.CurrentUser.LastName} has endorsed one of your order pending requests.", NotificationTypeEnum.Order, order.Id);
+				}
 
 				await message.EnqueueAndShowIfAsync();
 

@@ -3,12 +3,15 @@ using CherryProject.Model;
 using CherryProject.Model.Enum;
 using CherryProject.Panel;
 using CherryProject.Service.SignStatus;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -47,15 +50,70 @@ namespace CherryProject.Service
 						{
 							CurrentUser = result;
 
-							await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+							await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
 							{
-								for (; ; )
+								while (true)
 								{
-									// 1 min refresh
-									await Task.Delay(60000);
-
 									if (CurrentUser != null)
 									{
+										using (var context = new Context())
+										{
+											IQueryable<Notification> notifications;
+
+											switch (CurrentUser.Role)
+											{
+												// dealer
+												// sales manager
+												// storemen
+												default:
+												{
+													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
+
+													break;
+												}
+
+												case RoleEnum.AreaManager:
+												{
+													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
+
+													break;
+												}
+
+												case RoleEnum.DispatchClerk:
+												{
+													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order) && x.IsReceived == false);
+
+													break;
+												}
+
+												case RoleEnum.Administrator:
+												{
+													notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId) && x.IsReceived == false);
+
+													break;
+												}
+											}
+
+											foreach (var notification in notifications)
+											{
+												if (StorageManager.GetApplicationDataContainer().Values[CurrentUser.Id.ToString() + notification.Id] == null)
+												{
+													NotificationManager.SendNotification(notification);
+												}
+
+												if (notification.SenderId != notification.RecipientId || (notification.SenderId == notification.RecipientId && (notification.Type == NotificationTypeEnum.Order || notification.Type == NotificationTypeEnum.Dic || DateTime.UtcNow - notification.Timestamp > new TimeSpan(1, 0, 0, 0))))
+												{
+													notification.IsReceived = true;
+												}
+												else if (notification.SenderId == notification.RecipientId)
+												{
+													StorageManager.GetApplicationDataContainer().Values[CurrentUser.Id.ToString() + notification.Id] = true;
+												}
+											}
+
+											await context.SaveChangesAsync();
+										}
+
 										if (!await ValidateSecurityStamp())
 										{
 											SignOut();
@@ -70,6 +128,9 @@ namespace CherryProject.Service
 									{
 										break;
 									}
+
+									// 1 min refresh
+									await Task.Delay(60000);
 								}
 							});
 

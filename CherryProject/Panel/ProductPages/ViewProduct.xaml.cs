@@ -1,4 +1,5 @@
-﻿using CherryProject.Extension;
+﻿using CherryProject.Attribute;
+using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Service;
 using CherryProject.ViewModel;
@@ -28,6 +29,7 @@ namespace CherryProject.Panel.ProductPages
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
+	[Hidden]
 	public sealed partial class ViewProduct : Page
 	{
 		private readonly ObservableCollection<ViewTuple> displayItems;
@@ -40,7 +42,6 @@ namespace CherryProject.Panel.ProductPages
 
 			// permission control
 			ModifyProduct.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyProduct));
-			ModifyProductStatus.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyProductStatus));
 		}
 
 		public ObservableCollection<ViewTuple> DisplayItems => displayItems;
@@ -55,7 +56,17 @@ namespace CherryProject.Panel.ProductPages
 
 				// add event listener
 				ModifyProduct.Click += (sender, args) => Frame.Navigate(typeof(ModifyProduct), product, new DrillInNavigationTransitionInfo());
-				ModifyProductStatus.Click += (sender, args) => Frame.Navigate(typeof(ModifyProductStatus), product, new DrillInNavigationTransitionInfo());
+			}
+			else if (e.Parameter is Guid id)
+			{
+				using (var context = new Context())
+				{
+					var tmp = context.Product.FirstOrDefault(x => x.Id == id);
+					SetProductInformation(tmp);
+
+					// add event listener
+					ModifyProduct.Click += (sender, args) => Frame.Navigate(typeof(ModifyProduct), tmp, new DrillInNavigationTransitionInfo());
+				}
 			}
 			else
 			{

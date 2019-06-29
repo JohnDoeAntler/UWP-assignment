@@ -49,6 +49,7 @@ namespace CherryProject.Panel.DispatchPages
 			{
 				DicGUID.Text = (dic = dialog.Dic).Id.ToString();
 				SelectedDic.Text = $"Selected DIC: {dic.Id}";
+				SelectedDic.Visibility = Visibility.Visible;
 
 				UpdateDids(SearchBox.Text);
 			}
@@ -85,6 +86,7 @@ namespace CherryProject.Panel.DispatchPages
 			{
 				DicGUID.Text = (this.dic = dic).Id.ToString();
 				SelectedDic.Text = $"Selected DIC: {dic.Id}";
+				SelectedDic.Visibility = Visibility.Visible;
 
 				UpdateDids();
 			}

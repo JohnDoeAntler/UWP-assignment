@@ -1,10 +1,10 @@
 ﻿using CherryProject.Model;
-using CherryProject.Model.Enum;
-using CherryProject.Service;
+using CherryProject.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -16,35 +16,29 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace CherryProject.Panel.PromotionPages
+namespace CherryProject.Panel.StatisticPages
 {
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class ViewPromotions : Page
+	public sealed partial class ViewDangerLevelProduct : Page
 	{
-		public ViewPromotions()
+		private readonly ObservableCollection<ProductViewModel> products;
+
+		public ViewDangerLevelProduct()
 		{
 			this.InitializeComponent();
 
 			using (var context = new Context())
 			{
-				if (PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyPromotion)))
-				{
-					Promotions.ItemsSource = new ObservableCollection<Promotion>(context.Promotion.Include(x => x.Product));
-				}
-				else
-				{
-					Promotions.ItemsSource = new ObservableCollection<Promotion>(context.Promotion.Include(x => x.Product).Where(x => x.Status == GeneralStatusEnum.Available));
-				}
+				products = new ObservableCollection<ProductViewModel>(context.Product.Include(x => x.PriceHistory).Where(x => x.ReorderLevel > context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity)).Select(x => new ProductViewModel(x, context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity))));
 			}
-
-			ModifyPromotion.Click += (sender, args) => Frame.Navigate(typeof(ModifyPromotion), Promotions.SelectedItem, new DrillInNavigationTransitionInfo());
 		}
+
+		public ObservableCollection<ProductViewModel> Products { get => products; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using CherryProject.Dialog;
+﻿using CherryProject.Attribute;
+using CherryProject.Dialog;
 using CherryProject.Extension;
 using CherryProject.Model;
 using CherryProject.Model.Enum;
@@ -26,6 +27,7 @@ namespace CherryProject.Panel.ProductPages
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
+	[Hidden]
 	public sealed partial class ModifyProduct : Page
 	{
 		private Product product;

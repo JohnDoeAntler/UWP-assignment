@@ -1,0 +1,220 @@
+﻿<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Report</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="controller">
+
+    <div class="jumbotron jumbotron-fluid mb-0">
+        <div class="container">
+            <h1 class="display-3">SLMC SYSTEM - Invoice</h1>
+            <p class="lead">Smart & Luxury Motor Company (Spares) Limited</p>
+            <hr>
+            <small>Concurrency Datetime: __Now__</small>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row my-5">
+            <div class="col">
+                <h1 class="display-4 mb-5">Dealer Information</h1>
+
+                <p class="my-3">
+                    Dealer ID: __DealerId__
+                </p>
+
+                <p class="my-3">
+                    First Name: __FirstName__
+                </p>
+
+                <p class="my-3">
+                    Last Name: __LastName__
+                </p>
+
+                <p class="my-3">
+                    Email: __Email__
+                </p>
+
+                <p class="my-3">
+                    Phone Number: __PhoneNumber__
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col">
+                <h1 class="display-4 mb-5">Order Information</h1>
+
+                <p class="my-3">Delivery Address: __Address__</p>
+
+                <p class="my-3">Type: __Type__</p>
+
+                <p class="my-3">Status: __Status__</p>
+
+                <p class="my-3">Total Price: __TotalPrice__</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col">
+                <h1 class="display-4 mb-5">Ordered Products</h1>
+
+                <p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Ordered Quantity</th>
+                                <th>Dispatched Quantity</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="orderProduct in orderProducts">
+                                <td scope="row">{{orderProduct.Id}}</td>
+                                <td>{{orderProduct.Name}}</td>
+                                <td>{{orderProduct.Quantity}}</td>
+                                <td>{{orderProduct.Dispatched}}</td>
+                                <td>{{orderProduct.TotalPrice | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col">
+                <h1 class="display-4 mb-5">Benefited Promotions</h1>
+
+                <p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Promotion ID</th>
+                                <th>Promotion Description</th>
+                                <th>Promotion Discount</th>
+                                <th>Benefited Product</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="promotion in promotions">
+                                <td scope="row">{{promotion.Id}}</td>
+                                <td>{{promotion.Description}}</td>
+                                <td>{{(promotion.Discount * 100) + "%"}}</td>
+                                <td>{{promotion.DiscountedProduct}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-light">
+        <div class="row py-5">
+            <div class="col">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <h6>Disclaimer </h6>
+                            <small>
+                                All information and content contained in this website are provided solely for general
+                                information and reference purposes. Smart & Luxury Motor Company (Spares) Limited
+                                Management Limited makes no statement, representation, warranty or guarantee as to the
+                                accuracy, reliability or timeliness of the information and content contained in this
+                                website.
+
+                                Neither Smart & Luxury Motor Company (Spares) Limited Management Limited nor any of its
+                                related company accepts any responsibility or liability for any direct or indirect loss
+                                or damage (whether in tort, contract or otherwise) which may be suffered or occasioned
+                                by any person howsoever arising due to any inaccuracy,
+
+
+                            </small>
+                        </div>
+                        <div class="col-4">
+                            <small>
+                                omission, misrepresentation or error in respect of any information and content provided
+                                by this website (including any third-party websites accessed by hyperlinks through this
+                                website.)
+
+                                If there is any inconsistency between the English and Chinese versions of this
+                                Disclaimer, the English version shall prevail.
+
+                            </small><small>
+
+                                The contents contained in this website are copyright protected. Except with the prior
+                                written permission of Smart & Luxury Motor Company (Spares) Limited Management Limited
+                                and/or other relevant copyright owner, no person may download, duplicate, reproduce,
+                                edit, publish, make available or disseminate through whatever means this website or any
+                                content contained in whole or in part.
+
+                            </small>
+                        </div>
+                        <div class="col-4">
+                            <small>
+                                All hyperlinks to this website require prior written application to and the approval in
+                                writing by Smart & Luxury Motor Company (Spares) Limited Management Limited.
+
+                                If there is any inconsistency between the English and Chinese versions of this Copyright
+                                Statement, the English version shall prevail.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Angular JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+
+    <script>
+        var app = angular.module("app", []);
+
+        app.controller("controller", ($scope) => {
+            $scope.orderProducts = __orderProducts__;
+
+            $scope.promotions = __promotions__;
+        });
+    </script>
+
+</body>
+
+</html>
