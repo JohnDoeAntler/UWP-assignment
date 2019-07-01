@@ -32,7 +32,7 @@ namespace CherryProject.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=colourful.dlinkddns.com;uid=system;pwd=F10gNfXZg6sIvBkP;database=system_project");
+                optionsBuilder.UseMySql("server=localhost;uid=root;database=system_project");
             }
         }
 

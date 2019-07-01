@@ -103,7 +103,7 @@ namespace CherryProject.Panel.OrderPages
 			{
 				// if the user enter searching user UI by clicking nav bar, it would direct user to view account UI
 				// else if the user was instructed to select an account, it would return a user previous UI
-				Frame.Navigate(searchStatus ?? typeof(ViewPromotion), ResultListViewControl.SelectedItem, new DrillInNavigationTransitionInfo());
+				Frame.Navigate(searchStatus ?? typeof(ViewOrder), ResultListViewControl.SelectedItem, new DrillInNavigationTransitionInfo());
 			}
 		}
 

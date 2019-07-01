@@ -116,16 +116,6 @@ namespace CherryProject.Service
 
 											switch (CurrentUser.Role)
 											{
-												// dealer
-												// sales manager
-												// storemen
-												default:
-													{
-														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
-
-														break;
-													}
-
 												case RoleEnum.AreaManager:
 													{
 														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
@@ -143,6 +133,16 @@ namespace CherryProject.Service
 												case RoleEnum.Administrator:
 													{
 														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId) && x.IsReceived == false);
+
+														break;
+													}
+
+												// dealer
+												// sales manager
+												// storemen
+												default:
+													{
+														notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic) && x.IsReceived == false);
 
 														break;
 													}

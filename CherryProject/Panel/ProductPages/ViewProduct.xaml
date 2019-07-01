@@ -17,7 +17,7 @@
 			<StackPanel>
 				<Ellipse Height="200" Width="200">
 					<Ellipse.Fill>
-						<ImageBrush x:Name="Icon" ImageSource="https://i.imgur.com/Yj7sJJz.jpg"/>
+						<ImageBrush x:Name="Icon" ImageSource="https://cdn1.iconfinder.com/data/icons/business-e-commerce-logistics-full-colours-set-2/91/Business_E-commerce__Logistics_C-98-512.png"/>
 					</Ellipse.Fill>
 				</Ellipse>
 			</StackPanel>

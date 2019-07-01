@@ -5,12 +5,70 @@
     xmlns:local="using:CherryProject.Panel.OtherPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+	xmlns:model="using:CherryProject.Model"
+	mc:Ignorable="d"
     Background="Transparent">
 
     <Grid>
-		<StackPanel>
-			<CalendarView></CalendarView>
+		<StackPanel Spacing="30">
+			<CalendarView x:Name="CalendarView" Width="460" Height="460"/>
+
+			<ScrollViewer
+				Height="236"
+				HorizontalAlignment="Left"
+				BorderBrush="Gray"
+				BorderThickness="1">
+
+				<ListView
+					x:Name="ResultListViewControl"
+					HorizontalAlignment="Left"
+					SelectionMode="Single"
+					IsItemClickEnabled="True"
+					ItemsSource="{x:Bind Notifications}"
+					Width="460">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="model:Notification">
+							<ListViewItem IsTapEnabled="False">
+								<StackPanel 
+									Padding="12"
+									Orientation="Horizontal">
+									<Ellipse Width="54" Height="54">
+										<Ellipse.Fill>
+											<ImageBrush ImageSource="{x:Bind Sender.IconUrl}"/>
+										</Ellipse.Fill>
+									</Ellipse>
+									<StackPanel Margin="16 0 0 0">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="{x:Bind Sender.FirstName}"/>
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="{x:Bind Sender.LastName}"/>
+										</StackPanel>
+										<TextBlock
+											TextWrapping="WrapWholeWords" 
+											TextTrimming="Clip" 
+											Text="{x:Bind Header}"
+											Style="{ThemeResource CaptionTextBlockStyle}"
+											Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+										<TextBlock
+											TextWrapping="WrapWholeWords" 
+											TextTrimming="Clip" 
+											Text="{x:Bind Content}"
+											Style="{ThemeResource CaptionTextBlockStyle}"
+											Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+									</StackPanel>
+								</StackPanel>
+							</ListViewItem>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</ScrollViewer>
 		</StackPanel>
     </Grid>
 </Page>

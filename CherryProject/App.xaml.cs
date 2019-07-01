@@ -148,7 +148,7 @@ namespace CherryProject
 						}
 						case "Order":
 						{
-							rootFrame.Navigate(typeof(PanelPage), ToNavigationParameters(typeof(ViewPromotion), Guid.Parse(args["ObjectId"])), new DrillInNavigationTransitionInfo());
+							rootFrame.Navigate(typeof(PanelPage), ToNavigationParameters(typeof(ViewOrder), Guid.Parse(args["ObjectId"])), new DrillInNavigationTransitionInfo());
 							break;
 						}
 						case "Product":
@@ -158,7 +158,7 @@ namespace CherryProject
 						}
 						case "Promotion":
 						{
-							rootFrame.Navigate(typeof(PanelPage), ToNavigationParameters(typeof(ViewPromotion), Guid.Parse(args["ObjectId"])), new DrillInNavigationTransitionInfo());
+							rootFrame.Navigate(typeof(PanelPage), ToNavigationParameters(typeof(ViewOrder), Guid.Parse(args["ObjectId"])), new DrillInNavigationTransitionInfo());
 							break;
 						}
 						case "Dic":

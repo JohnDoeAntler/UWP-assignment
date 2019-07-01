@@ -15,6 +15,6 @@
 		<TextBlock 
 			x:Name="Description"
 			TextWrapping="Wrap"
-			Text="The information you typed has mistakes, please ensure the input data validation is correct."/>
+			Text="The information you typed has some mistakes, please ensure the input data validation is correct."/>
 	</Grid>
 </ContentDialog>

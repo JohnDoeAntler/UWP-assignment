@@ -1,8 +1,11 @@
-﻿using CherryProject.Model;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
 using CherryProject.Model.Enum;
+using CherryProject.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,67 +24,69 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CherryProject.Panel.StatisticPages
 {
+
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 	public sealed partial class ViewBestSellingProduct : Page
 	{
+
+		private readonly ObservableCollection<BestSellingProductViewModel> products;
+
 		public ViewBestSellingProduct()
 		{
 			this.InitializeComponent();
 
-			setTop();
+			From.IsEnabled = !Toggle.IsOn;
+			To.IsEnabled = !Toggle.IsOn;
+
+			products = new ObservableCollection<BestSellingProductViewModel>();
 		}
 
-		private void setTop(TimeSpan? days = null)
+		public ObservableCollection<BestSellingProductViewModel> Products => products;
+
+		private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+		{
+			if (sender is ToggleSwitch toggle)
+			{
+				From.IsEnabled = !toggle.IsOn;
+				To.IsEnabled = !toggle.IsOn;
+			}
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			using (var context = new Context())
 			{
-				if (days != null)
+				if (Toggle.IsOn || !From.Date.HasValue || !To.Date.HasValue)
 				{
-					var products = context.Product.Select(x => new
+					products.UpdateObservableCollection(context.Product.Select(x => new BestSellingProductViewModel()
 					{
-						x.Name,
-						Quantity = context.OrderProduct.Include(y => y.Order).Where(y => y.Order.Status == OrderStatusEnum.Endorsed && y.ProductId == x.Id && DateTime.UtcNow - y.LastTimeModified < days).Sum(y => y.Quantity)
-					}).OrderByDescending(x => x.Quantity).Take(5);
-
-					for (int i = 0; i < products.Count(); i++)
-					{
-						var tb = (TextBlock)FindName($"top{i + 1}");
-						tb.Text = $"{products.Skip(i).First().Name} (Sales Volume: {products.Skip(i).First().Quantity})";
-					}
+						Name = x.Name,
+						Quantity = context.OrderProduct.Include(y => y.Order).Where(y => y.Order.Status == OrderStatusEnum.Endorsed && y.ProductId == x.Id).Sum(y => y.Quantity),
+						Icon = ValidOrDefault(x.IconUrl)
+					}).OrderByDescending(x => x.Quantity).Take((int)Slider.Value));
 				}
 				else
 				{
-					var products = context.Product.Select(x => new
+					products.UpdateObservableCollection(context.Product.Select(x => new BestSellingProductViewModel()
 					{
-						x.Name,
-						Quantity = context.OrderProduct.Include(y => y.Order).Where(y => y.Order.Status == OrderStatusEnum.Endorsed && y.ProductId == x.Id).Sum(y => y.Quantity)
-					}).OrderByDescending(x => x.Quantity).Take(5);
-
-					for (int i = 0; i < products.Count(); i++)
-					{
-						var tb = (TextBlock)FindName($"top{i + 1}");
-						tb.Text = $"{products.Skip(i).First().Name} (Sales Volume: {products.Skip(i).First().Quantity})";
-					}
+						Name = x.Name,
+						Quantity = context.OrderProduct.Include(y => y.Order).Where(y => y.Order.Status == OrderStatusEnum.Endorsed && y.ProductId == x.Id && x.LastTimeModified >= From.Date.Value && x.LastTimeModified <= To.Date).Sum(y => y.Quantity),
+						Icon = ValidOrDefault(x.IconUrl)
+					}).OrderByDescending(x => x.Quantity).Take((int)Slider.Value));
 				}
 			}
 		}
 
-		private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+		private static string ValidOrDefault(string uri)
 		{
-			setTop();
-		}
+			if (Uri.TryCreate(uri, UriKind.Absolute, out Uri iconUrl) && iconUrl != null && (iconUrl.Scheme == Uri.UriSchemeHttp || iconUrl.Scheme == Uri.UriSchemeHttps))
+			{
+				return uri;
+			}
 
-		private void MenuFlyoutItem_Click_2(object sender, RoutedEventArgs e)
-		{
-			Debug.WriteLine(new TimeSpan(31, 0, 0, 0).TotalDays);
-			setTop(new TimeSpan(31, 0, 0, 0));
-		}
-
-		private void MenuFlyoutItem_Click_3(object sender, RoutedEventArgs e)
-		{
-			setTop(new TimeSpan(7, 0, 0, 0));
+			return "ms-appx:///Assets/Account.jpg";
 		}
 	}
 }

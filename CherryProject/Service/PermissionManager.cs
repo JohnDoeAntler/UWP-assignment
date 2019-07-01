@@ -9,6 +9,7 @@ using CherryProject.Panel.OtherPages;
 using CherryProject.Panel.ProductPages;
 using CherryProject.Panel.PromotionPages;
 using CherryProject.Panel.SparePages;
+using CherryProject.Panel.StatisticPages;
 using CherryProject.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace CherryProject.Service
 						typeof(ModifyOrder),
 						typeof(SearchOrders),
 						typeof(UnreserveOrder),
-						typeof(ViewPromotion),
+						typeof(ViewOrder),
 						// other
 						typeof(Calendar),
 						// product
@@ -72,7 +73,7 @@ namespace CherryProject.Service
 						typeof(EndorseOrder),
 						typeof(ModifyOrder),
 						typeof(SearchOrders),
-						typeof(ViewPromotion),
+						typeof(ViewOrder),
 						// other
 						typeof(Calendar),
 						// product
@@ -98,6 +99,12 @@ namespace CherryProject.Service
 						typeof(AddPromotion),
 						typeof(ModifyPromotion),
 						typeof(ViewPromotions),
+						// statistic
+						typeof(ViewBestSellingProduct),
+						typeof(ViewDangerLevelProduct),
+						typeof(ViewReorderLevelProduct),
+						typeof(ViewProductSellingVolume),
+						typeof(ViewSellingVolume)
 					};
 
 				case RoleEnum.SalesOrderOfficer:
@@ -111,14 +118,20 @@ namespace CherryProject.Service
 						typeof(ViewOrderDispatchStatus),
 						// order
 						typeof(SearchOrders),
-						typeof(ViewPromotion),
+						typeof(ViewOrder),
 						// other
 						typeof(Calendar),
 						// product
 						typeof(SearchProducts),
 						typeof(ViewProduct),
 						// promotion
-						typeof(ViewPromotions)
+						typeof(ViewPromotions),
+						// statistic
+						typeof(ViewBestSellingProduct),
+						typeof(ViewDangerLevelProduct),
+						typeof(ViewReorderLevelProduct),
+						typeof(ViewProductSellingVolume),
+						typeof(ViewSellingVolume)
 					};
 
 				case RoleEnum.Storemen:
@@ -128,7 +141,7 @@ namespace CherryProject.Service
 						typeof(ViewAccount),
 						// order
 						typeof(SearchOrders),
-						typeof(ViewPromotion),
+						typeof(ViewOrder),
 						// other
 						typeof(Calendar),
 						// spare

@@ -5,44 +5,82 @@
     xmlns:local="using:CherryProject.Panel.StatisticPages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+	xmlns:viewmodel="using:CherryProject.ViewModel"
+	mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
-
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" MaxWidth="460"/>
+		</Grid.ColumnDefinitions>
+		
 		<StackPanel Spacing="30">
-			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<DropDownButton Content="Type">
-					<DropDownButton.Flyout>
-						<MenuFlyout Placement="Bottom">
-							<MenuFlyoutItem Text="All Time" Click="MenuFlyoutItem_Click"/>
-							<MenuFlyoutItem Text="Monthly" Click="MenuFlyoutItem_Click_2"/>
-							<MenuFlyoutItem Text="Weekly" Click="MenuFlyoutItem_Click_3"/>
-						</MenuFlyout>
-					</DropDownButton.Flyout>
-				</DropDownButton>
-			</StackPanel>
+			<ToggleSwitch x:Name="Toggle" Header="Display All Time" Toggled="ToggleSwitch_Toggled" />
+
+			<CalendarDatePicker x:Name="From" PlaceholderText="Pick a date" Header="From" />
 			
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Top 1 - " Style="{StaticResource HeaderTextBlockStyle}" Margin="0 0 20 0"/>
-				<TextBlock Name="top1" Style="{StaticResource HeaderTextBlockStyle}"/>
+			<CalendarDatePicker x:Name="To" PlaceholderText="Pick a date" Header="To"/>
+
+			<Button Content="View Best Selling Product" Click="Button_Click"/>
+
+			<StackPanel Spacing="10" Orientation="Horizontal">
+				<Slider x:Name="Slider" TickFrequency="5" Minimum="5" Maximum="50" Value="5" TickPlacement="Outside" Width="200" HorizontalAlignment="Left" Header="Result Amount" />
+
+				<TextBlock x:Name="SliderValue" Text="{Binding ElementName=Slider,Path=Value}" VerticalAlignment="Bottom" Margin="0 7"/>
 			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Top 2 - " Style="{StaticResource SubheaderTextBlockStyle}" Margin="0 0 15 0"/>
-				<TextBlock Name="top2" Style="{StaticResource SubheaderTextBlockStyle}"/>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Top 3 - " Style="{StaticResource TitleTextBlockStyle}" Margin="0 0 10 0"/>
-				<TextBlock Name="top3" Style="{StaticResource TitleTextBlockStyle}"/>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Top 4 - " Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 8 0"/>
-				<TextBlock Name="top4" Style="{StaticResource SubtitleTextBlockStyle}"/>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Top 5 - " Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 8 0"/>
-				<TextBlock Name="top5" Style="{StaticResource SubtitleTextBlockStyle}"/>
-			</StackPanel>
+
+			<ScrollViewer
+				Height="236"
+				HorizontalAlignment="Left"
+				BorderBrush="Gray"
+				BorderThickness="1">
+
+				<ListView
+					x:Name="ResultListViewControl"
+					HorizontalAlignment="Left"
+					SelectionMode="Single"
+					IsItemClickEnabled="True"
+					ItemsSource="{x:Bind Products}"
+					Width="460">
+					<ListView.ItemTemplate>
+						<DataTemplate x:DataType="viewmodel:BestSellingProductViewModel">
+							<ListViewItem IsTapEnabled="False">
+								<StackPanel 
+									Padding="12"
+									Orientation="Horizontal">
+									<Ellipse Width="54" Height="54">
+										<Ellipse.Fill>
+											<ImageBrush ImageSource="{x:Bind Icon}"/>
+										</Ellipse.Fill>
+									</Ellipse>
+									<StackPanel Margin="16 0 0 0">
+										<TextBlock
+											TextWrapping="WrapWholeWords" 
+											TextTrimming="Clip" 
+											Text="{x:Bind Name}"/>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="Quantity: "
+												Style="{ThemeResource CaptionTextBlockStyle}"
+												Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+											<TextBlock
+												Margin="0 0 3 0"
+												TextWrapping="WrapWholeWords" 
+												TextTrimming="Clip" 
+												Text="{x:Bind Quantity}"
+												Style="{ThemeResource CaptionTextBlockStyle}"
+												Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+										</StackPanel>
+									</StackPanel>
+								</StackPanel>
+							</ListViewItem>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</ScrollViewer>
 		</StackPanel>
 	</Grid>
 </Page>

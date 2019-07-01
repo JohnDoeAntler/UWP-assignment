@@ -29,13 +29,13 @@ namespace CherryProject.Panel.OrderPages
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 	[Hidden]
-	public sealed partial class ViewPromotion : Page
+	public sealed partial class ViewOrder : Page
     {
 		private readonly ObservableCollection<ViewTuple> displayItems;
 
 		private readonly ObservableCollection<OrderProductViewModel> items;
 
-		public ViewPromotion()
+		public ViewOrder()
         {
             this.InitializeComponent();
 
@@ -93,7 +93,7 @@ namespace CherryProject.Panel.OrderPages
 
 				ContentDialogResult result = await dialog.EnqueueAndShowIfAsync();
 
-				Frame.Navigate(typeof(SearchOrders), typeof(ViewPromotion), new DrillInNavigationTransitionInfo());
+				Frame.Navigate(typeof(SearchOrders), typeof(ViewOrder), new DrillInNavigationTransitionInfo());
 			}
 		}
 

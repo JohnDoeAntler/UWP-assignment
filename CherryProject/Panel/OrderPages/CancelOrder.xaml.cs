@@ -109,7 +109,7 @@ namespace CherryProject.Panel.OrderPages
 
 				await message.EnqueueAndShowIfAsync();
 
-				Frame.Navigate(typeof(ViewPromotion), order, new DrillInNavigationTransitionInfo());
+				Frame.Navigate(typeof(ViewOrder), order, new DrillInNavigationTransitionInfo());
 			}
 		}
 	}

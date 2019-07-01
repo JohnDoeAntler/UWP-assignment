@@ -36,17 +36,7 @@ namespace CherryProject.Panel.StatisticPages
 
 			using (var context = new Context())
 			{
-				products = new ObservableCollection<ProductViewModel>();
-
-				foreach (var item in context.Product.Include(x => x.PriceHistory))
-				{
-					long stock;
-
-					if (item.DangerLevel > (stock = context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == item.Id) - context.Did.Where(y => y.ProductId == item.Id).Sum(x => x.Quantity)))
-					{
-						products.Add(new ProductViewModel(item, stock));
-					}
-				}
+				products = new ObservableCollection<ProductViewModel>(context.Product.Include(x => x.PriceHistory).Where(x => x.DangerLevel > context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - (context.Did.Any(y => y.ProductId == x.Id) ? context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity) : 0)).Select(x => new ProductViewModel(x, context.Spare.Include(y => y.Category).Count(y => y.Category.ProductId == x.Id) - (context.Did.Any(y => y.ProductId == x.Id) ? context.Did.Where(y => y.ProductId == x.Id).Sum(y => y.Quantity) : 0))));
 			}
 		}
 

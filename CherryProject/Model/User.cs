@@ -10,6 +10,7 @@ namespace CherryProject.Model
 		private bool phoneNumberConfirmed;
 		private string securityStamp;
 		private string concurrencyStamp;
+		private string iconUrl;
 
 		public User()
 		{
@@ -34,7 +35,7 @@ namespace CherryProject.Model
 		public bool PhoneNumberConfirmed { get => phoneNumberConfirmed; set => phoneNumberConfirmed = value; }
 		public string Region { get; set; }
 		public string Address { get; set; }
-		public string IconUrl { get; set; }
+		public string IconUrl { get => ValidOrDefault(iconUrl); set => iconUrl = value; }
 		public GeneralStatusEnum Status { get; set; }
 		public RoleEnum Role { get; set; }
 
@@ -42,5 +43,15 @@ namespace CherryProject.Model
 		public virtual ICollection<Order> OrderModifier { get; set; }
 		public virtual ICollection<Notification> NotificationRecipient { get; set; }
 		public virtual ICollection<Notification> NotificationSender { get; set; }
+
+		private static string ValidOrDefault(string uri)
+		{
+			if (Uri.TryCreate(uri, UriKind.Absolute, out Uri iconUrl) && iconUrl != null && (iconUrl.Scheme == Uri.UriSchemeHttp || iconUrl.Scheme == Uri.UriSchemeHttps))
+			{
+				return uri;
+			}
+
+			return "ms-appx:///Assets/Account.jpg";
+		}
 	}
 }

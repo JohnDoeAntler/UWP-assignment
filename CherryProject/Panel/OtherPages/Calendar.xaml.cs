@@ -1,5 +1,12 @@
-﻿using System;
+﻿using CherryProject.Extension;
+using CherryProject.Model;
+using CherryProject.Model.Enum;
+using CherryProject.Service;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +29,62 @@ namespace CherryProject.Panel.OtherPages
     /// </summary>
     public sealed partial class Calendar : Page
     {
+		private readonly ObservableCollection<Notification> notifications;
+
         public Calendar()
         {
             this.InitializeComponent();
-        }
-    }
+
+			notifications = new ObservableCollection<Notification>();
+
+			CalendarView.SelectedDatesChanged += Calendar_SelectedDatesChanged;
+		}
+
+		public ObservableCollection<Notification> Notifications => notifications;
+		
+		private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+		{
+			using (var context = new Context())
+			{
+				IQueryable<Notification> notifications;
+
+				switch (SignInManager.CurrentUser.Role)
+				{
+
+					case RoleEnum.AreaManager:
+						{
+							notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == SignInManager.CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != SignInManager.CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Dic));
+
+							break;
+						}
+
+					case RoleEnum.DispatchClerk:
+						{
+							notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == SignInManager.CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != SignInManager.CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order));
+
+							break;
+						}
+
+					case RoleEnum.Administrator:
+						{
+							notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == SignInManager.CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != SignInManager.CurrentUser.Id && x.SenderId == x.RecipientId));
+
+							break;
+						}
+
+					// dealer
+					// sales manager
+					// storemen
+					default:
+						{
+							notifications = context.Notification.Include(x => x.Sender).Where(x => (x.RecipientId == SignInManager.CurrentUser.Id && x.SenderId != x.RecipientId || x.RecipientId != SignInManager.CurrentUser.Id && x.SenderId == x.RecipientId && x.Type != NotificationTypeEnum.Order && x.Type != NotificationTypeEnum.Dic));
+
+							break;
+						}
+				}
+
+				this.notifications.UpdateObservableCollection(notifications.Where(x => x.Timestamp.Date == sender.SelectedDates.FirstOrDefault().Date));
+			}
+		}
+	}
 }

@@ -32,6 +32,8 @@ namespace CherryProject.Panel.PromotionPages
 		{
 			this.InitializeComponent();
 
+			ModifyPromotion.IsEnabled = PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyPromotion));
+
 			using (var context = new Context())
 			{
 				if (PermissionManager.GetPermission(SignInManager.CurrentUser.Role).Contains(typeof(ModifyPromotion)))
